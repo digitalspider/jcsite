@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Classic - Contact Page</title>
+    <title>Javacloud Contact Page</title>
 <!--
 Classic Template
 http://www.templatemo.com/tm-488-classic
@@ -28,7 +28,7 @@ http://www.templatemo.com/tm-488-classic
         <div class="tm-header">
             <div class="container-fluid">
                 <div class="tm-header-inner">
-                    <a href="#" class="navbar-brand tm-site-name">Classic</a>
+                    <a href="index.jsp" class="navbar-brand tm-site-name">JavaCloud</a>
                     
                     <!-- navbar -->
                     <nav class="navbar tm-main-nav">
@@ -40,16 +40,16 @@ http://www.templatemo.com/tm-488-classic
                         <div class="collapse navbar-toggleable-sm" id="tmNavbar">
                             <ul class="nav navbar-nav">
                                 <li class="nav-item">
-                                    <a href="index.jsp" class="nav-link">Home</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="about.jsp" class="nav-link">About</a>
+                                    <a href="about.jsp" class="nav-link">Services</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="blog.jsp" class="nav-link">Blog</a>
                                 </li>
-                                <li class="nav-item active">
+                                <li class="nav-item">
                                     <a href="contact.jsp" class="nav-link">Contact</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="index.jsp" class="nav-link">Login</a>
                                 </li>
                             </ul>                        
                         </div>
@@ -60,9 +60,10 @@ http://www.templatemo.com/tm-488-classic
             </div>            
         </div>
 
+        <!--
         <div class="tm-contact-img-container">
-            
         </div>
+        -->
 
         <section class="tm-section">
             <div class="container-fluid">
@@ -70,11 +71,15 @@ http://www.templatemo.com/tm-488-classic
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
 
                         <section>
-                            <h3 class="tm-gold-text tm-form-title">Pellentesque fermentum mauris</h3>
-                            <p class="tm-form-description">Vivamus accumsan blandit ligula. Sed lobortis efficitur sapien. Quisque vel sem eu turpis ullamcorper euismod. Praesent quis nisi ac augue luctus viverra. Sed et dui nisi. Fusce vitae dapibus justo.</p> 
+                            <h3 class="tm-gold-text tm-form-title">Contact us for more information</h3>
+                            <p class="tm-form-description">
+                            If you would like to know more information about hosting, want to change your plan,
+                            or are having a support issue, please contact us. We respect our customers and want
+                            our customers to be sucessful, so please let us know how we can help.
+                            </p>
 
 
-                            <form action="index.html" method="post" class="tm-contact-form">                                
+                            <form action="index.jsp" method="post" class="tm-contact-form">
                                 <div class="form-group">
                                     <input type="text" id="contact_name" name="contact_name" class="form-control" placeholder="Name"  required/>
                                 </div>
@@ -93,20 +98,17 @@ http://www.templatemo.com/tm-488-classic
                         </section>
                         
                         <section class="tm-margin-t-mid tm-map-section">
-                            <h3 class="tm-gold-text tm-form-title">Pellentesque fermentum mauris</h3>
+                            <h3 class="tm-gold-text tm-form-title">Our location</h3>
 
                             <div id="google-map"></div>
 
-                            <p class="tm-form-description">Morbi vel pharetra massa, non iaculis tortor. Nulla porttitor tincidunt felis et feugiat. Vivamus fermentum ligula justo, sit amet blandit nisl volutpat id.</p>
+                            <p class="tm-form-description">We are located in Greater Western Sydney, Australia,
+                            and aim to cater specifically for Australian based businesses and individuals</p>
 
-                            <p class="m-b-0">Donec mattis ipsum in erat viverra commodo. 
-                                Proin sapien lacus, euismod eget nisl in, 
-                                elementum posuere massa. Curabitur a odio
-                                eros. Cras aliquam lectus erat, non semper est
-                                volutpat eget. Ut eget erat tincidunt.</p>
+                            <p class="m-b-0">If you are interested in partnering with us please let us know.</p>
 
                             <a href="#" class="tm-btn tm-margin-t-small">Detail</a> 
-                        </section>                        
+                        </section>
                  
 
                     </div>
@@ -121,12 +123,12 @@ http://www.templatemo.com/tm-488-classic
                                     </h3>
                                     <nav>
                                         <ul class="nav">
-                                            <li><a href="#" class="tm-text-link">Lorem ipsum dolor sit</a></li>
-                                            <li><a href="#" class="tm-text-link">Tincidunt non faucibus placerat</a></li>
-                                            <li><a href="#" class="tm-text-link">Vestibulum tempor ac lectus</a></li>
-                                            <li><a href="#" class="tm-text-link">Elementum egestas dui</a></li>
-                                            <li><a href="#" class="tm-text-link">Nam in augue consectetur</a></li>
-                                            <li><a href="#" class="tm-text-link">Text Link Color #006699</a></li>
+                                            <li><a href="#" class="tm-text-link">Java development</a></li>
+                                            <li><a href="#" class="tm-text-link">Hosting</a></li>
+                                            <li><a href="#" class="tm-text-link">Technology news</a></li>
+                                            <li><a href="#" class="tm-text-link">Business news</a></li>
+                                            <li><a href="#" class="tm-text-link">Other</a></li>
+                                            <li><a href="#" class="tm-text-link">abc</a></li>
                                         </ul>
                                     </nav>
                                     <hr class="tm-margin-t-small">   
@@ -135,12 +137,12 @@ http://www.templatemo.com/tm-488-classic
                                     </h3>
                                     <nav>   
                                         <ul class="nav">
-                                            <li><a href="#" class="tm-text-link">Suspendisse sed dui nulla</a></li>
-                                            <li><a href="#" class="tm-text-link">Lorem ipsum dolor sit</a></li>
-                                            <li><a href="#" class="tm-text-link">Duiss nec purus et eros</a></li>
-                                            <li><a href="#" class="tm-text-link">Etiam pulvinar et ligula sed</a></li>
-                                            <li><a href="#" class="tm-text-link">Proin egestas eu felis et iaculis</a></li>
-                                            <li><a href="#" class="tm-text-link">Fusce non turpis euismod</a></li>
+                                            <li><a href="http://www.java.com" class="tm-text-link">Oracle Java</a></li>
+                                            <li><a href="http://www.se-radio.net" class="tm-text-link">SE Radio</a></li>
+                                            <li><a href="http://www.theserverside.com" class="tm-text-link">The Server Side</a></li>
+                                            <li><a href="http://www.mkyong.com/" class="tm-text-link">Mykong</a></li>
+                                            <li><a href="http://build-podcast.com" class="tm-text-link">Build Podcast</a></li>
+                                            <li><a href="#" class="tm-text-link">Other..</a></li>
                                         </ul>
                                     </nav>      
                                 </div>
@@ -299,7 +301,7 @@ http://www.templatemo.com/tm-488-classic
 
                 <div class="row">
                     <div class="col-xs-12 tm-copyright-col">
-                        <p class="tm-copyright-text">Copyright 2016 Your Company Name</p>
+                        <p class="tm-copyright-text">Copyright 2016 Java Cloud</p>
                     </div>
                 </div>
             </div>
@@ -319,7 +321,7 @@ http://www.templatemo.com/tm-488-classic
             function initialize() {
                 var mapOptions = {
                     zoom: 16,
-                    center: new google.maps.LatLng(13.758468,100.567481),
+                    center: new google.maps.LatLng(-33.768955, 150.907624),
                     scrollwheel: false
                 };
             

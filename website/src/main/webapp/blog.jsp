@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Classic - Blog Page</title>
+    <title>Javacloud Blog</title>
 <!--
 Classic Template
 http://www.templatemo.com/tm-488-classic
@@ -28,7 +28,7 @@ http://www.templatemo.com/tm-488-classic
         <div class="tm-header">
             <div class="container-fluid">
                 <div class="tm-header-inner">
-                    <a href="#" class="navbar-brand tm-site-name">Classic</a>
+                    <a href="index.jsp" class="navbar-brand tm-site-name">JavaCloud</a>
                     
                     <!-- navbar -->
                     <nav class="navbar tm-main-nav">
@@ -40,16 +40,16 @@ http://www.templatemo.com/tm-488-classic
                         <div class="collapse navbar-toggleable-sm" id="tmNavbar">
                             <ul class="nav navbar-nav">
                                 <li class="nav-item">
-                                    <a href="index.jsp" class="nav-link">Home</a>
+                                    <a href="about.jsp" class="nav-link">Services</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="about.jsp" class="nav-link">About</a>
-                                </li>
-                                <li class="nav-item active">
                                     <a href="blog.jsp" class="nav-link">Blog</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="contact.jsp" class="nav-link">Contact</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="index.jsp" class="nav-link">Login</a>
                                 </li>
                             </ul>                        
                         </div>
@@ -60,9 +60,10 @@ http://www.templatemo.com/tm-488-classic
             </div>            
         </div>
 
+        <!--
         <div class="tm-blog-img-container">
-            
         </div>
+        -->
 
         <section class="tm-section">
             <div class="container-fluid">
@@ -79,114 +80,10 @@ http://www.templatemo.com/tm-488-classic
                             <p>Morbi vel pharetra massa, non iaculis tortor. Nulla porttitor tincidunt felis et feugiat. Vivamus fermentum ligula justo, sit amet blandit nisl volutpat id. Fusce sagittis ultricies felis, non luctus mauris lacinia quis. Ut fringilla lacus ac tempor ullamcorper. Mauris iaculis placerat ex et mattis.</p>
 
                             <p>Quisque vel sem eu turpis ullamcorper euismod. Praesent quis nisi ac augue luctus viverra. Sed et dui nisi. Fusce vitae dapibus justo. Pellentesque accumsan est ac posuere imperdiet. Curabitur eros mi, lacinia at euismod quis, dapibus vel ligula. Ut sodales erat vitae nunc tempor mollis. Donec tempor lobortis tortor, in feugiat massa facilisis sed. Ut dignissim viverra pretium. In eu justo maximus turpis feugiat finibus scelerisque nec eros. Cras nec lectus tempor nibh vestibulum eleifend et ac elit.</p>
-<div class="row">
-			<div class="col-md-12 col-sm-12 text-center">
-				<div class="section-title">
-					<strong>05</strong>
-					<h1 class="heading bold">OUR PRICING</h1>
-					<hr>
-				</div>
-			</div>
-			<div class="col-md-4 col-sm-6">
-				<div data-wow-delay="0.3s" class="plan plan-one wow bounceIn animated" style="visibility: visible; animation-delay: 0.3s; animation-name: bounceIn;">
-					<div class="plan_title">
-						<i class="icon-mobile medium-icon"></i>
-						<h3>BASIC</h3>
-						<h2>$150 <span>per year</span></h2>
-					</div>
-					<ul>
-                    	<li>100 GB Cloud Storage</li>
-						<li>5 Pro Websites</li>
-						<li>10 Secured Emails</li>
-                        <li>24-hour Support</li>
-					</ul>
-					<button class="btn btn-warning">Get it now</button>
-				</div>
-			</div>
-			<div class="col-md-4 col-sm-6">
-				<div data-wow-delay="0.3s" class="plan plan-two wow bounceIn animated" style="visibility: visible; animation-delay: 0.3s; animation-name: bounceIn;">
-					<div class="plan_title">
-						<i class="icon-desktop medium-icon"></i>
-						<h3>BUSINESS</h3>
-						<h2>$260 <span>per year</span></h2>
-					</div>
-					<ul>
-						<li>200 GB Cloud Storage</li>
-						<li>10 Pro Websites</li>
-						<li>20 Secured Emails</li>
-                        <li>30-Minute Support</li>
-					</ul>
-					<button class="btn btn-warning">Take this!</button>
-				</div>
-			</div>
-			<div class="col-md-4 col-sm-6">
-				<div data-wow-delay="0.3s" class="plan plan-three wow bounceIn animated" style="visibility: visible; animation-delay: 0.3s; animation-name: bounceIn;">
-					<div class="plan_title">
-						<i class="icon-cloud medium-icon"></i>
-						<h3>PROFESSIONAL</h3>
-						<h2>$380 <span>per year</span></h2>
-					</div>
-					<ul>
-						<li>500 GB Cloud Storage</li>
-						<li>20 Pro Websites</li>
-						<li>40 Secured Emails</li>
-                        <li>Live Support</li>
-					</ul>
-					<button class="btn btn-warning">Buy Now</button>
-				</div>
-			</div>
-		</div>
 
-<table id="dataTables-example" class="table table-striped table-bordered table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>Rendering engine</th>
-                                            <th>Browser</th>
-                                            <th>Platform(s)</th>
-                                            <th>Engine version</th>
-                                            <th>CSS grade</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="odd gradeX">
-                                            <td>Trident</td>
-                                            <td>Internet Explorer 4.0</td>
-                                            <td>Win 95+</td>
-                                            <td class="center">4</td>
-                                            <td class="center">X</td>
-                                        </tr>
-                                        <tr class="gradeA">
-                                            <td>Gecko</td>
-                                            <td>Firefox 1.0</td>
-                                            <td>Win 98+ / OSX.2+</td>
-                                            <td class="center">1.7</td>
-                                            <td class="center">A</td>
-                                        </tr>
-                                        <tr class="gradeA">
-                                            <td>Gecko</td>
-                                            <td>Mozilla 1.1</td>
-                                            <td>Win 95+ / OSX.1+</td>
-                                            <td class="center">1.1</td>
-                                            <td class="center">A</td>
-                                        </tr>
-                                        <tr class="gradeA">
-                                            <td>Gecko</td>
-                                            <td>Mozilla 1.2</td>
-                                            <td>Win 95+ / OSX.1+</td>
-                                            <td class="center">1.2</td>
-                                            <td class="center">A</td>
-                                        </tr>
-                                        <tr class="gradeU">
-                                            <td>Other browsers</td>
-                                            <td>All others</td>
-                                            <td>-</td>
-                                            <td class="center">-</td>
-                                            <td class="center">U</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-                            <p>Sed vitae luctus libero. Nam sem neque, finibus id sem pharetra, cursus porttitor ligula. Praesent aliquam fermentum dui, vitae venenatis libero vulputate ac. Fusce bibendum scelerisque magna eget iaculis. Phasellus non arcu eu sem convallis semper. Duis vulputate dignissim rhoncus.</p>
+                            <p>Sed vitae luctus libero. Nam sem neque, finibus id sem pharetra, cursus porttitor ligula.
+                            Praesent aliquam fermentum dui, vitae venenatis libero vulputate ac. Fusce bibendum scelerisque
+                            magna eget iaculis. Phasellus non arcu eu sem convallis semper. Duis vulputate dignissim rhoncus.</p>
                         </div>
                         
                         <div class="row tm-margin-t-big">
@@ -368,7 +265,7 @@ http://www.templatemo.com/tm-488-classic
 
                 <div class="row">
                     <div class="col-xs-12 tm-copyright-col">
-                        <p class="tm-copyright-text">Copyright 2016 Your Company Name</p>
+                        <p class="tm-copyright-text">Copyright 2016 Java Cloud</p>
                     </div>
                 </div>
             </div>

@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Classic - Responsive Bootstrap 4.0 Template</title>
+    <title>Javacloud</title>
 <!--
 Classic Template
 http://www.templatemo.com/tm-488-classic
@@ -28,7 +28,7 @@ http://www.templatemo.com/tm-488-classic
         <div class="tm-header">
             <div class="container-fluid">
                 <div class="tm-header-inner">
-                    <a href="#" class="navbar-brand tm-site-name">Classic</a>
+                    <a href="index.jsp" class="navbar-brand tm-site-name">JavaCloud</a>
                     
                     <!-- navbar -->
                     <nav class="navbar tm-main-nav">
@@ -39,17 +39,17 @@ http://www.templatemo.com/tm-488-classic
                         
                         <div class="collapse navbar-toggleable-sm" id="tmNavbar">
                             <ul class="nav navbar-nav">
-                                <li class="nav-item active">
-                                    <a href="index.jsp" class="nav-link">Home</a>
-                                </li>
                                 <li class="nav-item">
-                                    <a href="about.jsp" class="nav-link">About</a>
+                                    <a href="about.jsp" class="nav-link">Services</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="blog.jsp" class="nav-link">Blog</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="contact.jsp" class="nav-link">Contact</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="index.jsp" class="nav-link">Login</a>
                                 </li>
                             </ul>                        
                         </div>
@@ -60,40 +60,48 @@ http://www.templatemo.com/tm-488-classic
             </div>            
         </div>
 
+        <!--
         <div class="tm-home-img-container">
             <img src="img/tm-home-img.jpg" alt="Image" class="hidden-lg-up img-fluid">
         </div>
+        -->
 
         <section class="tm-section">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-xs-center">
-                        <h2 class="tm-gold-text tm-title">Introduction</h2>
-                        <p class="tm-subtitle">Suspendisse ut magna vel velit cursus tempor ut nec nunc. Mauris vehicula, augue in tincidunt porta, purus ipsum blandit massa.</p>
+                        <h2 class="tm-gold-text tm-title">Welcome to Java Cloud</h2>
+                        <p class="tm-subtitle">Welcome to Australias premier java hosting solution.<br/>
+                        Java Cloud allows you to host your web application with simplicity.</p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 col-xl-3">
 
                         <div class="tm-content-box">
+                            <!--
                             <img src="img/tm-img-310x180-1.jpg" alt="Image" class="tm-margin-b-20 img-fluid">
-                            <h4 class="tm-margin-b-20 tm-gold-text">Lorem ipsum dolor #1</h4>
-                            <p class="tm-margin-b-20">Aenean cursus tellus mauris, quis
-                            consequat mauris dapibus id. Donec
-                            scelerisque porttitor pharetra</p>
-                            <a href="#" class="tm-btn text-uppercase">Detail</a>    
-                        </div>  
+                            -->
+                            <h4 class="tm-margin-b-20 tm-gold-text">Business Hosting</h4>
+                            <p class="tm-margin-b-20">Host your business applications with us,
+                            either exclusively, or as part of your load balanced solution. We focus on
+                            Small to Medium business, and will work with you to find the right solution
+                            for you.</p>
+                            <a href="#" class="tm-btn text-uppercase">Read more</a>
+                        </div>
 
                     </div>
 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 col-xl-3">
 
                         <div class="tm-content-box">
+                            <!--
                             <img src="img/tm-img-310x180-2.jpg" alt="Image" class="tm-margin-b-20 img-fluid">
-                            <h4 class="tm-margin-b-20 tm-gold-text">Lorem ipsum dolor #2</h4>
-                            <p class="tm-margin-b-20">Aenean cursus tellus mauris, quis
-                            consequat mauris dapibus id. Donec
-                            scelerisque porttitor pharetra</p>
+                            -->
+                            <h4 class="tm-margin-b-20 tm-gold-text">Software Developers</h4>
+                            <p class="tm-margin-b-20">Your job is to build awesome applications. Let
+                            us take care of hosting them for you. We provide databases, application containers,
+                            and monitoring, so you can focus on development.</p>
                             <a href="#" class="tm-btn text-uppercase">Read More</a>    
                         </div>  
 
@@ -102,12 +110,15 @@ http://www.templatemo.com/tm-488-classic
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 col-xl-3">
 
                         <div class="tm-content-box">
+                            <!--
                             <img src="img/tm-img-310x180-3.jpg" alt="Image" class="tm-margin-b-20 img-fluid">
-                            <h4 class="tm-margin-b-20 tm-gold-text">Lorem ipsum dolor #3</h4>
-                            <p class="tm-margin-b-20">Aenean cursus tellus mauris, quis
-                            consequat mauris dapibus id. Donec
-                            scelerisque porttitor pharetra</p>
-                            <a href="#" class="tm-btn text-uppercase">Detail</a>    
+                            -->
+                            <h4 class="tm-margin-b-20 tm-gold-text">Educators and Students</h4>
+                            <p class="tm-margin-b-20">Run Java training courses and help your students
+                            host their solutions in the java cloud. <br/>
+                            Or as a student learning web development programming, host your creation
+                            within our java cloud.</p>
+                            <a href="#" class="tm-btn text-uppercase">Read More</a>
                         </div>  
 
                     </div>
@@ -115,11 +126,13 @@ http://www.templatemo.com/tm-488-classic
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 col-xl-3">
 
                         <div class="tm-content-box">
+                            <!--
                             <img src="img/tm-img-310x180-4.jpg" alt="Image" class="tm-margin-b-20 img-fluid">
-                            <h4 class="tm-margin-b-20 tm-gold-text">Lorem ipsum dolor #4</h4>
-                            <p class="tm-margin-b-20">Aenean cursus tellus mauris, quis
-                            consequat mauris dapibus id. Donec
-                            scelerisque porttitor pharetra</p>
+                            -->
+                            <h4 class="tm-margin-b-20 tm-gold-text">Services</h4>
+                            <p class="tm-margin-b-20">Interested in us developing a website solution
+                            for you. We can host wordpress, integration with payments, build an ecommerce
+                            solution, or help you fix your java applications. Contact us for a quote</p>
                             <a href="#" class="tm-btn text-uppercase">Read More</a>    
                         </div>  
 
@@ -130,16 +143,23 @@ http://www.templatemo.com/tm-488-classic
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                         <div class="tm-2-col-left">
                             
-                            <h3 class="tm-gold-text tm-title">Pellentesque fermentum mauris et posuere</h3>
-                            <p class="tm-margin-b-30">Vivamus accumsan blandit ligula. Sed lobortis efficitur sapien</p>
+                            <h3 class="tm-gold-text tm-title">How does it work</h3>
+                            <!--
+                            <p class="tm-margin-b-30">Some text here</p>
                             <img src="img/tm-img-660x330-1.jpg" alt="Image" class="tm-margin-b-40 img-fluid">
-                            <p>
-                                Donec tempor lobortis tortor, in feugiat massa facilisis sed. Ut dignissim viverra pretium. In eu justo maximus turpis feugiat finibus scelerisque nec eros. Cras nec lectus tempor nibh vestibulum eleifend et ac elit.
-                            </p>
-                            <p>Morbi vel pharetra massa, non iaculis tortor. Nulla porttitor tincidunt felis et feugiat. Vivamus fermentum ligula justo, sit amet blandit nisl volutpat id. Fusce sagittis ultricies felis, non luctus mauris lacinia quis.</p>
-                            <p class="m-b-2"> Ut fringilla lacus ac tempor ullamcorper. Mauris iaculis placerat ex et mattis. Mauris id vulputate lectus, id fermentum sapien.
-                            </p>
-                            <a href="#" class="tm-btn text-uppercase">Read More</a>
+                            -->
+                            <p>Login and register with us to get your own linux container. This container will be available
+                            through the internet at http://&lt;youralias&gt;.javacloud.com.au. Within your linux container
+                            choose your application server, e.g. jetty, tomcat, jboss, wildfly or glassfish. Then deploy your
+                            web applications (war files) into your containers. They will appear at
+                            http://&lt;youralias&gt;.javacloud.com.au/&lt;yourapp&gt;</p>
+                            <p>It&apos;s just that simple! You get root access to your linux container.
+                            Our default container is pretty small, but if you need more RAM, Disk Space,
+                            a Database, or anything else, we can help you to scale to your needs. </p>
+                            <p class="m-b-2">Yes we host non java things also, like php, wordpress, prestashop, etc</p>
+                            <p class="m-b-2">Try it out today, or contact us for more information. </p>
+                            <a href="#" class="tm-btn text-uppercase">Sign up</a>
+                            <a href="#" class="tm-btn text-uppercase">Contact Us</a>
 
                         </div>
                     </div>
@@ -309,7 +329,7 @@ http://www.templatemo.com/tm-488-classic
 
                 <div class="row">
                     <div class="col-xs-12 tm-copyright-col">
-                        <p class="tm-copyright-text">Copyright 2016 Your Company Name</p>
+                        <p class="tm-copyright-text">Copyright 2016 Java Cloud</p>
                     </div>
                 </div>
             </div>
