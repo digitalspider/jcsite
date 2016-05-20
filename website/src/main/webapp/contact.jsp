@@ -128,7 +128,6 @@ http://www.templatemo.com/tm-488-classic
                                             <li><a href="#" class="tm-text-link">Technology news</a></li>
                                             <li><a href="#" class="tm-text-link">Business news</a></li>
                                             <li><a href="#" class="tm-text-link">Other</a></li>
-                                            <li><a href="#" class="tm-text-link">abc</a></li>
                                         </ul>
                                     </nav>
                                     <hr class="tm-margin-t-small">   
@@ -139,10 +138,9 @@ http://www.templatemo.com/tm-488-classic
                                         <ul class="nav">
                                             <li><a href="http://www.java.com" class="tm-text-link">Oracle Java</a></li>
                                             <li><a href="http://www.se-radio.net" class="tm-text-link">SE Radio</a></li>
-                                            <li><a href="http://www.theserverside.com" class="tm-text-link">The Server Side</a></li>
                                             <li><a href="http://www.mkyong.com/" class="tm-text-link">Mykong</a></li>
                                             <li><a href="http://build-podcast.com" class="tm-text-link">Build Podcast</a></li>
-                                            <li><a href="#" class="tm-text-link">Other..</a></li>
+                                            <li><a href="http://www.theserverside.com" class="tm-text-link">The Server Side</a></li>
                                         </ul>
                                     </nav>      
                                 </div>

@@ -137,13 +137,11 @@ http://www.templatemo.com/tm-488-classic
                             </h3>
                             <nav>
                                 <ul class="nav">
-                                    <li><a href="#" class="tm-text-link">Lorem ipsum dolor sit</a></li>
-                                    <li><a href="#" class="tm-text-link">Tincidunt non faucibus placerat</a></li>
-                                    <li><a href="#" class="tm-text-link">Vestibulum tempor ac lectus</a></li>
-                                    <li><a href="#" class="tm-text-link">Elementum egestas dui</a></li>
-                                    <li><a href="#" class="tm-text-link">Nam in augue consectetur</a></li>
-                                    <li><a href="#" class="tm-text-link">Fusce non turpis euismod</a></li>
-                                    <li><a href="#" class="tm-text-link">Text Link Color #006699</a></li>
+                                    <li><a href="#" class="tm-text-link">Java development</a></li>
+                                    <li><a href="#" class="tm-text-link">Hosting</a></li>
+                                    <li><a href="#" class="tm-text-link">Technology news</a></li>
+                                    <li><a href="#" class="tm-text-link">Business news</a></li>
+                                    <li><a href="#" class="tm-text-link">Other</a></li>
                                 </ul>
                             </nav>
                             <hr class="tm-margin-t-small">   
@@ -152,11 +150,12 @@ http://www.templatemo.com/tm-488-classic
                             </h3>
                             <nav>   
                                 <ul class="nav">
-                                    <li><a href="#" class="tm-text-link">Suspendisse sed dui nulla</a></li>
-                                    <li><a href="#" class="tm-text-link">Lorem ipsum dolor sit</a></li>
-                                    <li><a href="#" class="tm-text-link">Duiss nec purus et eros</a></li>
-                                    <li><a href="#" class="tm-text-link">Etiam pulvinar et ligula sed</a></li>
-                                    <li><a href="#" class="tm-text-link">Proin egestas eu felis et iaculis</a></li>
+                                    <li><a href="http://www.java.com" class="tm-text-link">Oracle Java</a></li>
+                                    <li><a href="http://www.se-radio.net" class="tm-text-link">SE Radio</a></li>
+                                    <li><a href="http://www.mkyong.com/" class="tm-text-link">Mykong</a></li>
+                                    <li><a href="http://build-podcast.com" class="tm-text-link">Build Podcast</a></li>
+                                    <li><a href="http://www.theserverside.com" class="tm-text-link">The Server Side</a></li>
+                                    <li><a href="#" class="tm-text-link">Other..</a></li>
                                 </ul>
                             </nav>   
                             <hr class="tm-margin-t-small"> 

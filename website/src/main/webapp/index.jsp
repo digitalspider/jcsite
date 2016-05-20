@@ -159,7 +159,7 @@ http://www.templatemo.com/tm-488-classic
                             <p class="m-b-2">Yes we host non java things also, like php, wordpress, prestashop, etc</p>
                             <p class="m-b-2">Try it out today, or contact us for more information. </p>
                             <a href="#" class="tm-btn text-uppercase">Sign up</a>
-                            <a href="#" class="tm-btn text-uppercase">Contact Us</a>
+                            <a href="contact.jsp" class="tm-btn text-uppercase">Contact Us</a>
 
                         </div>
                     </div>
@@ -176,11 +176,11 @@ http://www.templatemo.com/tm-488-classic
                                         </h3>
                                         <nav>
                                             <ul class="nav">
-                                                <li><a href="#" class="tm-text-link">Tincidunt non faucibus placerat</a></li>
-                                                <li><a href="#" class="tm-text-link">Vestibulum tempor ac lectus</a></li>
-                                                <li><a href="#" class="tm-text-link">Fusce non turpis euismod</a></li>
-                                                <li><a href="#" class="tm-text-link">Nam in augue consectetur</a></li>
-                                                <li><a href="#" class="tm-text-link">Text Link Color #006699</a></li>
+                                                <li><a href="#" class="tm-text-link">Java development</a></li>
+                                                <li><a href="#" class="tm-text-link">Hosting</a></li>
+                                                <li><a href="#" class="tm-text-link">Technology news</a></li>
+                                                <li><a href="#" class="tm-text-link">Business news</a></li>
+                                                <li><a href="#" class="tm-text-link">Other</a></li>
                                             </ul>
                                         </nav>    
                                     </div> <!-- col -->
@@ -191,11 +191,11 @@ http://www.templatemo.com/tm-488-classic
                                         </h3>
                                         <nav>
                                             <ul class="nav">
-                                                <li><a href="#" class="tm-text-link">Suspendisse sed dui nulla</a></li>
-                                                <li><a href="#" class="tm-text-link">Lorem ipsum dolor sit</a></li>
-                                                <li><a href="#" class="tm-text-link">Duiss nec purus et eros</a></li>
-                                                <li><a href="#" class="tm-text-link">Etiam pulvinar et ligula sed</a></li>
-                                                <li><a href="#" class="tm-text-link">Proin egestas eu felis et iaculis</a></li>
+                                                <li><a href="http://www.java.com" class="tm-text-link">Oracle Java</a></li>
+                                                <li><a href="http://www.se-radio.net" class="tm-text-link">SE Radio</a></li>
+                                                <li><a href="http://www.mkyong.com/" class="tm-text-link">Mykong</a></li>
+                                                <li><a href="http://build-podcast.com" class="tm-text-link">Build Podcast</a></li>
+                                                <li><a href="http://www.theserverside.com" class="tm-text-link">The Server Side</a></li>
                                             </ul>
                                         </nav>    
                                     </div> <!-- col -->
