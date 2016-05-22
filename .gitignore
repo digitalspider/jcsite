@@ -6,6 +6,9 @@ target
 .bin
 .metadata
 RemoteSystemsTempFiles
+*.iml
+*.ipr
+*.iws
 
 # Package Files #
 *.jar
