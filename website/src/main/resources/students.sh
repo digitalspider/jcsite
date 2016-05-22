@@ -1,2 +1,2 @@
 rm students.db
-sqlite3 studnets.db -init students.sql
+sqlite3 /opt/tomcat/tomcat-stage/students.db -init students.sql

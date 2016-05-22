@@ -9,11 +9,11 @@
 <title>Add New Student</title>
 </head>
 <body>
-	<form action="StudentController" method="post">
+	<form action="/website/student" method="post">
 		<fieldset>
 			<div>
 				<label for="studentId">Student ID</label>
-				<input type="text" name="studentId" value="<c:out value="${student.studentId}" />"
+				<input type="text" name="studentId" value="<c:out value="${student.id}" />"
 					readonly="readonly" placeholder="Student ID" />
 			</div>
 			<div>

@@ -16,38 +16,38 @@ import au.com.javacloud.dao.StudentDAOImpl;
 import au.com.javacloud.dao.StudentDAO;
 import au.com.javacloud.model.Student;
 
-@WebServlet("/StudentController")
+@WebServlet("/student")
 public class StudentController extends HttpServlet {
 
     private StudentDAO dao;
     private static final long serialVersionUID = 1L;
-    public static final String lIST_STUDENT = "/list.jsp";
-    public static final String INSERT_OR_EDIT = "/edit.jsp";
+    public static final String lIST_STUDENT = "/pages/student/list.jsp";
+    public static final String INSERT_OR_EDIT = "/pages/student/edit.jsp";
 
     public StudentController() {
         dao = new StudentDAOImpl();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String forward = "";
+        String forward = null;
         String action = request.getParameter( "action" );
 
-        if( action.equalsIgnoreCase( "delete" ) ) {
-            forward = lIST_STUDENT;
-            int studentId = Integer.parseInt( request.getParameter("studentId") );
-            dao.deleteStudent(studentId);
-            request.setAttribute("students", dao.getAllStudents() );
+        if (action!=null) {
+            if (action.equalsIgnoreCase("delete")) {
+                forward = lIST_STUDENT;
+                int studentId = Integer.parseInt(request.getParameter("studentId"));
+                dao.deleteStudent(studentId);
+                request.setAttribute("students", dao.getAllStudents());
+            } else if (action.equalsIgnoreCase("edit")) {
+                forward = INSERT_OR_EDIT;
+                int studentId = Integer.parseInt(request.getParameter("studentId"));
+                Student student = dao.getStudentById(studentId);
+                request.setAttribute("student", student);
+            } else if (action.equalsIgnoreCase("insert")) {
+                forward = INSERT_OR_EDIT;
+            }
         }
-        else if( action.equalsIgnoreCase( "edit" ) ) {
-            forward = INSERT_OR_EDIT;
-            int studentId = Integer.parseInt( request.getParameter("studentId") );
-            Student student = dao.getStudentById(studentId);
-            request.setAttribute("student", student);
-        }
-        else if( action.equalsIgnoreCase( "insert" ) ) {
-            forward = INSERT_OR_EDIT;
-        }
-        else {
+        if (forward==null) {
             forward = lIST_STUDENT;
             request.setAttribute("students", dao.getAllStudents() );
         }

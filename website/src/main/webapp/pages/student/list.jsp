@@ -23,21 +23,21 @@
 		<tbody>
 			<c:forEach items="${students}" var="student">
 				<tr>
-					<td><c:out value="${student.studentId}" /></td>
+					<td><c:out value="${student.id}" /></td>
 					<td><c:out value="${student.firstName}" /></td>
 					<td><c:out value="${student.lastName}" /></td>
 					<td><c:out value="${student.course}" /></td>
 					<td><c:out value="${student.year}" /></td>
 					<td><a
-						href="StudentController.do?action=edit&studentId=<c:out value="${student.studentId }"/>">Update</a></td>
+						href="/website/student?action=edit&studentId=<c:out value="${student.id }"/>">Update</a></td>
 					<td><a
-						href="StudentController.do?action=delete&studentId=<c:out value="${student.studentId }"/>">Delete</a></td>
+						href="/website/student?action=delete&studentId=<c:out value="${student.id }"/>">Delete</a></td>
 				</tr>
 			</c:forEach>
 		</tbody>
 	</table>
 	<p>
-		<a href="StudentController.do?action=insert">Add Student</a>
+		<a href="/website/student?action=insert">Add Student</a>
 	</p>
 </body>
 </html>
