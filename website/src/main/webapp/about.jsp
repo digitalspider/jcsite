@@ -49,7 +49,7 @@ http://www.templatemo.com/tm-488-classic
                                     <a href="contact.jsp" class="nav-link">Contact</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="index.jsp" class="nav-link">Login</a>
+                                    <a href="login.jsp" class="nav-link">Login</a>
                                 </li>
                             </ul>                        
                         </div>
@@ -142,7 +142,7 @@ http://www.templatemo.com/tm-488-classic
                                     <div class="plan_title">
                                         <i class="icon-cloud medium-icon"></i>
                                         <h3>BUSINESS</h3>
-                                        <h2>$300 <span>per month</span></h2>
+                                        <h2>$150 <span>per month</span></h2>
                                     </div>
                                     <ul>
                                         <li>50 GB Cloud Storage</li>
@@ -284,36 +284,33 @@ http://www.templatemo.com/tm-488-classic
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 col-xl-3">
                         
                         <div class="tm-footer-content-box">
-                            <h3 class="tm-gold-text tm-title tm-footer-content-box-title">Proin eu posuere felis</h3>
+                            <h3 class="tm-gold-text tm-title tm-footer-content-box-title">Quote</h3>
                             <div class="tm-gray-bg">
-                                <p>Aenean cursus tellus mauris, quis consequat mauris dapibus id. Donec scelerisque porttitor pharetra.</p>
-                                <p>Aenean cursus tellus mauris, quis consequat mauris dapibus id. Donec scelerisque porttitor pharetra.</p>
-                                <p><strong>Danny Egg (Executive)</strong></p>    
-                            </div>    
+                                <p>Java can be really simple!</p>
+                                <p><strong>David Vittor (Founder)</strong></p>
+                            </div>
                         </div>
-                                                
                     </div>
 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 col-xl-3">
                         <div class="tm-footer-content-box tm-footer-links-container">
-                        
-                            <h3 class="tm-gold-text tm-title tm-footer-content-box-title">Nulla tortor dolor</h3>
+
+                            <h3 class="tm-gold-text tm-title tm-footer-content-box-title">Links</h3>
                             <nav>
                                 <ul class="nav">
-                                    <li><a href="#" class="tm-footer-link">Tincidunt non faucibus</a></li>
-                                    <li><a href="#" class="tm-footer-link">Vestibulum tempor</a></li>
-                                    <li><a href="#" class="tm-footer-link">Fusce non turpis euismod</a></li>
-                                    <li><a href="#" class="tm-footer-link">Lorem ipsum dolor sit</a></li>
-                                    <li><a href="#" class="tm-footer-link">Nam in augue consectetur</a></li>
-                                    <li><a href="#" class="tm-footer-link">Text Link Color #CCCC66</a></li>
+                                    <li><a href="blog.jsp" class="tm-footer-link">Our Blogs</a></li>
+                                    <li><a href="contact.jsp" class="tm-footer-link">Contact Us</a></li>
+                                    <li><a href="#" class="tm-footer-link">Privacy Policy</a></li>
+                                    <li><a href="#" class="tm-footer-link">Terms and Conditions</a></li>
+                                    <li><a href="#" class="tm-footer-link">JIRA Support Portal</a></li>
                                 </ul>
                             </nav>
 
                         </div>
-                        
+
                     </div>
 
-                    <!-- Add the extra clearfix for only the required viewport 
+                    <!-- Add the extra clearfix for only the required viewport
                         http://stackoverflow.com/questions/24590222/bootstrap-3-grid-with-different-height-in-each-item-is-it-solvable-using-only
                     -->
                     <div class="clearfix hidden-lg-up"></div>
@@ -321,33 +318,22 @@ http://www.templatemo.com/tm-488-classic
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 col-xl-3">
 
                         <div class="tm-footer-content-box">
-                        
-                            <h3 class="tm-gold-text tm-title tm-footer-content-box-title">Etiam mollis ornare</h3>
-                            <p class="tm-margin-b-30">Aenean cursus tellus mauris, quis consequat mauris dapibus id. Donec scelerisque porttitor pharetra.</p><hr class="tm-margin-b-30">
-                            <p class="tm-margin-b-30">Aenean cursus tellus mauris, quis consequat mauris dapibus id. Donec scelerisque porttitor pharetra.</p><hr class="tm-margin-b-30">
-                            <p class="tm-margin-b-30">Aenean cursus tellus mauris, quis consequat mauris dapibus id. Donec scelerisque porttitor pharetra.</p>
-                            <a href="#" class="tm-btn tm-btn-gray text-uppercase">Read More</a>
+
+                            <h3 class="tm-gold-text tm-title tm-footer-content-box-title">Support</h3>
+                            <p class="tm-margin-b-30">If your container is not responding, please use the contact us page and submit a request. We will address this ASAP!</p><hr class="tm-margin-b-30">
+                            <p class="tm-margin-b-30">If your container is working, but your application is failing, please look at our support contracts.</p>
+                            <a href="about.jsp" class="tm-btn tm-btn-gray text-uppercase">Support</a>
 
                         </div>
-                        
+
                     </div>
 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 col-xl-3">
 
                         <div class="tm-footer-content-box">
-                        
-                            <h3 class="tm-gold-text tm-title tm-footer-content-box-title">Fusce non turpis</h3>
-                            <div class="tm-margin-b-30">
-                                <img src="img/tm-img-100x100-1.jpg" alt="Image" class="tm-footer-thumbnail">
-                                <img src="img/tm-img-100x100-2.jpg" alt="Image" class="tm-footer-thumbnail">
-                                <img src="img/tm-img-100x100-3.jpg" alt="Image" class="tm-footer-thumbnail">
-                                <img src="img/tm-img-100x100-4.jpg" alt="Image" class="tm-footer-thumbnail">
-                                <img src="img/tm-img-100x100-5.jpg" alt="Image" class="tm-footer-thumbnail">
-                                <img src="img/tm-img-100x100-6.jpg" alt="Image" class="tm-footer-thumbnail">
-                            </div>
-                            <p class="tm-margin-b-20">Curabitur dui massa, aliquam quis mi sed, tempor vulputate tellus. Sed vestibulum non neque.</p>
-                            <a href="#" class="tm-btn tm-btn-gray text-uppercase">Browse</a>
-
+                            <h3 class="tm-gold-text tm-title tm-footer-content-box-title">Partners</h3>
+                            <p class="tm-margin-b-20">If you would like to partner with us, please contact us through the contact page</p>
+                            <a href="contact.jsp" class="tm-btn tm-btn-gray text-uppercase">Contact</a>
                         </div>
                         
                     </div>

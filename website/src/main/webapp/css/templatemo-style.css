@@ -226,6 +226,7 @@ p { line-height: 1.9; }
 
 .tm-form-description { margin-top: 30px; }
 .tm-contact-form { padding-top: 20px; }
+.tm-login-form { padding-top: 20px; }
 
 #google-map {
     height: 333px;
