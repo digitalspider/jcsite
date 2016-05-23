@@ -8,6 +8,6 @@
 <title>Welcome</title>
 </head>
 <body>
-	<jsp:forward page="/website/student"></jsp:forward>
+	<jsp:forward page="<%=request.getContextPath()%>/student"></jsp:forward>
 </body>
 </html>

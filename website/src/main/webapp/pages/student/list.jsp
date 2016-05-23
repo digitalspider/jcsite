@@ -29,15 +29,15 @@
 					<td><c:out value="${student.course}" /></td>
 					<td><c:out value="${student.year}" /></td>
 					<td><a
-						href="/website/student?action=edit&studentId=<c:out value="${student.id }"/>">Update</a></td>
+						href="<%=request.getContextPath()%>/student?action=edit&studentId=<c:out value="${student.id }"/>">Update</a></td>
 					<td><a
-						href="/website/student?action=delete&studentId=<c:out value="${student.id }"/>">Delete</a></td>
+						href="<%=request.getContextPath()%>/student?action=delete&studentId=<c:out value="${student.id }"/>">Delete</a></td>
 				</tr>
 			</c:forEach>
 		</tbody>
 	</table>
 	<p>
-		<a href="/website/student?action=insert">Add Student</a>
+		<a href="<%=request.getContextPath()%>/student?action=insert">Add Student</a>
 	</p>
 </body>
 </html>

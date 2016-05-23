@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TOMCATDIR=/opt/tomcat/tomcat-stage
+DBDIR=/opt/jetty
 
-sudo rm $TOMCATDIR/database.db
-sudo sqlite3 $TOMCATDIR/database.db -init src/main/resources/students.sql
+sudo rm $DBDIR/database.db
+sudo sqlite3 $DBDIR/database.db -init src/main/resources/students.sql

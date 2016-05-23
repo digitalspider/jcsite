@@ -9,7 +9,7 @@
 <title>Add New Student</title>
 </head>
 <body>
-	<form action="/website/student" method="post">
+	<form action="<%=request.getContextPath()%>/student" method="post">
 		<fieldset>
 			<div>
 				<label for="studentId">Student ID</label>
