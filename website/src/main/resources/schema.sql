@@ -23,10 +23,11 @@ CREATE TABLE page (
 	title   text NOT NULL,
 	extract text NOT NULL,
 	content text NOT NULL,
-	status text NOT NULL,
+	url     text NOT NULL,
+	status  text NOT NULL,
 	authorId integer NOT NULL,
 	parentId integer,
-	tags     text
+	tags    text
 );
 
 CREATE TABLE pageComment (
@@ -77,6 +78,7 @@ CREATE TABLE user (
 	fname text NOT NULL,
 	lname text NOT NULL,
 	url text NOT NULL,
+	mobile text,
 	description text,
 	tags text,
 	type text NOT NULL,
@@ -136,6 +138,7 @@ CREATE TABLE box (
 	authorId integer NOT NULL,
 	parentId integer NOT NULL,
 	pdate 	date,
+	price double,
 	cpulimit integer,
 	cpuusage integer,
 	memlimit integer,
