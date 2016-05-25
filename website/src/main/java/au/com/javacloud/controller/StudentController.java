@@ -21,8 +21,8 @@ public class StudentController extends HttpServlet {
 
     private StudentDAO dao;
     private static final long serialVersionUID = 1L;
-    public static final String lIST_STUDENT = "/pages/student/list.jsp";
-    public static final String INSERT_OR_EDIT = "/pages/student/edit.jsp";
+    public static final String lIST_STUDENT = "/page/student/list.jsp";
+    public static final String INSERT_OR_EDIT = "/page/student/edit.jsp";
 
     public StudentController() {
         dao = new StudentDAOImpl();
