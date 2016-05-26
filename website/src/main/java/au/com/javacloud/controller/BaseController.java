@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import au.com.javacloud.dao.BaseDAO;
 import au.com.javacloud.model.BaseBean;
 import au.com.javacloud.model.Student;
+import au.com.javacloud.util.HttpUtil;
 
 /**
  * Created by david on 22/05/16.
@@ -33,6 +34,12 @@ public abstract class BaseController extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String forward = null;
+
+        String[] pathparts = HttpUtil.getPathParts(request);
+        System.out.println("pathParts="+pathparts);
+        String baseUrl = HttpUtil.getBaseUrl(request);
+        System.out.println("baseUrl="+baseUrl);
+
         String action = request.getParameter( "action" );
 
         if (action!=null) {
