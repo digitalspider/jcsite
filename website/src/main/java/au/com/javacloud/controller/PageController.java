@@ -9,69 +9,41 @@ import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import au.com.javacloud.dao.StudentDAO;
-import au.com.javacloud.dao.StudentDAOImpl;
-import au.com.javacloud.model.Student;
+import au.com.javacloud.dao.PageDAOImpl;
+import au.com.javacloud.model.Page;
 
-@WebServlet("/student")
-public class PageController extends HttpServlet {
+@WebServlet("/page")
+public class PageController extends BaseController {
 
-    private StudentDAO dao;
-    private static final long serialVersionUID = 1L;
-    public static final String lIST_STUDENT = "/page/student/list.jsp";
-    public static final String INSERT_OR_EDIT = "/page/student/edit.jsp";
+    public static final String URL_lIST = "/page/page/list.jsp";
+    public static final String URL_INSERT_OR_EDIT = "/page/page/edit.jsp";
+    public static final String PROP_BEANNAME = "page";
+    public static final String PROP_BEANSNAME = "pages";
 
     public PageController() {
-        dao = new StudentDAOImpl();
+        super(new PageDAOImpl(), PROP_BEANNAME, PROP_BEANSNAME, URL_lIST, URL_INSERT_OR_EDIT);
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String forward = null;
-        String action = request.getParameter( "action" );
-
-        if (action!=null) {
-            if (action.equalsIgnoreCase("delete")) {
-                forward = lIST_STUDENT;
-                int studentId = Integer.parseInt(request.getParameter("studentId"));
-                dao.deleteStudent(studentId);
-                request.setAttribute("students", dao.getAllStudents());
-            } else if (action.equalsIgnoreCase("edit")) {
-                forward = INSERT_OR_EDIT;
-                int studentId = Integer.parseInt(request.getParameter("studentId"));
-                Student student = dao.getStudentById(studentId);
-                request.setAttribute("student", student);
-            } else if (action.equalsIgnoreCase("insert")) {
-                forward = INSERT_OR_EDIT;
-            }
-        }
-        if (forward==null) {
-            forward = lIST_STUDENT;
-            request.setAttribute("students", dao.getAllStudents() );
-        }
-        RequestDispatcher view = request.getRequestDispatcher( forward );
-        view.forward(request, response);
-    }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Student student = new Student();
-        student.setFirstName( request.getParameter( "firstName" ) );
-        student.setLastName( request.getParameter( "lastName" ) );
-        student.setCourse( request.getParameter( "course" ) );
-        student.setYear( Integer.parseInt( request.getParameter( "year" ) ) );
-        String studentId = request.getParameter("studentId");
+        Page page = new Page();
+        page.setTitle( request.getParameter( "title" ) );
+        page.setDescription( request.getParameter( "description" ) );
+        page.setContent( request.getParameter( "content" ) );
+        page.setUrl( request.getParameter( "url" ) );
 
-        if( studentId == null || studentId.isEmpty() )
-            dao.addStudent(student);
+        String id = request.getParameter("id");
+        if( id == null || id.isEmpty() )
+            dao.add(page);
         else {
-            student.setId( Integer.parseInt(studentId) );
-            dao.updateStudent(student);
+            page.setId( Integer.parseInt(id) );
+            dao.update(page);
         }
-        RequestDispatcher view = request.getRequestDispatcher( lIST_STUDENT );
-        request.setAttribute("students", dao.getAllStudents());
+        RequestDispatcher view = request.getRequestDispatcher( URL_lIST );
+        request.setAttribute(PROP_BEANSNAME, dao.getAll());
         view.forward(request, response);
     }
 }

@@ -1,6 +1,11 @@
 package au.com.javacloud.model;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by david on 22/05/16.
@@ -8,8 +13,8 @@ import java.util.Date;
 
 public class BaseBean {
     protected int id;
-    protected Date cdate;
-    protected Date mdate;
+    protected Date cdate = new Date();
+    protected Date mdate = new Date();
     protected String description;
     protected String tags;
     protected String type;

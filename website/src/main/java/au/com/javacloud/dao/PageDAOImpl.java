@@ -8,106 +8,40 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import au.com.javacloud.model.Student;
+import au.com.javacloud.model.Page;
 import au.com.javacloud.util.DBUtil;
 
 /**
  * Created by david on 22/05/16.
  */
-public class PageDAOImpl implements StudentDAO {
+public class PageDAOImpl extends BaseDAOImpl<Page> implements PageDAO<Page> {
 
     private Connection conn;
 
     public PageDAOImpl() {
+        super(new PageDAOMapper());
         conn = DBUtil.getConnection();
     }
 
     @Override
-    public void addStudent( Student student ) {
+    public List<Page> getAll() {
         try {
-            String query = "insert into student (firstName, lastName, course, year) values (?,?,?,?)";
-            PreparedStatement preparedStatement = conn.prepareStatement( query );
-            preparedStatement.setString( 1, student.getFirstName() );
-            preparedStatement.setString( 2, student.getLastName() );
-            preparedStatement.setString( 3, student.getCourse() );
-            preparedStatement.setInt( 4, student.getYear() );
-            preparedStatement.executeUpdate();
-            preparedStatement.close();
-        } catch (SQLException e) {
+            return getAll(Page.class);
+        } catch (Exception e) {
             e.printStackTrace();
+            return new ArrayList<Page>();
         }
     }
+
     @Override
-    public void deleteStudent( int studentId ) {
+    public Page get(int id) {
         try {
-            String query = "delete from student where studentId=?";
-            PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setInt(1, studentId);
-            preparedStatement.executeUpdate();
-            preparedStatement.close();
-        } catch (SQLException e) {
+            return get(id, Page.class);
+        } catch (Exception e) {
             e.printStackTrace();
+            return new Page();
         }
     }
-    @Override
-    public void updateStudent( Student student ) {
-        try {
-            String query = "update student set firstName=?, lastName=?, course=?, year=? where studentId=?";
-            PreparedStatement preparedStatement = conn.prepareStatement( query );
-            preparedStatement.setString( 1, student.getFirstName() );
-            preparedStatement.setString( 2, student.getLastName() );
-            preparedStatement.setString( 3, student.getCourse() );
-            preparedStatement.setInt( 4, student.getYear() );
-            preparedStatement.setInt(5, student.getId());
-            preparedStatement.executeUpdate();
-            preparedStatement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    @Override
-    public List<Student> getAllStudents() {
-        List<Student> students = new ArrayList<Student>();
-        try {
-            Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery( "select * from student" );
-            while( resultSet.next() ) {
-                Student student = new Student();
-                student.setId( resultSet.getInt( "studentId" ) );
-                student.setFirstName( resultSet.getString( "firstName" ) );
-                student.setLastName( resultSet.getString( "lastName" ) );
-                student.setCourse( resultSet.getString( "course" ) );
-                student.setYear( resultSet.getInt( "year" ) );
-                students.add(student);
-            }
-            resultSet.close();
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return students;
-    }
-    @Override
-    public Student getStudentById(int studentId) {
-        Student student = new Student();
-        try {
-            String query = "select * from student where studentId=?";
-            PreparedStatement preparedStatement = conn.prepareStatement( query );
-            preparedStatement.setInt(1, studentId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while( resultSet.next() ) {
-                student.setId( resultSet.getInt( "studentId" ) );
-                student.setFirstName( resultSet.getString( "firstName" ) );
-                student.setLastName( resultSet.getString( "LastName" ) );
-                student.setCourse( resultSet.getString( "course" ) );
-                student.setYear( resultSet.getInt( "year" ) );
-            }
-            resultSet.close();
-            preparedStatement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return student;
-    }
+
 
 }

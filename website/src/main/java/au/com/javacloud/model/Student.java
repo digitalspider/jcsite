@@ -1,10 +1,16 @@
 package au.com.javacloud.model;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by david on 22/05/16.
  */
 
-public class Student {
+public class Student extends BaseBean {
     private int id;
     private String firstName;
     private String lastName;

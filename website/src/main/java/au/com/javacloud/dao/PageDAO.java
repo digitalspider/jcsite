@@ -5,12 +5,9 @@ package au.com.javacloud.dao;
  */
 import java.util.List;
 
+import au.com.javacloud.model.BaseBean;
 import au.com.javacloud.model.Student;
 
-public interface PageDAO {
-    public void addStudent(Student student);
-    public void deleteStudent(int studentId);
-    public void updateStudent(Student student);
-    public List<Student> getAllStudents();
-    public Student getStudentById(int studentId);
+public interface PageDAO<T extends BaseBean> extends BaseDAO<T> {
+
 }

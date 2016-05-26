@@ -32,9 +32,9 @@
                         <td><c:out value="${student.course}" escapeXml="false"/></td>
                         <td><c:out value="${student.year}" escapeXml="false"/></td>
                         <td><a
-                            href="<%=request.getContextPath()%>/student?action=edit&studentId=<c:out value="${student.id }"/>">Update</a></td>
+                            href="<%=request.getContextPath()%>/student?action=edit&id=<c:out value="${student.id }"/>">Update</a></td>
                         <td><a
-                            href="<%=request.getContextPath()%>/student?action=delete&studentId=<c:out value="${student.id }"/>">Delete</a></td>
+                            href="<%=request.getContextPath()%>/student?action=delete&id=<c:out value="${student.id }"/>">Delete</a></td>
                     </tr>
                 </c:forEach>
             </tbody>

@@ -17,42 +17,15 @@ import au.com.javacloud.dao.StudentDAO;
 import au.com.javacloud.model.Student;
 
 @WebServlet("/student")
-public class StudentController extends HttpServlet {
+public class StudentController extends BaseController {
 
-    private StudentDAO dao;
-    private static final long serialVersionUID = 1L;
-    public static final String lIST_STUDENT = "/page/student/list.jsp";
-    public static final String INSERT_OR_EDIT = "/page/student/edit.jsp";
+    public static final String URL_lIST = "/page/student/list.jsp";
+    public static final String URL_INSERT_OR_EDIT = "/page/student/edit.jsp";
+    public static final String PROP_BEANNAME = "student";
+    public static final String PROP_BEANSNAME = "students";
 
     public StudentController() {
-        dao = new StudentDAOImpl();
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String forward = null;
-        String action = request.getParameter( "action" );
-
-        if (action!=null) {
-            if (action.equalsIgnoreCase("delete")) {
-                forward = lIST_STUDENT;
-                int studentId = Integer.parseInt(request.getParameter("studentId"));
-                dao.deleteStudent(studentId);
-                request.setAttribute("students", dao.getAllStudents());
-            } else if (action.equalsIgnoreCase("edit")) {
-                forward = INSERT_OR_EDIT;
-                int studentId = Integer.parseInt(request.getParameter("studentId"));
-                Student student = dao.getStudentById(studentId);
-                request.setAttribute("student", student);
-            } else if (action.equalsIgnoreCase("insert")) {
-                forward = INSERT_OR_EDIT;
-            }
-        }
-        if (forward==null) {
-            forward = lIST_STUDENT;
-            request.setAttribute("students", dao.getAllStudents() );
-        }
-        RequestDispatcher view = request.getRequestDispatcher( forward );
-        view.forward(request, response);
+        super(new StudentDAOImpl(), PROP_BEANNAME, PROP_BEANSNAME, URL_lIST, URL_INSERT_OR_EDIT);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -64,13 +37,13 @@ public class StudentController extends HttpServlet {
         String studentId = request.getParameter("studentId");
 
         if( studentId == null || studentId.isEmpty() )
-            dao.addStudent(student);
+            dao.add(student);
         else {
             student.setId( Integer.parseInt(studentId) );
-            dao.updateStudent(student);
+            dao.update(student);
         }
-        RequestDispatcher view = request.getRequestDispatcher( lIST_STUDENT );
-        request.setAttribute("students", dao.getAllStudents());
+        RequestDispatcher view = request.getRequestDispatcher( URL_lIST );
+        request.setAttribute(PROP_BEANSNAME, dao.getAll());
         view.forward(request, response);
     }
 }

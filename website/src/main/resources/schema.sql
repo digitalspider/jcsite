@@ -1,7 +1,7 @@
 CREATE TABLE page (
 	id	INTEGER PRIMARY KEY AUTOINCREMENT,
-	cdate 	date NOT NULL DEFAULT now(),
-	mdate 	date NOT NULL DEFAULT now(),
+	cdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    mdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	type    text,
 	title   text,
 	content text,
@@ -17,11 +17,11 @@ INSERT into page (firstName,lastName,course,year) VALUES ("daniela","vittor","Ph
 
 CREATE TABLE page (
 	id	INTEGER PRIMARY KEY AUTOINCREMENT,
-	cdate 	date NOT NULL DEFAULT now(),
-	mdate 	date NOT NULL DEFAULT now(),
+	cdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    mdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	type    text NOT NULL DEFAULT 'blog',
 	title   text NOT NULL,
-	extract text NOT NULL,
+	description text NOT NULL,
 	content text NOT NULL,
 	url     text NOT NULL,
 	status  text NOT NULL,
@@ -32,8 +32,8 @@ CREATE TABLE page (
 
 CREATE TABLE pageComment (
 	id	INTEGER PRIMARY KEY AUTOINCREMENT,
-	cdate 	date NOT NULL DEFAULT now(),
-	mdate 	date NOT NULL DEFAULT now(),
+	cdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    mdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	blogId integer,
 	title   text,
 	content text,
@@ -47,8 +47,8 @@ CREATE TABLE pageComment (
 
 CREATE TABLE pageRating (
 	id	INTEGER PRIMARY KEY AUTOINCREMENT,
-	cdate 	date NOT NULL DEFAULT now(),
-	mdate 	date NOT NULL DEFAULT now(),
+	cdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    mdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	blogId integer,
 	rating  text,
 	authorId integer,
@@ -70,8 +70,8 @@ CREATE TABLE pageExtra (
 
 CREATE TABLE user (
 	id	INTEGER PRIMARY KEY AUTOINCREMENT,
-	cdate 	date NOT NULL DEFAULT now(),
-	mdate 	date NOT NULL DEFAULT now(),
+	cdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    mdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	email text NOT NULL,
 	username text NOT NULL,
 	password text NOT NULL,
@@ -99,9 +99,9 @@ CREATE TABLE userExtra (
 
 CREATE TABLE container (
 	id	INTEGER PRIMARY KEY AUTOINCREMENT,
-	cdate 	date NOT NULL DEFAULT now(),
-	mdate 	date NOT NULL DEFAULT now(),
-	name text NOT NULL,
+	cdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    mdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    name text NOT NULL,
 	lxcid text,
 	alias text,
 	description text,
@@ -149,8 +149,8 @@ CREATE TABLE box (
 
 CREATE TABLE service (
 	id	INTEGER PRIMARY KEY AUTOINCREMENT,
-	cdate 	date NOT NULL DEFAULT now(),
-	mdate 	date NOT NULL DEFAULT now(),
+	cdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    mdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     name    text NOT NULL,
     version text NOT NULL,
     description text,
@@ -161,8 +161,8 @@ CREATE TABLE service (
 
 CREATE TABLE userService (
 	id	INTEGER PRIMARY KEY AUTOINCREMENT,
-	cdate 	date NOT NULL DEFAULT now(),
-	mdate 	date NOT NULL DEFAULT now(),
+	cdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    mdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     serviceId  integer NOT NULL,
     userId  integer NOT NULL,
     boxId  integer NOT NULL,
@@ -187,8 +187,8 @@ CREATE TABLE serviceOS (
 
 CREATE TABLE financial (
 	id	INTEGER PRIMARY KEY AUTOINCREMENT,
-	cdate 	date NOT NULL DEFAULT now(),
-	mdate 	date NOT NULL DEFAULT now(),
+	cdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    mdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     userId  integer NOT NULL,
     month   integer NOT NULL,
     year   integer NOT NULL,

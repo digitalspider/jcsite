@@ -12,8 +12,8 @@
 	<form action="<%=request.getContextPath()%>/student" method="post">
 		<fieldset>
 			<div>
-				<label for="studentId">Student ID</label>
-				<input type="text" name="studentId" value="<c:out value="${student.id}" />"
+				<label for="id">Student ID</label>
+				<input type="text" name="id" value="<c:out value="${student.id}" />"
 					readonly="readonly" placeholder="Student ID" />
 			</div>
 			<div>
