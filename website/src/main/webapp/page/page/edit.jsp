@@ -33,6 +33,26 @@
 				<input type="text" name="url" value="<c:out value="${page.url}" />" placeholder="Url" />
 			</div>
 			<div>
+				<label for="type">Type</label>
+				<input type="text" name="type" value="<c:out value="${user.type}" />" placeholder="Type" />
+			</div>
+			<div>
+				<label for="tags">Tags</label>
+				<input type="text" name="tags" value="<c:out value="${user.tags}" />" placeholder="Tags" />
+			</div>
+			<div>
+				<label for="status">Status</label>
+				<input type="text" name="status" value="<c:out value="${user.status}" />" placeholder="Status" />
+			</div>
+			<div>
+				<label for="authorId">Author Id</label>
+				<input type="text" name="authorId" value="<c:out value="${user.authorId}" />" placeholder="Author Id" />
+			</div>
+			<div>
+				<label for="parentId">Parent Id</label>
+				<input type="text" name="parentId" value="<c:out value="${user.parentId}" />" placeholder="Parent Id" />
+			</div>
+			<div>
 				<input type="submit" value="Submit" />
 			</div>
 		</fieldset>

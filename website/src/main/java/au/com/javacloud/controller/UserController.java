@@ -34,11 +34,16 @@ public class UserController extends BaseController {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = new User();
+        user.setFirstname( request.getParameter( "firstName" ) );
+        user.setLastname( request.getParameter( "lastName" ) );
         user.setEmail( request.getParameter( "email" ) );
         user.setUsername( request.getParameter( "username" ) );
         user.setPassword( request.getParameter( "password" ) );
-        user.setLastname( request.getParameter( "lastname" ) );
-        user.setFirstname( request.getParameter( "firstname" ) );
+        user.setUrl( request.getParameter( "url" ) );
+        user.setMobile( request.getParameter( "mobile" ) );
+        user.setType( request.getParameter( "type" ) );
+        user.setTags( request.getParameter( "tags" ) );
+        user.setStatus( request.getParameter( "status" ) );
 
         String id = request.getParameter("id");
         if( id == null || id.isEmpty() )

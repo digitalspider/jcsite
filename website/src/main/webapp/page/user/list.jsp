@@ -20,6 +20,11 @@
                     <th>Last Name</th>
                     <th>Email</th>
                     <th>Username</th>
+                    <th>URL</th>
+                    <th>Mobile</th>
+                    <th>Type</th>
+                    <th>Tags</th>
+                    <th>Status</th>
                     <th colspan="2">Action</th>
                 </tr>
             </thead>
@@ -31,6 +36,11 @@
                         <td><c:out value="${user.lastname}" escapeXml="false"/></td>
                         <td><c:out value="${user.email}" escapeXml="false"/></td>
                         <td><c:out value="${user.username}" escapeXml="false"/></td>
+                        <td><c:out value="${user.url}" escapeXml="false"/></td>
+                        <td><c:out value="${user.mobile}" escapeXml="false"/></td>
+                        <td><c:out value="${user.type}" /></td>
+                        <td><c:out value="${user.tags}" /></td>
+                        <td><c:out value="${user.status}" /></td>
                         <td><a
                             href="<%=request.getContextPath()%>/user?action=edit&id=<c:out value="${user.id }"/>">Update</a></td>
                         <td><a

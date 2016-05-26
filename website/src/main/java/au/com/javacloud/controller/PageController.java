@@ -34,6 +34,11 @@ public class PageController extends BaseController {
         page.setDescription( request.getParameter( "description" ) );
         page.setContent( request.getParameter( "content" ) );
         page.setUrl( request.getParameter( "url" ) );
+        page.setType( request.getParameter( "type" ) );
+        page.setTags( request.getParameter( "tags" ) );
+        page.setStatus( request.getParameter( "status" ) );
+        page.setAuthorId( Integer.parseInt(request.getParameter( "authorId" )) );
+        page.setParentId( Integer.parseInt(request.getParameter( "parentId" )) );
 
         String id = request.getParameter("id");
         if( id == null || id.isEmpty() )

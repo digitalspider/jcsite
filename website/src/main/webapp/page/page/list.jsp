@@ -20,17 +20,28 @@
                     <th>Description</th>
                     <th>Content</th>
                     <th>URL</th>
+                    <th>Type</th>
+                    <th>Tags</th>
+                    <th>Status</th>
+                    <th>Author Id</th>
+                    <th>Parent Id</th>
                     <th colspan="2">Action</th>
                 </tr>
             </thead>
             <tbody>
                 <c:forEach items="${pages}" var="page">
                     <tr>
-                        <td><c:out value="${page.id}" escapeXml="false"/></td>
+                        <td><c:out value="${page.id}" /></td>
                         <td><c:out value="${page.title}" escapeXml="false"/></td>
                         <td><c:out value="${page.description}" escapeXml="false"/></td>
                         <td><c:out value="${page.content}" escapeXml="false"/></td>
                         <td><c:out value="${page.url}" escapeXml="false"/></td>
+                        <td><c:out value="${page.type}" /></td>
+                        <td><c:out value="${page.tags}" /></td>
+                        <td><c:out value="${page.status}" /></td>
+                        <td><c:out value="${page.authorId}" /></td>
+                        <td><c:out value="${page.parentId}" /></td>
+
                         <td><a
                             href="<%=request.getContextPath()%>/page?action=edit&id=<c:out value="${page.id }"/>">Update</a></td>
                         <td><a
