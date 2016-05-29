@@ -20,7 +20,7 @@ import au.com.javacloud.dao.UserDAOImpl;
 import au.com.javacloud.model.Student;
 import au.com.javacloud.model.User;
 
-@WebServlet("/user")
+@WebServlet("/user/*")
 public class UserController extends BaseController {
 
     public static final String URL_lIST = "/page/user/list.jsp";

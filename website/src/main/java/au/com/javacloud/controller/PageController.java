@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import au.com.javacloud.dao.PageDAOImpl;
 import au.com.javacloud.model.Page;
 
-@WebServlet("/page")
+@WebServlet("/blog/*")
 public class PageController extends BaseController {
 
     public static final String URL_lIST = "/page/page/list.jsp";

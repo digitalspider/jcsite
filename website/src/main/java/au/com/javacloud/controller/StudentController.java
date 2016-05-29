@@ -16,7 +16,7 @@ import au.com.javacloud.dao.StudentDAOImpl;
 import au.com.javacloud.dao.StudentDAO;
 import au.com.javacloud.model.Student;
 
-@WebServlet("/student")
+@WebServlet("/student/*")
 public class StudentController extends BaseController {
 
     public static final String URL_lIST = "/page/student/list.jsp";
