@@ -1,10 +1,5 @@
 package au.com.javacloud.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,14 +11,11 @@ import au.com.javacloud.util.DBUtil;
  */
 public class PageDAOImpl extends BaseDAOImpl<Page> implements PageDAO<Page> {
 
-    private Connection conn;
-
     public PageDAOImpl() {
         super(new PageDAOMapper());
         conn = DBUtil.getConnection();
     }
 
-    @Override
     public List<Page> getAll() {
         try {
             return getAll(Page.class);
@@ -33,7 +25,6 @@ public class PageDAOImpl extends BaseDAOImpl<Page> implements PageDAO<Page> {
         }
     }
 
-    @Override
     public Page get(int id) {
         try {
             return get(id, Page.class);

@@ -43,15 +43,15 @@
                         <td><c:out value="${page.parentId}" /></td>
 
                         <td><a
-                            href="<%=request.getContextPath()%>/page?action=edit&id=<c:out value="${page.id }"/>">Update</a></td>
+                            href="<%=request.getContextPath()%>/page/edit/<c:out value="${page.id }"/>">Update</a></td>
                         <td><a
-                            href="<%=request.getContextPath()%>/page?action=delete&id=<c:out value="${page.id }"/>">Delete</a></td>
+                            href="<%=request.getContextPath()%>/page/delete/<c:out value="${page.id }"/>">Delete</a></td>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
         <p>
-            <a href="<%=request.getContextPath()%>/page?action=insert">Add Page</a>
+            <a href="<%=request.getContextPath()%>/page/insert">Add Page</a>
         </p>
     </body>
 </html>

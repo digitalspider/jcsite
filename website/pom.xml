@@ -70,13 +70,40 @@
         <artifactId>sqlite-jdbc</artifactId>
        <version>3.8.11.2</version>
     </dependency>
+    
+    <dependency>
+        <groupId>org.xerial</groupId>
+        <artifactId>sqlite-jdbc</artifactId>
+       <version>3.8.11.2</version>
+    </dependency>
+    
+	<!-- OrmLite -->
+	<dependency>
+		<groupId>com.j256.ormlite</groupId>
+		<artifactId>ormlite-core</artifactId>
+		<version>4.48</version>
+	</dependency>
+	
+	<!-- Hibernate -->
+	<dependency>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-core</artifactId>
+		<version>5.1.0.Final</version>
+	</dependency>
+	<dependency>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-entitymanager</artifactId>
+		<version>5.1.0.Final</version>
+	</dependency>
 
-    <!-- Other tools -->
+
+    <!-- Other tools 
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>1.16.8</version>
     </dependency>
+    -->
 
     <!-- Provided Dependencies -->
     <dependency>

@@ -6,33 +6,22 @@ package au.com.javacloud.controller;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import au.com.javacloud.dao.StudentDAO;
-import au.com.javacloud.dao.StudentDAOImpl;
-import au.com.javacloud.dao.UserDAO;
 import au.com.javacloud.dao.UserDAOImpl;
-import au.com.javacloud.model.Student;
 import au.com.javacloud.model.User;
 
 @WebServlet("/user/*")
-public class UserController extends BaseController {
-
-    public static final String URL_lIST = "/page/user/list.jsp";
-    public static final String URL_INSERT_OR_EDIT = "/page/user/edit.jsp";
-    public static final String PROP_BEANNAME = "user";
-    public static final String PROP_BEANSNAME = "users";
+public class UserController extends BaseController<User> {
 
     public UserController() {
-        super(new UserDAOImpl(), PROP_BEANNAME, PROP_BEANSNAME, URL_lIST, URL_INSERT_OR_EDIT);
+        super(new UserDAOImpl(), User.class);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected User populateBean(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = new User();
         user.setFirstname( request.getParameter( "firstName" ) );
         user.setLastname( request.getParameter( "lastName" ) );
@@ -44,16 +33,6 @@ public class UserController extends BaseController {
         user.setType( request.getParameter( "type" ) );
         user.setTags( request.getParameter( "tags" ) );
         user.setStatus( request.getParameter( "status" ) );
-
-        String id = request.getParameter("id");
-        if( id == null || id.isEmpty() )
-            dao.add(user);
-        else {
-            user.setId( Integer.parseInt(id) );
-            dao.update(user);
-        }
-        RequestDispatcher view = request.getRequestDispatcher( URL_lIST );
-        request.setAttribute(PROP_BEANSNAME, dao.getAll());
-        view.forward(request, response);
+        return user;
     }
 }

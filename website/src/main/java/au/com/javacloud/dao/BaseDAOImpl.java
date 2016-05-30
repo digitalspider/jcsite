@@ -18,10 +18,10 @@ import au.com.javacloud.util.DBUtil;
 public abstract class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 
     protected Connection conn;
-    protected BaseDAOMapper mapper;
+    protected BaseDAOMapper<T> mapper;
     protected String tableName = "TABLE_NOT_DEFINED";
 
-    public BaseDAOImpl(BaseDAOMapper mapper) {
+    public BaseDAOImpl(BaseDAOMapper<T> mapper) {
         conn = DBUtil.getConnection();
         this.mapper = mapper;
         tableName = mapper.getTableName();
@@ -100,7 +100,8 @@ public abstract class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
         }
     }
 
-    protected List<T> getAll(Class<T> clazz) throws InstantiationException, IllegalAccessException, ParseException {
+    @Override
+    public List<T> getAll(Class<T> clazz) throws InstantiationException, IllegalAccessException, ParseException {
         List<T> beans = new ArrayList<T>();
         try {
             Statement statement = conn.createStatement();
@@ -118,7 +119,9 @@ public abstract class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
         }
         return beans;
     }
-    protected T get(int id, Class<T> clazz) throws InstantiationException, IllegalAccessException, ParseException {
+    
+    @Override
+    public T get(int id, Class<T> clazz) throws InstantiationException, IllegalAccessException, ParseException {
         T bean = clazz.newInstance();
         try {
             String query = "select * from "+tableName+" where id=?";

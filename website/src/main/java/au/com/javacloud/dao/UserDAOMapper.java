@@ -1,18 +1,15 @@
 package au.com.javacloud.dao;
 
+import static au.com.javacloud.util.Constants.dft;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
-import au.com.javacloud.model.Page;
 import au.com.javacloud.model.User;
-
-import static au.com.javacloud.util.Constants.dft;
 
 /**
  * Created by david on 26/05/16.

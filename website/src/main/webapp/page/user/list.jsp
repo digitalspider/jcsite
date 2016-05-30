@@ -42,15 +42,15 @@
                         <td><c:out value="${user.tags}" /></td>
                         <td><c:out value="${user.status}" /></td>
                         <td><a
-                            href="<%=request.getContextPath()%>/user?action=edit&id=<c:out value="${user.id }"/>">Update</a></td>
+                            href="<%=request.getContextPath()%>/user/edit/<c:out value="${user.id }"/>">Update</a></td>
                         <td><a
-                            href="<%=request.getContextPath()%>/user?action=delete&id=<c:out value="${user.id }"/>">Delete</a></td>
+                            href="<%=request.getContextPath()%>/user/delete/<c:out value="${user.id }"/>">Delete</a></td>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
         <p>
-            <a href="<%=request.getContextPath()%>/user?action=insert">Add User</a>
+            <a href="<%=request.getContextPath()%>/user/insert">Add User</a>
         </p>
     </body>
 </html>
