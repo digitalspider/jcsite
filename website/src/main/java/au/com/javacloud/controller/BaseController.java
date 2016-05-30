@@ -22,6 +22,7 @@ public abstract class BaseController<T extends BaseBean> extends HttpServlet {
     protected String beanName = "bean";
     protected String beansName = "beans";
     protected String listUrl = "/";
+	protected String showUrl = "/";
     protected String insertOrEditUrl = "/";
 
     public BaseController(BaseDAO<T> dao) {
@@ -31,15 +32,17 @@ public abstract class BaseController<T extends BaseBean> extends HttpServlet {
         	beanName = className.substring(0, className.length()-"controller".length()).toLowerCase();
         	beansName = beanName+"s";
         	listUrl = "/jsp/"+beanName+"/list.jsp";
+			showUrl = "/jsp/"+beanName+"/show.jsp";
         	insertOrEditUrl = "/jsp/"+beanName+"/edit.jsp";
         }
     }
     
-    public BaseController(BaseDAO<T> dao, String beanName, String beansName, String listUrl, String insertOrEditUrl) {
+    public BaseController(BaseDAO<T> dao, String beanName, String beansName, String listUrl, String showUrl, String insertOrEditUrl) {
         this.dao = dao;
         this.beanName = beanName;
         this.beansName = beansName;
         this.listUrl = listUrl;
+		this.showUrl = showUrl;
         this.insertOrEditUrl = insertOrEditUrl;
     }
 
@@ -47,16 +50,22 @@ public abstract class BaseController<T extends BaseBean> extends HttpServlet {
         String forward = null;
 
         String[] pathparts = HttpUtil.getPathParts(request);
-        System.out.println("pathParts="+pathparts);
+//        System.out.println("pathParts="+pathparts);
         String baseUrl = HttpUtil.getBaseUrl(request);
-        System.out.println("baseUrl="+baseUrl);
+//        System.out.println("baseUrl="+baseUrl);
     	try {
     		if (pathparts!=null && pathparts.length>0) {
 	            if (pathparts[0].equals("delete")) {
-	            	if (pathparts.length>1) {
-	            		int id = Integer.parseInt(pathparts[1]);
-	            		dao.delete(id);            		
-	            	}
+					if (pathparts.length > 1) {
+						int id = Integer.parseInt(pathparts[1]);
+						dao.delete(id);
+					}
+				} else if (pathparts[0].equals("show")) {
+					if (pathparts.length>1) {
+						int id = Integer.parseInt(pathparts[1]);
+						request.setAttribute(beanName, dao.get(id));
+						forward = showUrl;
+					}
 	            } else if (pathparts[0].equals("edit")) {
 	            	if (pathparts.length>1) {
 	            		int id = Integer.parseInt(pathparts[1]);

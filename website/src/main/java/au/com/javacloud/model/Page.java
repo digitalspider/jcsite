@@ -19,7 +19,9 @@ public class Page extends BaseBean {
     private String content;
     private String url;
 
-
+    public String getNameColumn() {
+        return "title";
+    }
 
     @Override
     public String toString() {

@@ -5,29 +5,29 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Student <c:out value="${student.id}" /></title>
+<title>User <c:out value="${user.id}" /></title>
 </head>
 <body>
-    <a href="<%=request.getContextPath()%>/student/list">List</a>
+    <a href="<%=request.getContextPath()%>/user/list">List</a>
     <div>
         <label for="id">Student ID</label>
-        <div><c:out value="${student.id}" /></div>
+        <div><c:out value="${user.id}" /></div>
     </div>
     <div>
         <label for="firstName">First Name</label>
-        <div><c:out value="${student.firstName}" /></div>
+        <div><c:out value="${user.firstname}" /></div>
     </div>
     <div>
         <label for="lastName">Last Name</label>
-        <div><c:out value="${student.lastName}" /></div>
+        <div><c:out value="${user.lastname}" /></div>
     </div>
     <div>
         <label for="course">Course</label>
-        <div><c:out value="${student.course}" /></div>
+        <div><c:out value="${user.email}" /></div>
     </div>
     <div>
         <label for="year">Year</label>
-        <div><c:out value="${student.year}" /></div>
+        <div><c:out value="${user.username}" /></div>
     </div>
 </body>
 </html>

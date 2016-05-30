@@ -26,15 +26,13 @@
             <tbody>
                 <c:forEach items="${students}" var="student">
                     <tr>
-                        <td><c:out value="${student.id}" escapeXml="false"/></td>
+                        <td><a href="<%=request.getContextPath()%>/student/show/<c:out value='${student.id}'/>"><c:out value="${student.id}"/></td>
                         <td><c:out value="${student.firstName}" escapeXml="false"/></td>
                         <td><c:out value="${student.lastName}" escapeXml="false"/></td>
                         <td><c:out value="${student.course}" escapeXml="false"/></td>
                         <td><c:out value="${student.year}" escapeXml="false"/></td>
-                        <td><a
-                            href="<%=request.getContextPath()%>/student/edit/<c:out value="${student.id }"/>">Update</a></td>
-                        <td><a
-                            href="<%=request.getContextPath()%>/student/delete/<c:out value="${student.id }"/>">Delete</a></td>
+                        <td><a href="<%=request.getContextPath()%>/student/edit/<c:out value='${student.id}'/>">Update</a></td>
+                        <td><a href="<%=request.getContextPath()%>/student/delete/<c:out value='${student.id}'/>">Delete</a></td>
                     </tr>
                 </c:forEach>
             </tbody>

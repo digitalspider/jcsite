@@ -10,6 +10,10 @@ public class Student extends BaseBean {
     private String course;
     private int year;
 
+    public String getNameColumn() {
+        return "firstName";
+    }
+
     @Override
     public String toString() {
         return super.toString()+

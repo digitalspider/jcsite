@@ -11,5 +11,7 @@ public class UserDAOImpl extends BaseDAOImpl<User> implements UserDAO<User> {
     public UserDAOImpl() {
         super(User.class);
         conn = DBUtil.getConnection();
+        excludeForSaveGetMethods.add("cdate");
+        excludeForSaveGetMethods.add("mdate");
     }
 }

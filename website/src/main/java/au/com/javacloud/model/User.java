@@ -13,8 +13,6 @@ public class User extends BaseBean {
     private String tags;
     private String type;
     private String status;
-    private int authorId;
-    private int parentId;
     private String firstname;
     private String lastname;
     private String email;
@@ -25,6 +23,10 @@ public class User extends BaseBean {
     private String token;
     private String image;
 
+    public String getNameColumn() {
+        return "email";
+    }
+
     @Override
     public String toString() {
         return super.toString()+
@@ -34,8 +36,6 @@ public class User extends BaseBean {
                 ", tags=" + tags +
                 ", type=" + type +
                 ", status=" + status +
-                ", authorId=" + authorId +
-                ", parentId=" + parentId +
                 ", firstname=" + firstname +
                 ", lastname=" + lastname +
                 ", email=" + email +
@@ -89,22 +89,6 @@ public class User extends BaseBean {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public int getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(int authorId) {
-        this.authorId = authorId;
-    }
-
-    public int getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(int parentId) {
-        this.parentId = parentId;
     }
 
     public String getFirstname() {

@@ -4,7 +4,7 @@ package au.com.javacloud.model;
  * Created by david on 22/05/16.
  */
 
-public class BaseBean {
+public abstract class BaseBean {
     protected int id;
     protected String name;
 
@@ -12,6 +12,8 @@ public class BaseBean {
     public String toString() {
         return getClass().getSimpleName()+"["+id+"] name="+name;
     }
+
+    public abstract String getNameColumn();
 
     public int getId() {
         return id;
@@ -28,4 +30,5 @@ public class BaseBean {
     public void setName(String name) {
         this.name = name;
     }
+
 }

@@ -34,8 +34,8 @@ CREATE TABLE user (
 	email text NOT NULL,
 	username text NOT NULL,
 	password text NOT NULL,
-	fname text NOT NULL,
-	lname text NOT NULL,
+	firstname text NOT NULL,
+	lastname text NOT NULL,
 	url text NOT NULL,
 	mobile text,
 	description text,
@@ -46,4 +46,4 @@ CREATE TABLE user (
 	image blob
 );
 
-INSERT into user (email, username, password, fname, lname, url, type, status) VALUES ("d@g.com","dv","dv","david", "vittor", "/dv", "ADMIN", "OK");
+INSERT into user (email, username, password, firstname, lastname, url, type, status) VALUES ("d@g.com","dv","dv","david", "vittor", "/dv", "ADMIN", "OK");

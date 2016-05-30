@@ -4,6 +4,8 @@ package au.com.javacloud.controller;
  * Created by david on 22/05/16.
  */
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -30,8 +32,12 @@ public class PageController extends BaseController<Page> {
         page.setType( request.getParameter( "type" ) );
         page.setTags( request.getParameter( "tags" ) );
         page.setStatus( request.getParameter( "status" ) );
-        page.setAuthorId( Integer.parseInt(request.getParameter( "authorId" )) );
-        page.setParentId( Integer.parseInt(request.getParameter( "parentId" )) );
+        if (StringUtils.isNumeric(request.getParameter( "authorId" ))) {
+            page.setAuthorId(Integer.parseInt(request.getParameter("authorId")));
+        }
+        if (StringUtils.isNumeric(request.getParameter( "parentId" ))) {
+            page.setParentId(Integer.parseInt(request.getParameter("parentId")));
+        }
         return page;
     }
 }
