@@ -6,12 +6,12 @@
 <head>
     <head>
         <title>Javacloud Contact Page</title>
-        <jsp:include page="page/include/htmlhead.jsp"/>
+        <jsp:include page="jsp/include/htmlhead.jsp"/>
     </head>
 
     <body>
 
-        <jsp:include page="page/include/header.jsp"/>
+        <jsp:include page="jsp/include/header.jsp"/>
 
         <!--
         <div class="tm-contact-img-container">
@@ -172,7 +172,7 @@
         </section>
         
 
-        <jsp:include page="page/include/footer.jsp"/>
+        <jsp:include page="jsp/include/footer.jsp"/>
 
         <script>     
        

@@ -30,8 +30,8 @@ public abstract class BaseController<T extends BaseBean> extends HttpServlet {
         if (className.toLowerCase().endsWith("controller")) {
         	beanName = className.substring(0, className.length()-"controller".length()).toLowerCase();
         	beansName = beanName+"s";
-        	listUrl = "/page/"+beanName+"/list.jsp";
-        	insertOrEditUrl = "/page/"+beanName+"/edit.jsp";
+        	listUrl = "/jsp/"+beanName+"/list.jsp";
+        	insertOrEditUrl = "/jsp/"+beanName+"/edit.jsp";
         }
     }
     

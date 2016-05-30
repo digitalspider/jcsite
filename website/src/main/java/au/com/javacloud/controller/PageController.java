@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import au.com.javacloud.dao.PageDAOImpl;
 import au.com.javacloud.model.Page;
 
-@WebServlet("/blog/*")
+@WebServlet("/page/*")
 public class PageController extends BaseController<Page> {
 
     public PageController() {
