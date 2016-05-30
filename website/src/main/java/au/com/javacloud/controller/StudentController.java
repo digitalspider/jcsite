@@ -17,7 +17,7 @@ import au.com.javacloud.model.Student;
 public class StudentController extends BaseController<Student> {
 
     public StudentController() {
-        super(new StudentDAOImpl(), Student.class);
+        super(new StudentDAOImpl());
     }
 
     protected Student populateBean(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

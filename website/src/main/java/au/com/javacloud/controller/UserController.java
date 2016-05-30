@@ -18,7 +18,7 @@ import au.com.javacloud.model.User;
 public class UserController extends BaseController<User> {
 
     public UserController() {
-        super(new UserDAOImpl(), User.class);
+        super(new UserDAOImpl());
     }
 
     protected User populateBean(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

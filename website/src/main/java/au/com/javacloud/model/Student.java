@@ -1,17 +1,10 @@
 package au.com.javacloud.model;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by david on 22/05/16.
  */
 
 public class Student extends BaseBean {
-    private int id;
     private String firstName;
     private String lastName;
     private String course;
@@ -19,20 +12,11 @@ public class Student extends BaseBean {
 
     @Override
     public String toString() {
-        return "Student[" + id + "]"+
-                " firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", course='" + course + '\'' +
-                ", year=" + year +
-                ']';
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+        return super.toString()+
+                ", firstName=" + firstName +
+                ", lastName=" + lastName +
+                ", course=" + course +
+                ", year=" + year;
     }
 
     public String getFirstName() {

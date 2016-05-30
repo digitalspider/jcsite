@@ -1,17 +1,20 @@
 package au.com.javacloud.model;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by david on 22/05/16.
  */
 
 public class User extends BaseBean {
+    private Date cdate = new Date();
+    private Date mdate = new Date();
+    private String description;
+    private String tags;
+    private String type;
+    private String status;
+    private int authorId;
+    private int parentId;
     private String firstname;
     private String lastname;
     private String email;
@@ -24,14 +27,84 @@ public class User extends BaseBean {
 
     @Override
     public String toString() {
-        return "User[" + id + "]"+
-                " firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", email='" + email + '\'' +
+        return super.toString()+
+        		", cdate=" + cdate +
+                ", mdate=" + mdate +
+                ", description=" + description +
+                ", tags=" + tags +
+                ", type=" + type +
+                ", status=" + status +
+                ", authorId=" + authorId +
+                ", parentId=" + parentId +
+                ", firstname=" + firstname +
+                ", lastname=" + lastname +
+                ", email=" + email +
                 ", username=" + username +
-                ", url=" + url +
-                super.toString() +
-                ']';
+                ", url=" + url;
+    }
+    
+    public Date getCdate() {
+        return cdate;
+    }
+
+    public void setCdate(Date cdate) {
+        this.cdate = cdate;
+    }
+
+    public Date getMdate() {
+        return mdate;
+    }
+
+    public void setMdate(Date mdate) {
+        this.mdate = mdate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public int getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(int authorId) {
+        this.authorId = authorId;
+    }
+
+    public int getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
     }
 
     public String getFirstname() {

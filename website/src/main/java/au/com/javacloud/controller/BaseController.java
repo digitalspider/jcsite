@@ -23,11 +23,9 @@ public abstract class BaseController<T extends BaseBean> extends HttpServlet {
     protected String beansName = "beans";
     protected String listUrl = "/";
     protected String insertOrEditUrl = "/";
-    protected Class<T> clazz;
 
-    public BaseController(BaseDAO<T> dao, Class<T> clazz) {
+    public BaseController(BaseDAO<T> dao) {
         this.dao = dao;
-        this.clazz = clazz;
         String className = getClass().getSimpleName();
         if (className.toLowerCase().endsWith("controller")) {
         	beanName = className.substring(0, className.length()-"controller".length()).toLowerCase();
@@ -37,9 +35,8 @@ public abstract class BaseController<T extends BaseBean> extends HttpServlet {
         }
     }
     
-    public BaseController(BaseDAO<T> dao, Class<T> clazz, String beanName, String beansName, String listUrl, String insertOrEditUrl) {
+    public BaseController(BaseDAO<T> dao, String beanName, String beansName, String listUrl, String insertOrEditUrl) {
         this.dao = dao;
-        this.clazz = clazz;
         this.beanName = beanName;
         this.beansName = beansName;
         this.listUrl = listUrl;
@@ -53,37 +50,32 @@ public abstract class BaseController<T extends BaseBean> extends HttpServlet {
         System.out.println("pathParts="+pathparts);
         String baseUrl = HttpUtil.getBaseUrl(request);
         System.out.println("baseUrl="+baseUrl);
-
-        if (pathparts!=null && pathparts.length>0) {
-            if (pathparts[0].equals("delete")) {
-            	if (pathparts.length>1) {
-            		int id = Integer.parseInt(pathparts[1]);
-            		dao.delete(id);            		
-            	}
-            } else if (pathparts[0].equals("edit")) {
-            	if (pathparts.length>1) {
-            		int id = Integer.parseInt(pathparts[1]);
-            		try {
-						request.setAttribute(beanName, dao.get(id, clazz));
+    	try {
+    		if (pathparts!=null && pathparts.length>0) {
+	            if (pathparts[0].equals("delete")) {
+	            	if (pathparts.length>1) {
+	            		int id = Integer.parseInt(pathparts[1]);
+	            		dao.delete(id);            		
+	            	}
+	            } else if (pathparts[0].equals("edit")) {
+	            	if (pathparts.length>1) {
+	            		int id = Integer.parseInt(pathparts[1]);
+						request.setAttribute(beanName, dao.get(id));
 						forward = insertOrEditUrl;
-					} catch (Exception e) {
-						e.printStackTrace();
-						throw new ServletException(e);
-					}
-            	}
-            } else if (pathparts[0].equals("insert")) {
-                forward = insertOrEditUrl;
-            }
-        }
-        if (forward==null) {
-            forward = listUrl;
-            try {
-            	request.setAttribute(beansName, dao.getAll(clazz) );
-			} catch (Exception e) {
-				e.printStackTrace();
-				throw new ServletException(e);
-			}
-        }
+	            	}
+	            } else if (pathparts[0].equals("insert")) {
+	                forward = insertOrEditUrl;
+	            }
+    		}
+	        if (forward==null) {
+	            forward = listUrl;
+	           	request.setAttribute(beansName, dao.getAll() );
+	        }
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServletException(e);
+		}
+
         RequestDispatcher view = request.getRequestDispatcher( forward );
         view.forward(request, response);
     }
@@ -92,14 +84,14 @@ public abstract class BaseController<T extends BaseBean> extends HttpServlet {
     	T bean = populateBean(request, response);
     	
         String id = request.getParameter("id");
-        if( id == null || id.isEmpty() )
-            dao.add(bean);
-        else {
-            bean.setId( Integer.parseInt(id) );
-            dao.update(bean);
-        }
         try {
-        	request.setAttribute(beansName, dao.getAll(clazz) );
+	        if( id == null || id.isEmpty() )
+	            dao.saveOrUpdate(bean);
+	        else {
+	            bean.setId( Integer.parseInt(id) );
+	            dao.saveOrUpdate(bean);
+	        }
+        	request.setAttribute(beansName, dao.getAll() );
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ServletException(e);

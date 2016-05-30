@@ -1,5 +1,11 @@
 package au.com.javacloud.dao;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.ParseException;
 /**
  * Created by david on 22/05/16.
@@ -9,9 +15,14 @@ import java.util.List;
 import au.com.javacloud.model.BaseBean;
 
 public interface BaseDAO<T extends BaseBean> {
-    public void add(T bean);
-    public void update(T bean);
-    public List<T> getAll(Class<T> clazz) throws InstantiationException, IllegalAccessException, ParseException;
-    public T get(int id, Class<T> clazz) throws InstantiationException, IllegalAccessException, ParseException;
-    public void delete(int beanId);
+	
+    public String getTableName();
+    public void populateBeanFromResultSet(T bean, ResultSet rs) throws SQLException, ParseException, InvocationTargetException, IllegalAccessException;
+    public PreparedStatement prepareStatementForSave(Connection conn, T bean) throws SQLException, InvocationTargetException, IllegalArgumentException, IllegalAccessException;
+    
+    public void saveOrUpdate(T bean) throws SQLException, IOException;
+    public List<T> getAll() throws SQLException, IOException;
+    public List<T> getLookup() throws SQLException, IOException;
+    public T get(int id) throws SQLException, IOException;
+    public void delete(int beanId) throws SQLException;
 }

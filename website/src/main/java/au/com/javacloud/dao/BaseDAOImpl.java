@@ -1,5 +1,14 @@
 package au.com.javacloud.dao;
 
+import static au.com.javacloud.util.Constants.dft;
+
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.math.BigDecimal;
+import java.sql.Blob;
+import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,7 +16,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import au.com.javacloud.model.BaseBean;
 import au.com.javacloud.util.DBUtil;
@@ -18,22 +29,236 @@ import au.com.javacloud.util.DBUtil;
 public abstract class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 
     protected Connection conn;
-    protected BaseDAOMapper<T> mapper;
-    protected String tableName = "TABLE_NOT_DEFINED";
+    protected String tableName;
+    protected Class<T> clazz;
 
-    public BaseDAOImpl(BaseDAOMapper<T> mapper) {
+    public BaseDAOImpl(Class<T> clazz) {
         conn = DBUtil.getConnection();
-        this.mapper = mapper;
-        tableName = mapper.getTableName();
+        tableName= getTableName();
+        this.clazz = clazz;
+    }
+    
+    private T getNewBean() {
+    	try {
+    		return (T)clazz.newInstance();
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    	return null;
+    }
+
+    @Override
+    public void saveOrUpdate( T bean ) throws SQLException, IOException {
+    	PreparedStatement statement = null;
+		try {
+			statement = prepareStatementForSave(conn, bean);
+			statement.executeUpdate();
+		} catch (InvocationTargetException | IllegalArgumentException | IllegalAccessException e) {
+			throw new IOException(e);
+		} finally {
+			if (statement!=null) statement.close();
+		}
+    }
+
+    @Override
+    public void delete( int id ) throws SQLException {
+        String query = "delete from "+tableName+" where id=?";
+        PreparedStatement preparedStatement = conn.prepareStatement(query);
+        preparedStatement.setInt(1, id);
+        preparedStatement.executeUpdate();
+        preparedStatement.close();
+    }
+
+    @Override
+    public List<T> getAll() throws SQLException, IOException {
+        List<T> beans = new ArrayList<T>();
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {
+            statement = conn.createStatement();
+            resultSet = statement.executeQuery( "select * from "+tableName );
+            while( resultSet.next() ) {
+                T bean = getNewBean();
+				populateBeanFromResultSet(bean, resultSet);
+                beans.add(bean);
+            }
+		} catch (InvocationTargetException | IllegalAccessException | ParseException e) {
+			throw new IOException(e);
+        } finally {
+            if (resultSet!=null) resultSet.close();
+            if (statement!=null) statement.close();
+        }
+        return beans;
+    }
+    
+    @Override
+    public List<T> getLookup() throws SQLException, IOException {
+        List<T> beans = new ArrayList<T>();
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {
+            statement = conn.createStatement();
+            resultSet = statement.executeQuery( "select id,name from "+tableName );
+            while( resultSet.next() ) {
+                T bean = getNewBean();
+                bean.setId( resultSet.getInt( "id" ) );
+                bean.setName( resultSet.getString( "name" ) );
+                beans.add(bean);
+            }
+            resultSet.close();
+            statement.close();
+        } finally {
+            if (resultSet!=null) resultSet.close();
+            if (statement!=null) statement.close();
+        }
+        return beans;
+    }
+    
+    @Override
+    public T get(int id) throws SQLException, IOException {
+        T bean = getNewBean();
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            String query = "select * from "+tableName+" where id=?";
+            statement = conn.prepareStatement( query );
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+            if( resultSet.next() ) {
+                bean.setId( resultSet.getInt( "id" ) );
+                populateBeanFromResultSet(bean, resultSet);
+            }
+            resultSet.close();
+            statement.close();
+        } catch (InvocationTargetException | IllegalAccessException | ParseException e) {
+    		throw new IOException(e);
+        } finally {
+            if (resultSet!=null) resultSet.close();
+            if (statement!=null) statement.close();
+        }
+        return bean;
+    }
+    
+	@Override
+    public String getTableName() {
+    	return clazz.getSimpleName().toLowerCase();
+    }
+
+	@Override
+    public void populateBeanFromResultSet(T bean, ResultSet rs) throws SQLException, ParseException, InvocationTargetException, IllegalAccessException {
+    	Map<Method,Class> methods = getPublicSetterMethods();
+    	for (Method m : methods.keySet()) {
+    		Class paramClass = methods.get(m);
+    		switch(paramClass.getSimpleName()) {
+	    		case "String":
+	    			m.invoke(bean, rs.getString(getFieldName(m.getName())));
+	    			break;
+	    		case "Integer":
+	    			m.invoke(bean, rs.getInt(getFieldName(m.getName())));
+	    			break;
+	    		case "Boolean":
+	    			m.invoke(bean, rs.getBoolean(getFieldName(m.getName())));
+	    			break;
+	    		case "Date":
+	    			m.invoke(bean, dft.parse(rs.getString(getFieldName(m.getName()))));
+	    			break;
+	    		case "Long":
+	    			m.invoke(bean, rs.getLong(getFieldName(m.getName())));
+	    			break;
+	    		case "Short":
+	    			m.invoke(bean, rs.getShort(getFieldName(m.getName())));
+	    			break;
+	    		case "Float":
+	    			m.invoke(bean, rs.getFloat(getFieldName(m.getName())));
+	    			break;
+	    		case "Double":
+	    			m.invoke(bean, rs.getDouble(getFieldName(m.getName())));
+	    			break;
+	    		case "BigDecimal":
+	    			m.invoke(bean, rs.getBigDecimal(getFieldName(m.getName())));
+	    			break;
+	    		case "Blob":
+	    			m.invoke(bean, rs.getBlob(getFieldName(m.getName())));
+	    			break;
+	    		case "Clob":
+	    			m.invoke(bean, rs.getClob(getFieldName(m.getName())));
+	    			break;
+    		}
+   			
+    	}
+    }
+    
+	@Override
+    public PreparedStatement prepareStatementForSave(Connection conn, T bean) throws SQLException, InvocationTargetException, IllegalArgumentException, IllegalAccessException {
+    	boolean updateStmt = false;
+    	List<String> columns = new ArrayList<String>();
+    	Map<Method,Class> methods = getPublicGetterMethods();
+    	for (Method m : methods.keySet()) {
+    		columns.add(getFieldName(m.getName()));
+    	}
+    	String query = "insert into "+tableName+" "+getInsertIntoColumnsSQL(columns);
+    	if (bean.getId()>0) {
+    		updateStmt = true;
+        	query = "update "+tableName+" set "+getUpdateColumnsSQL(columns)+" where id=?";
+    	}
+        PreparedStatement preparedStatement = conn.prepareStatement( query );
+        
+    	int index = 0;
+        for (Method m : methods.keySet()) {
+    		if (m.getName().toLowerCase().equals("id")) {
+    			Object result = m.invoke(bean);
+    			if (result!=null) {
+	    			switch (result.getClass().getSimpleName()) {
+			    		case "String":
+			    			preparedStatement.setString(++index, (String)result);
+			    			break;
+			    		case "Integer":
+			    			preparedStatement.setInt(++index, (Integer)result);
+			    			break;
+			    		case "Boolean":
+			    			preparedStatement.setBoolean(++index, (Boolean)result);
+			    			break;
+			    		case "Date":
+			    			preparedStatement.setString(++index, dft.format(result));
+			    			break;
+			    		case "Long":
+			    			preparedStatement.setLong(++index, (Long)result);
+			    			break;
+			    		case "Short":
+			    			preparedStatement.setShort(++index, (Short)result);
+			    			break;
+			    		case "Float":
+			    			preparedStatement.setFloat(++index, (Float)result);
+			    			break;
+			    		case "Double":
+			    			preparedStatement.setDouble(++index, (Double)result);
+			    			break;
+			    		case "BigDecimal":
+			    			preparedStatement.setBigDecimal(++index, (BigDecimal)result);
+			    			break;
+			    		case "Blob":
+			    			preparedStatement.setBlob(++index, (Blob)result);
+			    			break;
+			    		case "Clob":
+			    			preparedStatement.setClob(++index, (Clob)result);
+			    			break;
+	    			}
+    			}
+    			
+    		}
+    	}
+    	if (updateStmt) {
+    		preparedStatement.setInt(++index, bean.getId());
+    	}
+    	return preparedStatement;
     }
 
     /**
      * Creates the insert part of the SQL. e.g. (name,email,date) values (?,?,?)
      */
-    private String getInsertIntoColumnsSQL() {
+    private String getInsertIntoColumnsSQL(List<String> columns) {
         String names = "";
         String params = "";
-        List<String> columns = mapper.getInsertColumns();
         for (String column : columns) {
             if (names.length()>0) {
                 names +=", ";
@@ -48,9 +273,8 @@ public abstract class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
     /**
      * Create the update part of the SQL. e.g. name=?, email=?, date=?
      */
-    private String getUpdateColumnsSQL() {
+    private String getUpdateColumnsSQL(List<String> columns) {
         String sql = "";
-        List<String> columns = mapper.getInsertColumns();
         for (String column : columns) {
             if (sql.length()>0) {
                 sql +=", ";
@@ -59,84 +283,39 @@ public abstract class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
         }
         return sql;
     }
-
-    @Override
-    public void add( T bean ) {
-        try {
-            String query = "insert into "+tableName+" "+getInsertIntoColumnsSQL();
-            PreparedStatement preparedStatement = conn.prepareStatement( query );
-            mapper.prepareStatementForSave(bean, preparedStatement);
-            preparedStatement.executeUpdate();
-            preparedStatement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void update( T bean ) {
-        try {
-            String query = "update "+tableName+" set "+getUpdateColumnsSQL()+" where id=?";
-            PreparedStatement preparedStatement = conn.prepareStatement( query );
-            int index = mapper.prepareStatementForSave(bean, preparedStatement);
-            preparedStatement.setInt(++index, bean.getId());
-            preparedStatement.executeUpdate();
-            preparedStatement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void delete( int id ) {
-        try {
-            String query = "delete from "+tableName+" where id=?";
-            PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setInt(1, id);
-            preparedStatement.executeUpdate();
-            preparedStatement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public List<T> getAll(Class<T> clazz) throws InstantiationException, IllegalAccessException, ParseException {
-        List<T> beans = new ArrayList<T>();
-        try {
-            Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery( "select * from "+tableName );
-            while( resultSet.next() ) {
-                T bean = clazz.newInstance();
-                bean.setId( resultSet.getInt( "id" ) );
-                mapper.populateBeanFromResultSet(bean, resultSet);
-                beans.add(bean);
-            }
-            resultSet.close();
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return beans;
+    
+    protected Map<Method,Class> getPublicSetterMethods() {
+    	Method[] allMethods = clazz.getDeclaredMethods();
+    	Map<Method,Class> setterMethods = new HashMap<Method,Class>();
+    	for (Method method : allMethods) {
+    	    if (Modifier.isPublic(method.getModifiers())) {
+    	        if (method.getName().startsWith("set")) {
+    	        	Class[] params = method.getParameterTypes();
+    	        	if (params.length==1) {
+    	        		setterMethods.put(method,params[0]);
+    	        	}
+    	        }
+    	    }
+    	}
+    	return setterMethods;
     }
     
-    @Override
-    public T get(int id, Class<T> clazz) throws InstantiationException, IllegalAccessException, ParseException {
-        T bean = clazz.newInstance();
-        try {
-            String query = "select * from "+tableName+" where id=?";
-            PreparedStatement preparedStatement = conn.prepareStatement( query );
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if( resultSet.next() ) {
-                bean.setId( resultSet.getInt( "id" ) );
-                mapper.populateBeanFromResultSet(bean, resultSet);
-            }
-            resultSet.close();
-            preparedStatement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return bean;
+    protected Map<Method,Class> getPublicGetterMethods() {
+    	Method[] allMethods = clazz.getDeclaredMethods();
+    	Map<Method,Class> getterMethods = new HashMap<Method,Class>();
+    	for (Method method : allMethods) {
+    	    if (Modifier.isPublic(method.getModifiers())) {
+    	        if (method.getName().startsWith("get")) {
+    	        	Class returnClass = method.getReturnType();
+    	        	getterMethods.put(method,returnClass);
+    	        }
+    	    }
+    	}
+    	return getterMethods;
+    }
+    
+    protected String getFieldName(String methodName) {
+    	String methodString = methodName.substring(3);
+    	return methodString.toLowerCase();
     }
 }

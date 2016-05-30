@@ -18,7 +18,7 @@ import au.com.javacloud.model.Page;
 public class PageController extends BaseController<Page> {
 
     public PageController() {
-        super(new PageDAOImpl(), Page.class);
+        super(new PageDAOImpl());
     }
 
     protected Page populateBean(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
