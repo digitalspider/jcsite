@@ -19,10 +19,6 @@ import au.com.javacloud.model.Page;
 @WebServlet("/page/*")
 public class PageController extends BaseController<Page> {
 
-    public PageController() {
-        super(new BaseDAOImpl<Page>(Page.class));
-    }
-
     protected Page populateBean(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Page page = new Page();
         page.setTitle( request.getParameter( "title" ) );

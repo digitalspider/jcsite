@@ -16,10 +16,6 @@ import au.com.javacloud.model.Student;
 @WebServlet("/student/*")
 public class StudentController extends BaseController<Student> {
 
-    public StudentController() {
-        super(new BaseDAOImpl<Student>(Student.class));
-    }
-
     protected Student populateBean(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Student student = new Student();
         student.setFirstName( request.getParameter( "firstName" ) );

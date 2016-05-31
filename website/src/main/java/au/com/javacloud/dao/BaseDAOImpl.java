@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
+
 import au.com.javacloud.model.BaseBean;
 import au.com.javacloud.util.DBUtil;
 
@@ -41,15 +43,6 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
         conn = DBUtil.getConnection();
         tableName= getTableName();
         excludeForSaveGetMethods.addAll(Arrays.asList(new String[] {"id", "name", "class", "namecolumn"}));
-    }
-    
-    protected T getNewBean() {
-    	try {
-    		return (T)clazz.newInstance();
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    	}
-    	return null;
     }
 
     @Override
@@ -81,9 +74,13 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
         ResultSet resultSet = null;
         try {
             statement = conn.createStatement();
-            resultSet = statement.executeQuery( "select * from "+tableName );
+            String query = "select * from "+tableName;
+            if (!StringUtils.isBlank(orderBy)) {
+            	query += " order by "+orderBy;
+            }
+            resultSet = statement.executeQuery( query );
             while( resultSet.next() ) {
-                T bean = getNewBean();
+                T bean = getNewBean(clazz);
 				populateBeanFromResultSet(bean, resultSet);
                 beans.add(bean);
             }
@@ -96,16 +93,19 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
         return beans;
     }
     
-    @Override
     public List<T> getLookup() throws SQLException, IOException {
         List<T> beans = new ArrayList<T>();
         Statement statement = null;
         ResultSet resultSet = null;
         try {
             statement = conn.createStatement();
-            resultSet = statement.executeQuery( "select id,name from "+tableName );
+            String query = "select id,name from "+tableName;
+            if (!StringUtils.isBlank(orderBy)) {
+            	query += " order by "+orderBy;
+            }
+            resultSet = statement.executeQuery( query );
             while( resultSet.next() ) {
-                T bean = getNewBean();
+                T bean = getNewBean(clazz);
                 bean.setId( resultSet.getInt( "id" ) );
                 bean.setName( resultSet.getString( bean.getNameColumn() ) );
                 beans.add(bean);
@@ -121,7 +121,7 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
     
     @Override
     public T get(int id) throws SQLException, IOException {
-        T bean = getNewBean();
+        T bean = getNewBean(clazz);
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
@@ -161,7 +161,7 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 		Set<Method> methods = BaseDAOImpl.getPublicGetterMethods(clazz).keySet();
 		List<String> beanFieldNames = new ArrayList<String>();
 		for (Method method : methods) {
-			beanFieldNames.add(getFieldName(method.getName()));
+			beanFieldNames.add(getFieldName(method));
 		}
 		return beanFieldNames;
 	}
@@ -175,38 +175,38 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
             try {
                 switch (paramClass.getSimpleName()) {
                     case "String":
-                        m.invoke(bean, rs.getString(getFieldName(m.getName())));
+                        m.invoke(bean, rs.getString(getFieldName(m)));
                         break;
                     case "Integer":
                     case "int":
-                        m.invoke(bean, rs.getInt(getFieldName(m.getName())));
+                        m.invoke(bean, rs.getInt(getFieldName(m)));
                         break;
                     case "Boolean":
-                        m.invoke(bean, rs.getBoolean(getFieldName(m.getName())));
+                        m.invoke(bean, rs.getBoolean(getFieldName(m)));
                         break;
                     case "Date":
-                        m.invoke(bean, dft.parse(rs.getString(getFieldName(m.getName()))));
+                        m.invoke(bean, dft.parse(rs.getString(getFieldName(m))));
                         break;
                     case "Long":
-                        m.invoke(bean, rs.getLong(getFieldName(m.getName())));
+                        m.invoke(bean, rs.getLong(getFieldName(m)));
                         break;
                     case "Short":
-                        m.invoke(bean, rs.getShort(getFieldName(m.getName())));
+                        m.invoke(bean, rs.getShort(getFieldName(m)));
                         break;
                     case "Float":
-                        m.invoke(bean, rs.getFloat(getFieldName(m.getName())));
+                        m.invoke(bean, rs.getFloat(getFieldName(m)));
                         break;
                     case "Double":
-                        m.invoke(bean, rs.getDouble(getFieldName(m.getName())));
+                        m.invoke(bean, rs.getDouble(getFieldName(m)));
                         break;
                     case "BigDecimal":
-                        m.invoke(bean, rs.getBigDecimal(getFieldName(m.getName())));
+                        m.invoke(bean, rs.getBigDecimal(getFieldName(m)));
                         break;
                     case "Blob":
-                        m.invoke(bean, rs.getBlob(getFieldName(m.getName())));
+                        m.invoke(bean, rs.getBlob(getFieldName(m)));
                         break;
                     case "Clob":
-                        m.invoke(bean, rs.getClob(getFieldName(m.getName())));
+                        m.invoke(bean, rs.getClob(getFieldName(m)));
                         break;
                 }
             } catch (SQLException e) {
@@ -226,8 +226,8 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
     	List<String> columns = new ArrayList<String>();
     	Map<Method,Class> methods = getPublicGetterMethods(clazz);
     	for (Method m : methods.keySet()) {
-            if (!excludeForSaveGetMethods.contains(getFieldName(m.getName()))) {
-                columns.add(getFieldName(m.getName()));
+            if (!excludeForSaveGetMethods.contains(getFieldName(m))) {
+                columns.add(getFieldName(m));
             }
     	}
     	String query = "insert into "+tableName+" "+getInsertIntoColumnsSQL(columns);
@@ -240,7 +240,7 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
         
     	int index = 0;
         for (Method m : methods.keySet()) {
-            if (!excludeForSaveGetMethods.contains(getFieldName(m.getName()))) {
+            if (!excludeForSaveGetMethods.contains(getFieldName(m))) {
                 Object result = m.invoke(bean);
                 if (result==null) {
                     System.out.println("m="+m.getName() + " result.class=null result="+result);
@@ -332,15 +332,30 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
     	return getterMethods;
     }
     
-    private String getFieldName(String methodName) {
+    public static <U extends BaseBean> U getNewBean(Class<U> clazz) {
+    	try {
+    		return (U)clazz.newInstance();
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    	return null;
+    }
+    
+    public static String getFieldName(String methodName) {
     	String methodString = methodName.substring(3);
     	return methodString.toLowerCase();
     }
+    
+    public static String getFieldName(Method method) {
+    	String methodString = method.getName().substring(3);
+    	return methodString.toLowerCase();
+    }
+    
 
     /**
      * Creates the insert part of the SQL. e.g. (name,email,date) values (?,?,?)
      */
-    private String getInsertIntoColumnsSQL(List<String> columns) {
+    public static String getInsertIntoColumnsSQL(List<String> columns) {
         String names = "";
         String params = "";
         for (String column : columns) {
@@ -357,7 +372,7 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
     /**
      * Create the update part of the SQL. e.g. name=?, email=?, date=?
      */
-    private String getUpdateColumnsSQL(List<String> columns) {
+    public static String getUpdateColumnsSQL(List<String> columns) {
         String sql = "";
         for (String column : columns) {
             if (sql.length()>0) {

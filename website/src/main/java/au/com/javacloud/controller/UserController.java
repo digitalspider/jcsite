@@ -17,10 +17,6 @@ import au.com.javacloud.model.User;
 @WebServlet("/user/*")
 public class UserController extends BaseController<User> {
 
-    public UserController() {
-        super(new BaseDAOImpl<User>(User.class));
-    }
-
     protected User populateBean(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = new User();
         user.setFirstname( request.getParameter( "firstName" ) );

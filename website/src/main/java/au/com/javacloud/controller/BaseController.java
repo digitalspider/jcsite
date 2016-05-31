@@ -1,6 +1,10 @@
 package au.com.javacloud.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,7 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import au.com.javacloud.dao.BaseDAO;
+import au.com.javacloud.dao.BaseDAOImpl;
 import au.com.javacloud.model.BaseBean;
+import au.com.javacloud.model.Page;
+import au.com.javacloud.model.Student;
+import au.com.javacloud.model.User;
 import au.com.javacloud.util.HttpUtil;
 
 /**
@@ -25,11 +33,18 @@ public abstract class BaseController<T extends BaseBean> extends HttpServlet {
 	protected String showUrl = "/";
     protected String insertOrEditUrl = "/";
 
-    public BaseController(BaseDAO<T> dao) {
-        this.dao = dao;
+    static Map<String,BaseDAO> daoMap = new HashMap<String,BaseDAO>();
+    static {
+    	daoMap.put(Page.class.getSimpleName().toLowerCase(),new BaseDAOImpl<Page>(Page.class));
+    	daoMap.put(Student.class.getSimpleName().toLowerCase(),new BaseDAOImpl<Student>(Student.class));
+    	daoMap.put(User.class.getSimpleName().toLowerCase(),new BaseDAOImpl<User>(User.class));
+    }
+    
+    public BaseController() {
         String className = getClass().getSimpleName();
         if (className.toLowerCase().endsWith("controller")) {
         	beanName = className.substring(0, className.length()-"controller".length()).toLowerCase();
+        	dao = daoMap.get(beanName);
         	beansName = beanName+"s";
         	listUrl = "/jsp/"+beanName+"/list.jsp";
 			showUrl = "/jsp/"+beanName+"/show.jsp";
@@ -45,7 +60,7 @@ public abstract class BaseController<T extends BaseBean> extends HttpServlet {
 		this.showUrl = showUrl;
         this.insertOrEditUrl = insertOrEditUrl;
     }
-
+    
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String forward = null;
 
@@ -110,5 +125,13 @@ public abstract class BaseController<T extends BaseBean> extends HttpServlet {
     }
     
     protected abstract T populateBean(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+
+	public BaseDAO<T> getDao() {
+		return dao;
+	}
+
+	public void setDao(BaseDAO<T> dao) {
+		this.dao = dao;
+	}
 
 }
