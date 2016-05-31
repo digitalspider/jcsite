@@ -1,6 +1,10 @@
 package au.com.javacloud.controller;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -23,6 +27,7 @@ public abstract class BaseController<T extends BaseBean> extends HttpServlet {
     protected String beanName = "bean";
     protected String beansName = "beans";
     protected String beanHeaders = beanName+"headers";
+    protected Map<String,List<BaseBean>> lookupMap = new HashMap<String, List<BaseBean>>();
     protected String listUrl = "/";
 	protected String showUrl = "/";
     protected String insertOrEditUrl = "/";
@@ -49,6 +54,24 @@ public abstract class BaseController<T extends BaseBean> extends HttpServlet {
         this.insertOrEditUrl = insertOrEditUrl;
     }
     
+    @Override
+    public void init() throws ServletException {
+    	super.init();
+    	Map<Method,Class> fieldMethods = ReflectUtil.getPublicSetterMethods(dao.getBeanClass());
+    	for (Method method : fieldMethods.keySet()) {
+    		Class lookupClass = fieldMethods.get(method);
+    		if (lookupClass.isInstance(BaseBean.class)) {
+    			try {
+        			BaseDAO lookupDao = ReflectUtil.getDaoMap().get(lookupClass);
+        			String fieldName = ReflectUtil.getFieldName(method);
+        			lookupMap.put(fieldName,lookupDao.getLookup());
+    			} catch (Exception e) {
+    				e.printStackTrace();
+    			}
+    		}
+    	}
+    }
+    
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String forward = null;
 
@@ -58,6 +81,8 @@ public abstract class BaseController<T extends BaseBean> extends HttpServlet {
 //        System.out.println("baseUrl="+baseUrl);
     	try {
     		request.setAttribute(beanHeaders, dao.getBeanFieldNames() );
+    		request.setAttribute("lookupMap", lookupMap );
+
     		if (pathparts!=null && pathparts.length>0) {
 	            if (pathparts[0].equals("delete")) {
 					if (pathparts.length > 1) {
@@ -104,8 +129,9 @@ public abstract class BaseController<T extends BaseBean> extends HttpServlet {
 	            bean.setId( Integer.parseInt(id) );
 	            dao.saveOrUpdate(bean);
 	        }
+	        request.setAttribute(beansName, dao.getAll() );
 	        request.setAttribute(beanHeaders, dao.getBeanFieldNames() );
-        	request.setAttribute(beansName, dao.getAll() );
+	        request.setAttribute("lookupMap", lookupMap );
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ServletException(e);

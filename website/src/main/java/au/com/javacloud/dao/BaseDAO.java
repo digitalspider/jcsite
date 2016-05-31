@@ -17,6 +17,7 @@ import au.com.javacloud.model.BaseBean;
 public interface BaseDAO<T extends BaseBean> {
 	
     public String getTableName();
+    public Class<T> getBeanClass();
     public void populateBeanFromResultSet(T bean, ResultSet rs) throws SQLException, ParseException, InvocationTargetException, IllegalAccessException, IOException;
     public PreparedStatement prepareStatementForSave(Connection conn, T bean) throws SQLException, InvocationTargetException, IllegalArgumentException, IllegalAccessException;
     public List<String> getBeanFieldNames();

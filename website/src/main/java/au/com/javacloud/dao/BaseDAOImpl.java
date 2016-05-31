@@ -159,6 +159,11 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
     }
 	
 	@Override
+    public Class getBeanClass() {
+    	return clazz;
+    }
+	
+	@Override
 	public List<String> getBeanFieldNames() {
 		return ReflectUtil.getBeanFieldNames(clazz);
 	}
