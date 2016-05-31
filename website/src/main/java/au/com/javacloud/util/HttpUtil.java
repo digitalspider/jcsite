@@ -43,11 +43,11 @@ public class HttpUtil
 
 
     public static String getBaseUrl(HttpServletRequest request) {
-		System.out.println("request="+request);
+//		System.out.println("request="+request);
 		System.out.println("request.getPathInfo()="+request.getPathInfo());
-		System.out.println("request.getServletPath()="+request.getServletPath());
-		System.out.println("request.getQueryString()="+request.getQueryString());
-		System.out.println("request.getRequestURL()="+request.getRequestURL());
+//		System.out.println("request.getServletPath()="+request.getServletPath());
+//		System.out.println("request.getQueryString()="+request.getQueryString());
+//		System.out.println("request.getRequestURL()="+request.getRequestURL());
         String url = request.getRequestURL().toString();
         String baseUrl = url.substring(0, url.indexOf("/",9));
         baseUrl = baseUrl + request.getServletPath();

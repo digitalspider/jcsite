@@ -33,6 +33,7 @@ public abstract class BaseController<T extends BaseBean> extends HttpServlet {
     protected String insertOrEditUrl = "/";
 
     public BaseController() {
+		super();
         String className = getClass().getSimpleName();
         if (className.toLowerCase().endsWith("controller")) {
         	beanName = className.substring(0, className.length()-"controller".length()).toLowerCase();
@@ -46,24 +47,27 @@ public abstract class BaseController<T extends BaseBean> extends HttpServlet {
     }
     
     public BaseController(BaseDAO<T> dao, String beanName, String beansName, String listUrl, String showUrl, String insertOrEditUrl) {
+		super();
         this.dao = dao;
         this.beanName = beanName;
         this.beansName = beansName;
         this.listUrl = listUrl;
 		this.showUrl = showUrl;
         this.insertOrEditUrl = insertOrEditUrl;
-    }
-    
-    @Override
+	}
+
+	@Override
     public void init() throws ServletException {
     	super.init();
     	Map<Method,Class> fieldMethods = ReflectUtil.getPublicSetterMethods(dao.getBeanClass());
     	for (Method method : fieldMethods.keySet()) {
     		Class lookupClass = fieldMethods.get(method);
-    		if (lookupClass.isInstance(BaseBean.class)) {
+//			System.out.println("lookupClass="+lookupClass.getName());
+    		if (ReflectUtil.isBean(lookupClass)) {
     			try {
-        			BaseDAO lookupDao = ReflectUtil.getDaoMap().get(lookupClass);
+        			BaseDAO lookupDao = ReflectUtil.getDaoMap().get(lookupClass.getSimpleName().toLowerCase());
         			String fieldName = ReflectUtil.getFieldName(method);
+//					System.out.println("fieldName="+fieldName+" lookupDao="+lookupDao);
         			lookupMap.put(fieldName,lookupDao.getLookup());
     			} catch (Exception e) {
     				e.printStackTrace();

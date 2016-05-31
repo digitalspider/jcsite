@@ -31,4 +31,6 @@ public interface BaseDAO<T extends BaseBean> {
     
     public void setOrderBy(String orderBy);
     public String getOrderBy();
+    public List<String> getExcludeForSaveGetMethods();
+    public void setExcludeForSaveGetMethods(List<String> excludeForSaveGetMethods);
 }

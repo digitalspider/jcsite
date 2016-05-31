@@ -13,8 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 
+import au.com.javacloud.dao.BaseDAO;
 import au.com.javacloud.dao.BaseDAOImpl;
 import au.com.javacloud.model.Page;
+import au.com.javacloud.model.User;
+import au.com.javacloud.util.ReflectUtil;
 
 @WebServlet("/page/*")
 public class PageController extends BaseController<Page> {
@@ -28,11 +31,27 @@ public class PageController extends BaseController<Page> {
         page.setType( request.getParameter( "type" ) );
         page.setTags( request.getParameter( "tags" ) );
         page.setStatus( request.getParameter( "status" ) );
-        if (StringUtils.isNumeric(request.getParameter( "authorId" ))) {
-            page.setAuthorId(Integer.parseInt(request.getParameter("authorId")));
-        }
-        if (StringUtils.isNumeric(request.getParameter( "parentId" ))) {
-            page.setParentId(Integer.parseInt(request.getParameter("parentId")));
+        try {
+            if (StringUtils.isNumeric(request.getParameter("authorId"))) {
+                BaseDAO<User> dao = ReflectUtil.getDaoMap().get("user");
+                if (dao!=null) {
+                    User author = dao.get(Integer.parseInt(request.getParameter("authorId")));
+                    if (author!=null) {
+                        page.setAuthorId(author);
+                    }
+                }
+            }
+            if (StringUtils.isNumeric(request.getParameter("parentId"))) {
+                BaseDAO<Page> dao = ReflectUtil.getDaoMap().get("page");
+                if (dao!=null) {
+                    Page parent = dao.get(Integer.parseInt(request.getParameter("parentId")));
+                    if (parent != null) {
+                        page.setParentId(parent);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return page;
     }

@@ -39,8 +39,8 @@
                         <td><c:out value="${page.type}" /></td>
                         <td><c:out value="${page.tags}" /></td>
                         <td><c:out value="${page.status}" /></td>
-                        <td><c:out value="${page.authorId}" /></td>
-                        <td><c:out value="${page.parentId}" /></td>
+                        <td><a href="<%=request.getContextPath()%>/user/show/<c:out value='${page.authorId.id}'/>"><c:out value="${page.authorId.id}" /></a></td>
+                        <td><a href="<%=request.getContextPath()%>/page/show/<c:out value='${page.parentId.id}'/>"><c:out value="${page.parentId.id}" /></a></td>
                         <td><a href="<%=request.getContextPath()%>/page/edit/<c:out value='${page.id}'/>">Update</a></td>
                         <td><a href="<%=request.getContextPath()%>/page/delete/<c:out value='${page.id}'/>">Delete</a></td>
                     </tr>

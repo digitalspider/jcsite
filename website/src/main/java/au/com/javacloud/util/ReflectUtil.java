@@ -1,8 +1,12 @@
 package au.com.javacloud.util;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,19 +23,41 @@ public class ReflectUtil {
 
     private static Map<String,BaseDAO> daoMap = new HashMap<String,BaseDAO>();
     static {
-    	daoMap.put(Page.class.getSimpleName().toLowerCase(),new BaseDAOImpl<Page>(Page.class));
-    	daoMap.put(Student.class.getSimpleName().toLowerCase(),new BaseDAOImpl<Student>(Student.class));
-    	daoMap.put(User.class.getSimpleName().toLowerCase(),new BaseDAOImpl<User>(User.class));
+//        Reflections reflections = new Reflections("au.com.javacloud.model");
+//        Set<Class<? extends BaseBean>> beanClasses =  reflections.getSubTypesOf(BaseBean.class);
+//
+		try {
+			List<Class> beanClasses = getClasses("au.com.javacloud.model");
+			for (Class classType : beanClasses) {
+				if (!classType.getSimpleName().equals("BaseBean")) {
+					daoMap.put(classType.getSimpleName().toLowerCase(), new BaseDAOImpl<>(classType));
+				}
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+
+//    	daoMap.put(Page.class.getSimpleName().toLowerCase(),new BaseDAOImpl<Page>(Page.class));
+//    	daoMap.put(Student.class.getSimpleName().toLowerCase(),new BaseDAOImpl<Student>(Student.class));
+//    	daoMap.put(User.class.getSimpleName().toLowerCase(),new BaseDAOImpl<User>(User.class));
     }
     
     public static Map<String,BaseDAO> getDaoMap() {
     	return daoMap;
     }
-    
+
+    public static boolean isBean(Class clazz) {
+        if (BaseBean.class.isAssignableFrom(clazz)) {
+            return true;
+        }
+        return false;
+    }
+
     public static Map<Method,Class> getPublicSetterMethods(Class<?> objectClass) {
     	Method[] allMethods = objectClass.getDeclaredMethods();
     	Map<Method,Class> setterMethods = new HashMap<Method,Class>();
-        if (objectClass.getSuperclass() != null && objectClass.getSuperclass().isInstance(BaseBean.class)) {
+//        System.out.println("set objectClass="+objectClass+" super="+objectClass.getSuperclass());
+        if (objectClass.getSuperclass() != null && ReflectUtil.isBean(objectClass.getSuperclass())) {
             Class<?> superClass = objectClass.getSuperclass();
             Map<Method,Class> superClassMethods = getPublicSetterMethods(superClass);
             setterMethods.putAll(superClassMethods);
@@ -46,13 +72,15 @@ public class ReflectUtil {
     	        }
     	    }
     	}
+//        System.out.println("setters="+setterMethods);
     	return setterMethods;
     }
     
     public static Map<Method,Class> getPublicGetterMethods(Class<?> objectClass) {
     	Method[] allMethods = objectClass.getDeclaredMethods();
     	Map<Method,Class> getterMethods = new HashMap<Method,Class>();
-        if (objectClass.getSuperclass() != null && objectClass.getSuperclass().isInstance(BaseBean.class)) {
+//        System.out.println("get objectClass="+objectClass+" super="+objectClass.getSuperclass());
+        if (objectClass.getSuperclass() != null && ReflectUtil.isBean(objectClass.getSuperclass())) {
             Class<?> superClass = objectClass.getSuperclass();
             Map<Method,Class> superClassMethods = getPublicGetterMethods(superClass);
             getterMethods.putAll(superClassMethods);
@@ -65,6 +93,7 @@ public class ReflectUtil {
     	        }
     	    }
     	}
+//        System.out.println("getters="+getterMethods);
     	return getterMethods;
     }
     
@@ -77,11 +106,14 @@ public class ReflectUtil {
     	return null;
     }
     
-	public static <U extends BaseBean> List<String> getBeanFieldNames(Class<U> clazz) {
+	public static <U extends BaseBean> List<String> getBeanFieldNames(Class<U> clazz, List<String> excludeValues) {
 		Set<Method> methods = ReflectUtil.getPublicGetterMethods(clazz).keySet();
 		List<String> beanFieldNames = new ArrayList<String>();
 		for (Method method : methods) {
-			beanFieldNames.add(ReflectUtil.getFieldName(method));
+            String fieldName = ReflectUtil.getFieldName(method);
+            if (!excludeValues.contains(fieldName)) {
+                beanFieldNames.add(fieldName);
+            }
 		}
 		return beanFieldNames;
 	}
@@ -96,36 +128,57 @@ public class ReflectUtil {
     	String methodString = method.getName().substring(3);
     	return methodString.toLowerCase();
     }
-    
 
-    /**
-     * Creates the insert part of the SQL. e.g. (name,email,date) values (?,?,?)
-     */
-    public static String getInsertIntoColumnsSQL(List<String> columns) {
-        String names = "";
-        String params = "";
-        for (String column : columns) {
-            if (names.length()>0) {
-                names +=", ";
-                params +=", ";
-            }
-            names += column;
-            params += "?";
-        }
-        return "("+names+") values ("+params+")";
-    }
+	/**
+	 * Scans all classes accessible from the context class loader which belong to the given package and subpackages.
+	 *
+	 * @param packageName The base package
+	 * @return The classes
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
+	public static List<Class> getClasses(String packageName) throws ClassNotFoundException, IOException {
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		assert classLoader != null;
+		String path = packageName.replace('.', '/');
+		Enumeration<URL> resources = classLoader.getResources(path);
+		List<File> dirs = new ArrayList<File>();
+		while (resources.hasMoreElements()) {
+			URL resource = resources.nextElement();
+			dirs.add(new File(resource.getFile()));
+		}
+		List<Class> classes = new ArrayList<Class>();
+		for (File directory : dirs) {
+			classes.addAll(findClasses(directory, packageName));
+		}
+		return classes;
+	}
 
-    /**
-     * Create the update part of the SQL. e.g. name=?, email=?, date=?
-     */
-    public static String getUpdateColumnsSQL(List<String> columns) {
-        String sql = "";
-        for (String column : columns) {
-            if (sql.length()>0) {
-                sql +=", ";
-            }
-            sql += column+"=?";
-        }
-        return sql;
-    }
+	/**
+	 * Recursive method used to find all classes in a given directory and subdirs.
+	 *
+	 * @param directory   The base directory
+	 * @param packageName The package name for classes found inside the base directory
+	 * @return The classes
+	 * @throws ClassNotFoundException
+	 */
+	public static List<Class> findClasses(File directory, String packageName) throws ClassNotFoundException {
+
+		List<Class> classes = new ArrayList<Class>();
+
+		if (!directory.exists()) {
+			return classes;
+		}
+
+		File[] files = directory.listFiles();
+		for (File file : files) {
+			if (file.isDirectory()) {
+				assert !file.getName().contains(".");
+				classes.addAll(findClasses(file, packageName + "." + file.getName()));
+			} else if (file.getName().endsWith(".class")) {
+				classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
+			}
+		}
+		return classes;
+	}
 }

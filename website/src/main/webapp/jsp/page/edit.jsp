@@ -34,23 +34,37 @@
 			</div>
 			<div>
 				<label for="type">Type</label>
-				<input type="text" name="type" value="<c:out value="${user.type}" />" placeholder="Type" />
+				<input type="text" name="type" value="<c:out value="${page.type}" />" placeholder="Type" />
 			</div>
 			<div>
 				<label for="tags">Tags</label>
-				<input type="text" name="tags" value="<c:out value="${user.tags}" />" placeholder="Tags" />
+				<input type="text" name="tags" value="<c:out value="${page.tags}" />" placeholder="Tags" />
 			</div>
 			<div>
 				<label for="status">Status</label>
-				<input type="text" name="status" value="<c:out value="${user.status}" />" placeholder="Status" />
+				<input type="text" name="status" value="<c:out value="${page.status}" />" placeholder="Status" />
 			</div>
 			<div>
 				<label for="authorId">Author Id</label>
-				<input type="text" name="authorId" value="<c:out value="${user.authorId}" />" placeholder="Author Id" />
+				<select name="authorId">
+				    <option value="">Select Author Id...</option>
+                    <c:forEach items='${lookupMap.get("authorid")}' var="authorBean">
+                       <option value='<c:out value="${authorBean.id}"/>'
+                            <c:if test="${page.authorId.id == authorBean.id}">selected="true"</c:if>
+                       ><c:out value="${authorBean.id}"/> - <c:out value="${authorBean.name}"/></option>
+                    </c:forEach>
+				</select>
 			</div>
 			<div>
 				<label for="parentId">Parent Id</label>
-				<input type="text" name="parentId" value="<c:out value="${user.parentId}" />" placeholder="Parent Id" />
+				<select name="parentId">
+				    <option value="">Select Parent Id...</option>
+                    <c:forEach items='${lookupMap.get("parentid")}' var="parentBean">
+                       <option value='<c:out value="${parentBean.id}"/>'
+                            <c:if test="${page.parentId.id == parentBean.id}">selected="true"</c:if>
+                       ><c:out value="${parentBean.id}"/> - <c:out value="${parentBean.name}"/></option>
+                    </c:forEach>
+				</select>
 			</div>
 			<div>
 				<input type="submit" value="Submit" />

@@ -13,8 +13,8 @@ public class Page extends BaseBean {
     protected String tags;
     protected String type;
     protected String status;
-    protected int authorId;
-    protected int parentId;
+    protected User authorId;
+    protected Page parentId;
     private String title;
     private String content;
     private String url;
@@ -87,19 +87,19 @@ public class Page extends BaseBean {
         this.status = status;
     }
 
-    public int getAuthorId() {
+    public User getAuthorId() {
         return authorId;
     }
 
-    public void setAuthorId(int authorId) {
+    public void setAuthorId(User authorId) {
         this.authorId = authorId;
     }
 
-    public int getParentId() {
+    public Page getParentId() {
         return parentId;
     }
 
-    public void setParentId(int parentId) {
+    public void setParentId(Page parentId) {
         this.parentId = parentId;
     }
 
