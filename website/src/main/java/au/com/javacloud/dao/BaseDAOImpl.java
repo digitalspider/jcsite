@@ -5,7 +5,6 @@ import static au.com.javacloud.util.Constants.dft;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.Clob;
@@ -17,15 +16,15 @@ import java.sql.Statement;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
 import au.com.javacloud.model.BaseBean;
 import au.com.javacloud.util.DBUtil;
+import au.com.javacloud.util.ReflectUtil;
 
 /**
  * Created by david on 22/05/16.
@@ -80,7 +79,7 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
             }
             resultSet = statement.executeQuery( query );
             while( resultSet.next() ) {
-                T bean = getNewBean(clazz);
+                T bean = ReflectUtil.getNewBean(clazz);
 				populateBeanFromResultSet(bean, resultSet);
                 beans.add(bean);
             }
@@ -105,7 +104,7 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
             }
             resultSet = statement.executeQuery( query );
             while( resultSet.next() ) {
-                T bean = getNewBean(clazz);
+                T bean = ReflectUtil.getNewBean(clazz);
                 bean.setId( resultSet.getInt( "id" ) );
                 bean.setName( resultSet.getString( bean.getNameColumn() ) );
                 beans.add(bean);
@@ -121,11 +120,14 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
     
     @Override
     public T get(int id) throws SQLException, IOException {
-        T bean = getNewBean(clazz);
+        T bean = ReflectUtil.getNewBean(clazz);
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
             String query = "select * from "+tableName+" where id=?";
+            if (!StringUtils.isBlank(orderBy)) {
+            	query += " order by "+orderBy;
+            }
             statement = conn.prepareStatement( query );
             statement.setInt(1, id);
             resultSet = statement.executeQuery();
@@ -158,65 +160,97 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 	
 	@Override
 	public List<String> getBeanFieldNames() {
-		Set<Method> methods = BaseDAOImpl.getPublicGetterMethods(clazz).keySet();
-		List<String> beanFieldNames = new ArrayList<String>();
-		for (Method method : methods) {
-			beanFieldNames.add(getFieldName(method));
-		}
-		return beanFieldNames;
+		return ReflectUtil.getBeanFieldNames(clazz);
 	}
 
 	@Override
-    public void populateBeanFromResultSet(T bean, ResultSet rs) throws SQLException, ParseException, InvocationTargetException, IllegalAccessException {
-    	Map<Method,Class> methods = getPublicSetterMethods(clazz);
-    	for (Method m : methods.keySet()) {
-    		Class paramClass = methods.get(m);
+    public void populateBeanFromResultSet(T bean, ResultSet rs) throws SQLException, ParseException, InvocationTargetException, IllegalAccessException, IOException {
+    	Map<Method,Class> methods = ReflectUtil.getPublicSetterMethods(clazz);
+    	for (Method method : methods.keySet()) {
+    		Class classType = methods.get(method);
 //            System.out.println("m="+m+" paramClass.getSimpleName()="+paramClass.getSimpleName());
-            try {
-                switch (paramClass.getSimpleName()) {
-                    case "String":
-                        m.invoke(bean, rs.getString(getFieldName(m)));
-                        break;
-                    case "Integer":
-                    case "int":
-                        m.invoke(bean, rs.getInt(getFieldName(m)));
-                        break;
-                    case "Boolean":
-                        m.invoke(bean, rs.getBoolean(getFieldName(m)));
-                        break;
-                    case "Date":
-                        m.invoke(bean, dft.parse(rs.getString(getFieldName(m))));
-                        break;
-                    case "Long":
-                        m.invoke(bean, rs.getLong(getFieldName(m)));
-                        break;
-                    case "Short":
-                        m.invoke(bean, rs.getShort(getFieldName(m)));
-                        break;
-                    case "Float":
-                        m.invoke(bean, rs.getFloat(getFieldName(m)));
-                        break;
-                    case "Double":
-                        m.invoke(bean, rs.getDouble(getFieldName(m)));
-                        break;
-                    case "BigDecimal":
-                        m.invoke(bean, rs.getBigDecimal(getFieldName(m)));
-                        break;
-                    case "Blob":
-                        m.invoke(bean, rs.getBlob(getFieldName(m)));
-                        break;
-                    case "Clob":
-                        m.invoke(bean, rs.getClob(getFieldName(m)));
-                        break;
-                }
-            } catch (SQLException e) {
-                if (m.getName().toLowerCase().equals("setname")) {
-                    // ignore as this is custom to BaseBean
-                } else {
-                    throw e;
-                }
-            }
-
+        	String fieldName = ReflectUtil.getFieldName(method);
+        	if (classType.isInstance(BaseBean.class)) {
+        		// Handle BaseBeans
+        		BaseDAO dao = ReflectUtil.getDaoMap().get(classType.getSimpleName().toLowerCase());
+        		int id = rs.getInt(fieldName);
+        		method.invoke(bean, dao.get(id));
+        	} else if (classType.isInstance(Collection.class)) {
+        		// Handle Collections
+        		BaseDAO dao = ReflectUtil.getDaoMap().get(classType.getSimpleName().toLowerCase());
+        		String values = rs.getString(fieldName);
+        		String[] valueArray = values.split(",");
+        		List<BaseBean> beans = new ArrayList<BaseBean>();
+        		Boolean numeric = null;
+        		for (String value : valueArray) {
+        			if (!StringUtils.isBlank(value)) {
+        				if (StringUtils.isNumeric(value)) {
+        					numeric = true;
+	        			} else {
+	        				numeric = false;
+	        				break;
+	        			}
+        			}
+        			if (numeric!=null) {
+        				BaseBean bean2 = dao.get(Integer.parseInt(value));
+            			if (beans!=null) {
+            				beans.add(bean2);
+            			}
+        			}
+        		}
+        		if (numeric!=null) {
+        			if (numeric) {
+        				method.invoke(bean, beans);
+        			} else {
+        				List<String> strings = new ArrayList(Arrays.asList(valueArray));
+        				method.invoke(bean, strings);
+        			}
+        		}
+        	} else {
+        		// Handle primitives
+        		try {
+	            	switch (classType.getSimpleName()) {
+	                    case "String":
+	                        method.invoke(bean, rs.getString(fieldName));
+	                        break;
+	                    case "Integer":
+	                    case "int":
+	                        method.invoke(bean, rs.getInt(fieldName));
+	                        break;
+	                    case "Boolean":
+	                        method.invoke(bean, rs.getBoolean(fieldName));
+	                        break;
+	                    case "Date":
+	                        method.invoke(bean, dft.parse(rs.getString(fieldName)));
+	                        break;
+	                    case "Long":
+	                        method.invoke(bean, rs.getLong(fieldName));
+	                        break;
+	                    case "Short":
+	                        method.invoke(bean, rs.getShort(fieldName));
+	                        break;
+	                    case "Float":
+	                        method.invoke(bean, rs.getFloat(fieldName));
+	                        break;
+	                    case "Double":
+	                        method.invoke(bean, rs.getDouble(fieldName));
+	                        break;
+	                    case "BigDecimal":
+	                        method.invoke(bean, rs.getBigDecimal(fieldName));
+	                        break;
+	                    case "Blob":
+	                        method.invoke(bean, rs.getBlob(fieldName));
+	                        break;
+	                    case "Clob":
+	                        method.invoke(bean, rs.getClob(fieldName));
+	                        break;
+	                }
+	            } catch (SQLException e) {
+	                if (!fieldName.equals("name")) { // ignore "name", as this is custom to BaseBean
+	                    throw e;
+	                }
+	            }
+        	}
     	}
     }
     
@@ -224,65 +258,102 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
     public PreparedStatement prepareStatementForSave(Connection conn, T bean) throws SQLException, InvocationTargetException, IllegalArgumentException, IllegalAccessException {
     	boolean updateStmt = false;
     	List<String> columns = new ArrayList<String>();
-    	Map<Method,Class> methods = getPublicGetterMethods(clazz);
-    	for (Method m : methods.keySet()) {
-            if (!excludeForSaveGetMethods.contains(getFieldName(m))) {
-                columns.add(getFieldName(m));
+    	Map<Method,Class> methods = ReflectUtil.getPublicGetterMethods(clazz);
+    	for (Method method : methods.keySet()) {
+    		String fieldName = ReflectUtil.getFieldName(method);
+            if (!excludeForSaveGetMethods.contains(fieldName)) {
+                columns.add(fieldName);
             }
     	}
-    	String query = "insert into "+tableName+" "+getInsertIntoColumnsSQL(columns);
+    	String query = "insert into "+tableName+" "+ReflectUtil.getInsertIntoColumnsSQL(columns);
     	if (bean.getId()>0) {
     		updateStmt = true;
-        	query = "update "+tableName+" set "+getUpdateColumnsSQL(columns)+" where id=?";
+        	query = "update "+tableName+" set "+ReflectUtil.getUpdateColumnsSQL(columns)+" where id=?";
     	}
         System.out.println("query="+query+" columns="+columns);
         PreparedStatement preparedStatement = conn.prepareStatement( query );
         
     	int index = 0;
-        for (Method m : methods.keySet()) {
-            if (!excludeForSaveGetMethods.contains(getFieldName(m))) {
-                Object result = m.invoke(bean);
-                if (result==null) {
-                    System.out.println("m="+m.getName() + " result.class=null result="+result);
-                    preparedStatement.setString(++index, null);
+    	for (Method method : methods.keySet()) {
+    		String fieldName = ReflectUtil.getFieldName(method);
+    		Class classType = methods.get(method);
+            if (!excludeForSaveGetMethods.contains(fieldName)) {
+                Object result = method.invoke(bean);
+                System.out.println("m="+method.getName() + " classType="+classType +" result="+result);
+                if (classType.isInstance(BaseBean.class)) {
+                	// Handle BaseBeans
+                	if (result==null) {
+                		System.out.println("result.class=null");
+                		preparedStatement.setInt(++index, 0);
+	                } else if (result instanceof BaseBean) {
+	                    System.out.println("result.class="+result.getClass().getSimpleName());
+	                	preparedStatement.setInt(++index, ((BaseBean)result).getId());
+	                }
+                } else if (classType.isInstance(Collection.class)) {
+                	// Handle Collections
+                	if (result==null) {
+                		System.out.println("result.class=null");
+                		preparedStatement.setObject(++index, null);
+	                } else {
+	                    System.out.println("result.class="+result.getClass().getSimpleName());
+	                    Collection c = (Collection) result;
+	                    String resString = "";
+	                    for (Object o : c) {
+	                    	if (resString.length()>0) {
+	                    		resString+=",";
+	                    	}
+	                    	if (o instanceof BaseBean) {
+	                    		resString += ((BaseBean)o).getId();
+	                    	} else {
+	                    		resString += o.toString();
+	                    	}
+	                    }
+	                	preparedStatement.setInt(++index, ((BaseBean)result).getId());
+	                }
                 } else {
-                    System.out.println("m="+m.getName() + " result.class=" + result.getClass().getSimpleName()+" result="+result);
-                    switch (result.getClass().getSimpleName()) {
-                        case "String":
-                            preparedStatement.setString(++index, (String) result);
-                            break;
-                        case "Integer":
-                        case "int":
-                            preparedStatement.setInt(++index, (Integer) result);
-                            break;
-                        case "Boolean":
-                            preparedStatement.setBoolean(++index, (Boolean) result);
-                            break;
-                        case "Date":
-                            preparedStatement.setString(++index, dft.format(result));
-                            break;
-                        case "Long":
-                            preparedStatement.setLong(++index, (Long) result);
-                            break;
-                        case "Short":
-                            preparedStatement.setShort(++index, (Short) result);
-                            break;
-                        case "Float":
-                            preparedStatement.setFloat(++index, (Float) result);
-                            break;
-                        case "Double":
-                            preparedStatement.setDouble(++index, (Double) result);
-                            break;
-                        case "BigDecimal":
-                            preparedStatement.setBigDecimal(++index, (BigDecimal) result);
-                            break;
-                        case "Blob":
-                            preparedStatement.setBlob(++index, (Blob) result);
-                            break;
-                        case "Clob":
-                            preparedStatement.setClob(++index, (Clob) result);
-                            break;
-                    }
+                	// Handle primitives
+                	if (result==null) {
+                		System.out.println("result.class=null");
+                		preparedStatement.setObject(++index, null);
+                	} else {
+                		System.out.println("result.class="+result.getClass().getSimpleName());
+                		switch (result.getClass().getSimpleName()) {
+	                        case "String":
+	                            preparedStatement.setString(++index, (String) result);
+	                            break;
+	                        case "Integer":
+	                        case "int":
+	                            preparedStatement.setInt(++index, (Integer) result);
+	                            break;
+	                        case "Boolean":
+	                            preparedStatement.setBoolean(++index, (Boolean) result);
+	                            break;
+	                        case "Date":
+	                            preparedStatement.setString(++index, dft.format(result));
+	                            break;
+	                        case "Long":
+	                            preparedStatement.setLong(++index, (Long) result);
+	                            break;
+	                        case "Short":
+	                            preparedStatement.setShort(++index, (Short) result);
+	                            break;
+	                        case "Float":
+	                            preparedStatement.setFloat(++index, (Float) result);
+	                            break;
+	                        case "Double":
+	                            preparedStatement.setDouble(++index, (Double) result);
+	                            break;
+	                        case "BigDecimal":
+	                            preparedStatement.setBigDecimal(++index, (BigDecimal) result);
+	                            break;
+	                        case "Blob":
+	                            preparedStatement.setBlob(++index, (Blob) result);
+	                            break;
+	                        case "Clob":
+	                            preparedStatement.setClob(++index, (Clob) result);
+	                            break;
+	                    }
+                	}
                 }
     		}
     	}
@@ -292,97 +363,6 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
     	return preparedStatement;
     }
     
-    public static Map<Method,Class> getPublicSetterMethods(Class<?> objectClass) {
-    	Method[] allMethods = objectClass.getDeclaredMethods();
-    	Map<Method,Class> setterMethods = new HashMap<Method,Class>();
-        if (objectClass.getSuperclass() != null) {
-            Class<?> superClass = objectClass.getSuperclass();
-            Map<Method,Class> superClassMethods = getPublicSetterMethods(superClass);
-            setterMethods.putAll(superClassMethods);
-        }
-    	for (Method method : allMethods) {
-    	    if (Modifier.isPublic(method.getModifiers()) && !Modifier.isAbstract(method.getModifiers())) {
-    	        if (method.getName().startsWith("set")) {
-    	        	Class[] params = method.getParameterTypes();
-    	        	if (params.length==1) {
-    	        		setterMethods.put(method,params[0]);
-    	        	}
-    	        }
-    	    }
-    	}
-    	return setterMethods;
-    }
-    
-    public static Map<Method,Class> getPublicGetterMethods(Class<?> objectClass) {
-    	Method[] allMethods = objectClass.getDeclaredMethods();
-    	Map<Method,Class> getterMethods = new HashMap<Method,Class>();
-        if (objectClass.getSuperclass() != null) {
-            Class<?> superClass = objectClass.getSuperclass();
-            Map<Method,Class> superClassMethods = getPublicGetterMethods(superClass);
-            getterMethods.putAll(superClassMethods);
-        }
-    	for (Method method : allMethods) {
-    	    if (Modifier.isPublic(method.getModifiers()) && !Modifier.isAbstract(method.getModifiers())) {
-    	        if (method.getName().startsWith("get")) {
-    	        	Class returnClass = method.getReturnType();
-    	        	getterMethods.put(method,returnClass);
-    	        }
-    	    }
-    	}
-    	return getterMethods;
-    }
-    
-    public static <U extends BaseBean> U getNewBean(Class<U> clazz) {
-    	try {
-    		return (U)clazz.newInstance();
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    	}
-    	return null;
-    }
-    
-    public static String getFieldName(String methodName) {
-    	String methodString = methodName.substring(3);
-    	return methodString.toLowerCase();
-    }
-    
-    public static String getFieldName(Method method) {
-    	String methodString = method.getName().substring(3);
-    	return methodString.toLowerCase();
-    }
-    
-
-    /**
-     * Creates the insert part of the SQL. e.g. (name,email,date) values (?,?,?)
-     */
-    public static String getInsertIntoColumnsSQL(List<String> columns) {
-        String names = "";
-        String params = "";
-        for (String column : columns) {
-            if (names.length()>0) {
-                names +=", ";
-                params +=", ";
-            }
-            names += column;
-            params += "?";
-        }
-        return "("+names+") values ("+params+")";
-    }
-
-    /**
-     * Create the update part of the SQL. e.g. name=?, email=?, date=?
-     */
-    public static String getUpdateColumnsSQL(List<String> columns) {
-        String sql = "";
-        for (String column : columns) {
-            if (sql.length()>0) {
-                sql +=", ";
-            }
-            sql += column+"=?";
-        }
-        return sql;
-    }
-
     public List<String> getExcludeForSaveGetMethods() {
         return excludeForSaveGetMethods;
     }

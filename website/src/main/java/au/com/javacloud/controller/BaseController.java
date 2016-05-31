@@ -1,10 +1,6 @@
 package au.com.javacloud.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,12 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import au.com.javacloud.dao.BaseDAO;
-import au.com.javacloud.dao.BaseDAOImpl;
 import au.com.javacloud.model.BaseBean;
-import au.com.javacloud.model.Page;
-import au.com.javacloud.model.Student;
-import au.com.javacloud.model.User;
 import au.com.javacloud.util.HttpUtil;
+import au.com.javacloud.util.ReflectUtil;
 
 /**
  * Created by david on 22/05/16.
@@ -29,23 +22,18 @@ public abstract class BaseController<T extends BaseBean> extends HttpServlet {
 	protected BaseDAO<T> dao;
     protected String beanName = "bean";
     protected String beansName = "beans";
+    protected String beanHeaders = beanName+"headers";
     protected String listUrl = "/";
 	protected String showUrl = "/";
     protected String insertOrEditUrl = "/";
 
-    static Map<String,BaseDAO> daoMap = new HashMap<String,BaseDAO>();
-    static {
-    	daoMap.put(Page.class.getSimpleName().toLowerCase(),new BaseDAOImpl<Page>(Page.class));
-    	daoMap.put(Student.class.getSimpleName().toLowerCase(),new BaseDAOImpl<Student>(Student.class));
-    	daoMap.put(User.class.getSimpleName().toLowerCase(),new BaseDAOImpl<User>(User.class));
-    }
-    
     public BaseController() {
         String className = getClass().getSimpleName();
         if (className.toLowerCase().endsWith("controller")) {
         	beanName = className.substring(0, className.length()-"controller".length()).toLowerCase();
-        	dao = daoMap.get(beanName);
+        	dao = ReflectUtil.getDaoMap().get(beanName);
         	beansName = beanName+"s";
+        	beanHeaders = beanName+"headers";
         	listUrl = "/jsp/"+beanName+"/list.jsp";
 			showUrl = "/jsp/"+beanName+"/show.jsp";
         	insertOrEditUrl = "/jsp/"+beanName+"/edit.jsp";
@@ -69,6 +57,7 @@ public abstract class BaseController<T extends BaseBean> extends HttpServlet {
         String baseUrl = HttpUtil.getBaseUrl(request);
 //        System.out.println("baseUrl="+baseUrl);
     	try {
+    		request.setAttribute(beanHeaders, dao.getBeanFieldNames() );
     		if (pathparts!=null && pathparts.length>0) {
 	            if (pathparts[0].equals("delete")) {
 					if (pathparts.length > 1) {
@@ -115,6 +104,7 @@ public abstract class BaseController<T extends BaseBean> extends HttpServlet {
 	            bean.setId( Integer.parseInt(id) );
 	            dao.saveOrUpdate(bean);
 	        }
+	        request.setAttribute(beanHeaders, dao.getBeanFieldNames() );
         	request.setAttribute(beansName, dao.getAll() );
 		} catch (Exception e) {
 			e.printStackTrace();
