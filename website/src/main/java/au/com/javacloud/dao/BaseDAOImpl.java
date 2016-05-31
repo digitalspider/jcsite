@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import au.com.javacloud.model.BaseBean;
 import au.com.javacloud.util.DBUtil;
@@ -27,12 +28,13 @@ import au.com.javacloud.util.DBUtil;
 /**
  * Created by david on 22/05/16.
  */
-public abstract class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
+public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 
     protected Connection conn;
     protected String tableName;
     protected Class<T> clazz;
     protected List<String> excludeForSaveGetMethods = new ArrayList<String>();
+    protected String orderBy;
 
     public BaseDAOImpl(Class<T> clazz) {
 		this.clazz = clazz;
@@ -142,10 +144,27 @@ public abstract class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
         return bean;
     }
     
+    @Override
+    public List<T> find(String field, String value) throws SQLException, IOException {
+    	List<T> results = new ArrayList<T>();
+    	// TODO: Implement!
+    	return results;
+    }
+    
 	@Override
     public String getTableName() {
     	return clazz.getSimpleName().toLowerCase();
     }
+	
+	@Override
+	public List<String> getBeanFieldNames() {
+		Set<Method> methods = BaseDAOImpl.getPublicGetterMethods(clazz).keySet();
+		List<String> beanFieldNames = new ArrayList<String>();
+		for (Method method : methods) {
+			beanFieldNames.add(getFieldName(method.getName()));
+		}
+		return beanFieldNames;
+	}
 
 	@Override
     public void populateBeanFromResultSet(T bean, ResultSet rs) throws SQLException, ParseException, InvocationTargetException, IllegalAccessException {
@@ -273,7 +292,7 @@ public abstract class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
     	return preparedStatement;
     }
     
-    protected Map<Method,Class> getPublicSetterMethods(Class<?> objectClass) {
+    public static Map<Method,Class> getPublicSetterMethods(Class<?> objectClass) {
     	Method[] allMethods = objectClass.getDeclaredMethods();
     	Map<Method,Class> setterMethods = new HashMap<Method,Class>();
         if (objectClass.getSuperclass() != null) {
@@ -294,7 +313,7 @@ public abstract class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
     	return setterMethods;
     }
     
-    protected Map<Method,Class> getPublicGetterMethods(Class<?> objectClass) {
+    public static Map<Method,Class> getPublicGetterMethods(Class<?> objectClass) {
     	Method[] allMethods = objectClass.getDeclaredMethods();
     	Map<Method,Class> getterMethods = new HashMap<Method,Class>();
         if (objectClass.getSuperclass() != null) {
@@ -356,4 +375,14 @@ public abstract class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
     public void setExcludeForSaveGetMethods(List<String> excludeForSaveGetMethods) {
         this.excludeForSaveGetMethods = excludeForSaveGetMethods;
     }
+
+    @Override
+	public String getOrderBy() {
+		return orderBy;
+	}
+
+    @Override
+    public void setOrderBy(String orderBy) {
+		this.orderBy = orderBy;
+	}
 }

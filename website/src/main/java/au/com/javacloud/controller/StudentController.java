@@ -10,14 +10,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import au.com.javacloud.dao.StudentDAOImpl;
+import au.com.javacloud.dao.BaseDAOImpl;
 import au.com.javacloud.model.Student;
 
 @WebServlet("/student/*")
 public class StudentController extends BaseController<Student> {
 
     public StudentController() {
-        super(new StudentDAOImpl());
+        super(new BaseDAOImpl<Student>(Student.class));
     }
 
     protected Student populateBean(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

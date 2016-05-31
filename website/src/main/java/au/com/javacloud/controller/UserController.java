@@ -11,14 +11,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import au.com.javacloud.dao.UserDAOImpl;
+import au.com.javacloud.dao.BaseDAOImpl;
 import au.com.javacloud.model.User;
 
 @WebServlet("/user/*")
 public class UserController extends BaseController<User> {
 
     public UserController() {
-        super(new UserDAOImpl());
+        super(new BaseDAOImpl<User>(User.class));
     }
 
     protected User populateBean(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

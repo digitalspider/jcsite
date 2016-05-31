@@ -19,10 +19,15 @@ public interface BaseDAO<T extends BaseBean> {
     public String getTableName();
     public void populateBeanFromResultSet(T bean, ResultSet rs) throws SQLException, ParseException, InvocationTargetException, IllegalAccessException;
     public PreparedStatement prepareStatementForSave(Connection conn, T bean) throws SQLException, InvocationTargetException, IllegalArgumentException, IllegalAccessException;
+    public List<String> getBeanFieldNames();
     
     public void saveOrUpdate(T bean) throws SQLException, IOException;
     public List<T> getAll() throws SQLException, IOException;
     public List<T> getLookup() throws SQLException, IOException;
     public T get(int id) throws SQLException, IOException;
     public void delete(int beanId) throws SQLException;
+    public List<T> find(String field, String value) throws SQLException, IOException;
+    
+    public void setOrderBy(String orderBy);
+    public String getOrderBy();
 }

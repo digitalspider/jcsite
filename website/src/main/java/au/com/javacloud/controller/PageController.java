@@ -1,11 +1,5 @@
 package au.com.javacloud.controller;
 
-/**
- * Created by david on 22/05/16.
- */
-
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -13,14 +7,20 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import au.com.javacloud.dao.PageDAOImpl;
+/**
+ * Created by david on 22/05/16.
+ */
+
+import org.apache.commons.lang3.StringUtils;
+
+import au.com.javacloud.dao.BaseDAOImpl;
 import au.com.javacloud.model.Page;
 
 @WebServlet("/page/*")
 public class PageController extends BaseController<Page> {
 
     public PageController() {
-        super(new PageDAOImpl());
+        super(new BaseDAOImpl<Page>(Page.class));
     }
 
     protected Page populateBean(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
