@@ -1,7 +1,14 @@
 package au.com.javacloud.controller;
 
+import static au.com.javacloud.util.Constants.dft;
+
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.sql.Blob;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,8 +19,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
+
 import au.com.javacloud.dao.BaseDAO;
 import au.com.javacloud.model.BaseBean;
+import au.com.javacloud.model.User;
 import au.com.javacloud.util.HttpUtil;
 import au.com.javacloud.util.ReflectUtil;
 
@@ -151,11 +161,88 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
     		String fieldName = ReflectUtil.getFieldName(method);
     		try {
     			String value = request.getParameter( fieldName );
-    			if (classType.getSimpleName().equals("int")) {
-    				method.invoke(bean, Integer.parseInt( value ) );
-    			} else {
-    				method.invoke(bean, value );
-    			}
+    			
+            	if (ReflectUtil.isBean(classType)) {
+            		// Handle BaseBeans
+                    if (StringUtils.isNumeric(value)) {
+                    	BaseDAO dao = ReflectUtil.getDaoMap().get(classType.getSimpleName().toLowerCase());
+                        if (dao!=null) {
+                            BaseBean valueBean = dao.get(Integer.parseInt(value));
+                            if (bean!=null) {
+                            	method.invoke(bean, valueBean);
+                            }
+                        }
+                    }
+            	} else if (classType.isInstance(new ArrayList<>())) { // FIXME
+            		// Handle Collections
+//            		BaseDAO dao = ReflectUtil.getDaoMap().get(classType.getSimpleName().toLowerCase());
+//            		String values = rs.getString(fieldName);
+//            		String[] valueArray = values.split(",");
+//            		List<BaseBean> beans = new ArrayList<BaseBean>();
+//            		Boolean numeric = null;
+//            		for (String value : valueArray) {
+//            			if (!StringUtils.isBlank(value)) {
+//            				if (StringUtils.isNumeric(value)) {
+//            					numeric = true;
+//    	        			} else {
+//    	        				numeric = false;
+//    	        				break;
+//    	        			}
+//            			}
+//            			if (numeric!=null) {
+//            				BaseBean bean2 = dao.get(Integer.parseInt(value));
+//                			if (beans!=null) {
+//                				beans.add(bean2);
+//                			}
+//            			}
+//            		}
+//            		if (numeric!=null) {
+//            			if (numeric) {
+//            				method.invoke(bean, beans);
+//            			} else {
+//            				List<String> strings = new ArrayList(Arrays.asList(valueArray));
+//            				method.invoke(bean, strings);
+//            			}
+//            		}
+            	} else {
+            		// Handle primitives
+	            	switch (classType.getSimpleName()) {
+	                    case "String":
+	                    	method.invoke(bean, value );
+	                        break;
+	                    case "Integer":
+	                    case "int":
+	                    	method.invoke(bean, Integer.parseInt( value ) );
+	                        break;
+	                    case "Boolean":
+	                    	method.invoke(bean, Boolean.parseBoolean( value ) );
+	                        break;
+	                    case "Date":
+	                    	method.invoke(bean, Date.parse( value ) );
+	                        break;
+	                    case "Long":
+	                    	method.invoke(bean, Long.parseLong( value ) );
+	                        break;
+	                    case "Short":
+	                    	method.invoke(bean, Short.parseShort( value ) );
+	                        break;
+	                    case "Float":
+	                    	method.invoke(bean, Float.parseFloat( value ) );
+	                        break;
+	                    case "Double":
+	                    	method.invoke(bean, Double.parseDouble( value ) );
+	                        break;
+	                    case "BigDecimal":
+	                    	method.invoke(bean, new BigDecimal( value ) );
+	                        break;
+	                    case "Blob":
+	                    	// method.invoke(bean, Blob.parseInt( value ) );
+	                        break;
+	                    case "Clob":
+	                    	// method.invoke(bean, Integer.parseInt( value ) );
+	                        break;
+	            	}
+            	}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
