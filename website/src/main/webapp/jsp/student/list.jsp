@@ -24,15 +24,15 @@
                 </tr>
             </thead>
             <tbody>
-                <c:forEach items="${students}" var="student">
+                <c:forEach items="${beans}" var="bean">
                     <tr>
-                        <td><a href="<%=request.getContextPath()%>/student/show/<c:out value='${student.id}'/>"><c:out value="${student.id}"/></td>
-                        <td><c:out value="${student.firstName}" escapeXml="false"/></td>
-                        <td><c:out value="${student.lastName}" escapeXml="false"/></td>
-                        <td><c:out value="${student.course}" escapeXml="false"/></td>
-                        <td><c:out value="${student.year}" escapeXml="false"/></td>
-                        <td><a href="<%=request.getContextPath()%>/student/edit/<c:out value='${student.id}'/>">Update</a></td>
-                        <td><a href="<%=request.getContextPath()%>/student/delete/<c:out value='${student.id}'/>">Delete</a></td>
+                        <td><a href="<%=request.getContextPath()%>/student/show/<c:out value='${bean.id}'/>"><c:out value="${bean.id}"/></td>
+                        <td><c:out value="${bean.firstName}" escapeXml="false"/></td>
+                        <td><c:out value="${bean.lastName}" escapeXml="false"/></td>
+                        <td><c:out value="${bean.course}" escapeXml="false"/></td>
+                        <td><c:out value="${bean.year}" escapeXml="false"/></td>
+                        <td><a href="<%=request.getContextPath()%>/student/edit/<c:out value='${bean.id}'/>">Update</a></td>
+                        <td><a href="<%=request.getContextPath()%>/student/delete/<c:out value='${bean.id}'/>">Delete</a></td>
                     </tr>
                 </c:forEach>
             </tbody>

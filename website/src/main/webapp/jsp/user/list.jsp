@@ -29,20 +29,20 @@
                 </tr>
             </thead>
             <tbody>
-                <c:forEach items="${users}" var="user">
+                <c:forEach items="${beans}" var="bean">
                     <tr>
-                        <td><a href="<%=request.getContextPath()%>/user/show/<c:out value='${user.id}'/>"><c:out value="${user.id}" escapeXml="false"/></a></td>
-                        <td><c:out value="${user.firstname}"/></td>
-                        <td><c:out value="${user.lastname}"/></td>
-                        <td><c:out value="${user.email}"/></td>
-                        <td><c:out value="${user.username}"/></td>
-                        <td><c:out value="${user.url}"/></td>
-                        <td><c:out value="${user.mobile}"/></td>
-                        <td><c:out value="${user.type}" /></td>
-                        <td><c:out value="${user.tags}" /></td>
-                        <td><c:out value="${user.status}" /></td>
-                        <td><a href="<%=request.getContextPath()%>/user/edit/<c:out value='${user.id}' />">Update</a></td>
-                        <td><a href="<%=request.getContextPath()%>/user/delete/<c:out value='${user.id}'/>">Delete</a></td>
+                        <td><a href="<%=request.getContextPath()%>/user/show/<c:out value='${bean.id}'/>"><c:out value="${bean.id}" escapeXml="false"/></a></td>
+                        <td><c:out value="${bean.firstname}"/></td>
+                        <td><c:out value="${bean.lastname}"/></td>
+                        <td><c:out value="${bean.email}"/></td>
+                        <td><c:out value="${bean.username}"/></td>
+                        <td><c:out value="${bean.url}"/></td>
+                        <td><c:out value="${bean.mobile}"/></td>
+                        <td><c:out value="${bean.type}" /></td>
+                        <td><c:out value="${bean.tags}" /></td>
+                        <td><c:out value="${bean.status}" /></td>
+                        <td><a href="<%=request.getContextPath()%>/user/edit/<c:out value='${bean.id}' />">Update</a></td>
+                        <td><a href="<%=request.getContextPath()%>/user/delete/<c:out value='${bean.id}'/>">Delete</a></td>
                     </tr>
                 </c:forEach>
             </tbody>

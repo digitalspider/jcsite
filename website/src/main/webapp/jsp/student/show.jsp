@@ -9,25 +9,27 @@
 </head>
 <body>
     <a href="<%=request.getContextPath()%>/student/list">List</a>
+    &nbsp;|&nbsp;
+    <a href="<%=request.getContextPath()%>/student/edit/<c:out value="${bean.id}" />">Edit</a>
     <div>
         <label for="id">Student ID</label>
-        <div><c:out value="${student.id}" /></div>
+        <div><c:out value="${bean.id}" /></div>
     </div>
     <div>
         <label for="firstName">First Name</label>
-        <div><c:out value="${student.firstName}" /></div>
+        <div><c:out value="${bean.firstName}" /></div>
     </div>
     <div>
         <label for="lastName">Last Name</label>
-        <div><c:out value="${student.lastName}" /></div>
+        <div><c:out value="${bean.lastName}" /></div>
     </div>
     <div>
         <label for="course">Course</label>
-        <div><c:out value="${student.course}" /></div>
+        <div><c:out value="${bean.course}" /></div>
     </div>
     <div>
         <label for="year">Year</label>
-        <div><c:out value="${student.year}" /></div>
+        <div><c:out value="${bean.year}" /></div>
     </div>
 </body>
 </html>

@@ -104,12 +104,10 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
             resultSet = statement.executeQuery( query );
             while( resultSet.next() ) {
                 bean = ReflectUtil.getNewBean(clazz);
-                bean.setId( resultSet.getInt( "id" ) );
+                bean.setId( resultSet.getInt( BaseBean.FIELD_ID ) );
                 bean.setDisplayValue( resultSet.getString( columnName ) );
                 beans.add(bean);
             }
-            resultSet.close();
-            statement.close();
         } finally {
             if (resultSet!=null) resultSet.close();
             if (statement!=null) statement.close();
@@ -131,7 +129,7 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
             statement.setInt(1, id);
             resultSet = statement.executeQuery();
             if( resultSet.next() ) {
-                bean.setId( resultSet.getInt( "id" ) );
+                bean.setId( resultSet.getInt( BaseBean.FIELD_ID ) );
                 populateBeanFromResultSet(bean, resultSet);
             }
         } finally {
@@ -142,9 +140,28 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
     }
     
     @Override
-    public List<T> find(String field, String value) throws SQLException, IOException {
+    public List<T> find(String field, String value) throws Exception {
     	List<T> results = new ArrayList<T>();
-    	// TODO: Implement!
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            String query = "select * from "+tableName+" where "+field+" like ?";
+            if (!StringUtils.isBlank(orderBy)) {
+                query += " order by "+orderBy;
+            }
+            statement = conn.prepareStatement( query );
+            statement.setString(1, "%"+value+"%");
+            resultSet = statement.executeQuery();
+            while( resultSet.next() ) {
+                T bean = ReflectUtil.getNewBean(clazz);
+                bean.setId( resultSet.getInt( BaseBean.FIELD_ID ) );
+                populateBeanFromResultSet(bean, resultSet);
+                results.add(bean);
+            }
+        } finally {
+            if (resultSet!=null) resultSet.close();
+            if (statement!=null) statement.close();
+        }
     	return results;
     }
     

@@ -22,6 +22,10 @@ public interface BaseController<T extends BaseBean> {
     public void update(String id, HttpServletRequest request, HttpServletResponse response) throws Exception;
     
     public void delete(HttpServletRequest request, HttpServletResponse response) throws Exception;
+
+    public void find(HttpServletRequest request, HttpServletResponse response) throws Exception;
+
+    public void order(HttpServletRequest request, HttpServletResponse response) throws Exception;
     
     public T populateBean(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
 

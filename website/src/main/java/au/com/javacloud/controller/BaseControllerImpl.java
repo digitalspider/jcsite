@@ -1,17 +1,9 @@
 package au.com.javacloud.controller;
 
-import static au.com.javacloud.util.Constants.dft;
-
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.math.BigDecimal;
-import java.sql.Blob;
-import java.sql.Clob;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,11 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 
 import au.com.javacloud.dao.BaseDAO;
 import au.com.javacloud.model.BaseBean;
-import au.com.javacloud.model.User;
 import au.com.javacloud.util.HttpUtil;
 import au.com.javacloud.util.ReflectUtil;
 
@@ -60,13 +50,17 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 		super();
 		this.clazz = clazz;
     	dao = ReflectUtil.getDaoMap().get(clazz);
-    	setBeanName(clazz.getSimpleName().toLowerCase());
+		updateUrls(clazz.getSimpleName().toLowerCase());
     }
-    
-    protected void updateUrls() {
-    	this.listUrl = DEFAULT_JSPPAGE_PREFIX+beanName+DEFAULT_LIST_PAGE;
-    	this.showUrl = DEFAULT_JSPPAGE_PREFIX+beanName+DEFAULT_SHOW_PAGE;
-    	this.insertOrEditUrl = DEFAULT_JSPPAGE_PREFIX+beanName+DEFAULT_EDIT_PAGE;    	
+
+	protected void updateUrls(String contextName) {
+		updateUrls(DEFAULT_JSPPAGE_PREFIX,contextName);
+	}
+
+    protected void updateUrls(String prefix, String contextName) {
+    	this.listUrl = prefix+contextName+DEFAULT_LIST_PAGE;
+    	this.showUrl = prefix+contextName+DEFAULT_SHOW_PAGE;
+    	this.insertOrEditUrl = prefix+contextName+DEFAULT_EDIT_PAGE;
     }
     
     public BaseControllerImpl(BaseDAO<T> dao, String beanName, String beansName, String listUrl, String showUrl, String insertOrEditUrl) {
@@ -112,15 +106,23 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
     		if (pathParts!=null && pathParts.length>0) {
 	            if (pathParts[0].equals("delete")) {
 	            	delete(request, response);
-				} else if (pathParts[0].equals("show")) {
-					read(request, response);
-					forward = showUrl;
 	            } else if (pathParts[0].equals("edit")) {
 	            	read(request, response);
 	            	forward = insertOrEditUrl;
+				} else if (pathParts[0].equals("show")) {
+					read(request, response);
+					forward = showUrl;
+				} else if (StringUtils.isNumeric(pathParts[0])) {
+					read(request, response);
+					forward = showUrl;
 	            } else if (pathParts[0].equals("insert")) {
-	                forward = insertOrEditUrl;
-	            }
+					forward = insertOrEditUrl;
+				} else if (pathParts[0].equals("find")) {
+					find(request, response);
+					forward = listUrl;
+				} else if (pathParts[0].equals("order")) {
+					order(request, response);
+				}
     		}
 	        if (forward==null) {
 	            forward = listUrl;
@@ -196,10 +198,16 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
     
     @Override
     public void read(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		if (pathParts.length>1) {
-			int id = Integer.parseInt(pathParts[1]);
+		String idValue = null;
+		if (StringUtils.isNumeric(pathParts[0])) {
+			idValue = pathParts[0];
+		} else if (pathParts.length>1 && StringUtils.isNumeric(pathParts[1])) {
+			idValue = pathParts[1];
+		}
+		if (idValue!=null) {
+			int id = Integer.parseInt(idValue);
 			request.setAttribute(beanName, dao.get(id));
-		}    	
+		}
     }
     
     @Override
@@ -217,6 +225,30 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 		}
     }
 
+	@Override
+	public void find(HttpServletRequest request, HttpServletResponse response)  throws Exception {
+		if (pathParts.length > 2) {
+			String field = pathParts[1];
+			String value = pathParts[2];
+			request.setAttribute(beanName+BEANS_SUFFIX, dao.find(field,value) );
+		}
+	}
+
+	@Override
+	public void order(HttpServletRequest request, HttpServletResponse response)  throws Exception {
+		dao.setOrderBy("");
+		if (pathParts.length > 1) {
+			String field = pathParts[1];
+			dao.setOrderBy(field);
+			if (pathParts.length > 2) {
+				String direction = pathParts[2];
+				if (direction.equalsIgnoreCase("ASC") || direction.equalsIgnoreCase("DESC")) {
+					dao.setOrderBy(field+" "+direction);
+				}
+			}
+		}
+	}
+
 	public BaseDAO<T> getDao() {
 		return dao;
 	}
@@ -233,8 +265,6 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 	@Override
 	public void setBeanName(String beanName) {
 		this.beanName = beanName;
-		updateUrls();
-		
 	}
 
 	@Override

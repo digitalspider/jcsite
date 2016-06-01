@@ -233,22 +233,23 @@ public class ReflectUtil {
 	}
 
 	public static <T extends BaseBean> void invokeSetterMethodForPrimitive(T bean, Method method, Class classType, String value, DateFormat dateFormat) throws Exception {
+//		System.out.println("set bean="+bean+" m="+ method.getName()+" class="+classType+" value="+value);
 		if (!StringUtils.isBlank(value)) {
 			if (classType.equals(String.class)) {
 				method.invoke(bean, value);
-			} else if (classType.equals(int.class) && classType.equals(Integer.class)) {
+			} else if (classType.equals(int.class) || classType.equals(Integer.class)) {
 				method.invoke(bean, Integer.parseInt(value));
-			} else if (classType.equals(boolean.class) && classType.equals(Boolean.class)) {
+			} else if (classType.equals(boolean.class) || classType.equals(Boolean.class)) {
 				method.invoke(bean, Boolean.parseBoolean(value));
 			} else if (classType.equals(Date.class)) {
 				method.invoke(bean, dateFormat.parse(value));
-			} else if (classType.equals(long.class) && classType.equals(Long.class)) {
+			} else if (classType.equals(long.class) || classType.equals(Long.class)) {
 				method.invoke(bean, Long.parseLong(value));
-			} else if (classType.equals(short.class) && classType.equals(Short.class)) {
+			} else if (classType.equals(short.class) || classType.equals(Short.class)) {
 				method.invoke(bean, Short.parseShort(value));
-			} else if (classType.equals(float.class) && classType.equals(Float.class)) {
+			} else if (classType.equals(float.class) || classType.equals(Float.class)) {
 				method.invoke(bean, Float.parseFloat(value));
-			} else if (classType.equals(double.class) && classType.equals(Double.class)) {
+			} else if (classType.equals(double.class) || classType.equals(Double.class)) {
 				method.invoke(bean, Double.parseDouble(value));
 			} else if (classType.equals(BigDecimal.class)) {
 				method.invoke(bean, new BigDecimal(value));

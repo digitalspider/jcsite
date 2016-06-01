@@ -29,20 +29,20 @@
                 </tr>
             </thead>
             <tbody>
-                <c:forEach items="${pages}" var="page">
+                <c:forEach items="${beans}" var="bean">
                     <tr>
-                        <td><a href="<%=request.getContextPath()%>/page/show/<c:out value='${page.id}'/>"><c:out value="${page.id}" /></a></td>
-                        <td><c:out value="${page.title}" escapeXml="false"/></td>
-                        <td><c:out value="${page.description}" escapeXml="false"/></td>
-                        <td><c:out value="${page.content}" escapeXml="false"/></td>
-                        <td><c:out value="${page.url}" escapeXml="false"/></td>
-                        <td><c:out value="${page.type}" /></td>
-                        <td><c:out value="${page.tags}" /></td>
-                        <td><c:out value="${page.status}" /></td>
-                        <td><a href="<%=request.getContextPath()%>/user/show/<c:out value='${page.authorId.id}'/>"><c:out value="${page.authorId.id}" /> - <c:out value="${page.authorId.displayValue}" /></a></td>
-                        <td><a href="<%=request.getContextPath()%>/page/show/<c:out value='${page.parentId.id}'/>"><c:out value="${page.parentId.id}" /> - <c:out value="${page.parentId.displayValue}" /></a></td>
-                        <td><a href="<%=request.getContextPath()%>/page/edit/<c:out value='${page.id}'/>">Update</a></td>
-                        <td><a href="<%=request.getContextPath()%>/page/delete/<c:out value='${page.id}'/>">Delete</a></td>
+                        <td><a href="<%=request.getContextPath()%>/page/show/<c:out value='${bean.id}'/>"><c:out value="${bean.id}" /></a></td>
+                        <td><c:out value="${bean.title}" escapeXml="false"/></td>
+                        <td><c:out value="${bean.description}" escapeXml="false"/></td>
+                        <td><c:out value="${bean.content}" escapeXml="false"/></td>
+                        <td><c:out value="${bean.url}" escapeXml="false"/></td>
+                        <td><c:out value="${bean.type}" /></td>
+                        <td><c:out value="${bean.tags}" /></td>
+                        <td><c:out value="${bean.status}" /></td>
+                        <td><a href="<%=request.getContextPath()%>/user/show/<c:out value='${bean.authorId.id}'/>"><c:out value="${bean.authorId.id}" /> - <c:out value="${bean.authorId.displayValue}" /></a></td>
+                        <td><a href="<%=request.getContextPath()%>/page/show/<c:out value='${bean.parentId.id}'/>"><c:out value="${bean.parentId.id}" /> - <c:out value="${bean.parentId.displayValue}" /></a></td>
+                        <td><a href="<%=request.getContextPath()%>/page/edit/<c:out value='${bean.id}'/>">Update</a></td>
+                        <td><a href="<%=request.getContextPath()%>/page/delete/<c:out value='${bean.id}'/>">Delete</a></td>
                     </tr>
                 </c:forEach>
             </tbody>
