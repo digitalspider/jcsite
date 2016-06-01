@@ -12,16 +12,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import au.com.javacloud.controller.BaseController;
+import au.com.javacloud.controller.BaseControllerImpl;
 import au.com.javacloud.dao.BaseDAO;
 import au.com.javacloud.dao.BaseDAOImpl;
 import au.com.javacloud.model.BaseBean;
-import au.com.javacloud.model.Page;
-import au.com.javacloud.model.Student;
-import au.com.javacloud.model.User;
 
 public class ReflectUtil {
 
-    private static Map<String,BaseDAO> daoMap = new HashMap<String,BaseDAO>();
+    private static Map<Class,BaseDAO> daoMap = new HashMap<Class,BaseDAO>();
+    private static Map<Class,BaseController> controllerMap = new HashMap<Class,BaseController>();
     static {
 //        Reflections reflections = new Reflections("au.com.javacloud.model");
 //        Set<Class<? extends BaseBean>> beanClasses =  reflections.getSubTypesOf(BaseBean.class);
@@ -30,25 +30,32 @@ public class ReflectUtil {
 			List<Class> beanClasses = getClasses("au.com.javacloud.model");
 			for (Class classType : beanClasses) {
 				if (!classType.getSimpleName().equals("BaseBean")) {
-					daoMap.put(classType.getSimpleName().toLowerCase(), new BaseDAOImpl<>(classType));
+					daoMap.put(classType, new BaseDAOImpl<>(classType));
+					controllerMap.put(classType, new BaseControllerImpl<>(classType));
 				}
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 
-//    	daoMap.put(Page.class.getSimpleName().toLowerCase(),new BaseDAOImpl<Page>(Page.class));
-//    	daoMap.put(Student.class.getSimpleName().toLowerCase(),new BaseDAOImpl<Student>(Student.class));
-//    	daoMap.put(User.class.getSimpleName().toLowerCase(),new BaseDAOImpl<User>(User.class));
+//    	daoMap.put(Page.class,new BaseDAOImpl<Page>(Page.class));
+//    	daoMap.put(Student.class,new BaseDAOImpl<Student>(Student.class));
+//    	daoMap.put(User.class,new BaseDAOImpl<User>(User.class));
     }
     
-    public static Map<String,BaseDAO> getDaoMap() {
+    public static Map<Class,BaseDAO> getDaoMap() {
     	return daoMap;
+    }
+    
+    public static Map<Class,BaseController> getControllerMap() {
+    	return controllerMap;
     }
 
     public static boolean isBean(Class clazz) {
         if (BaseBean.class.isAssignableFrom(clazz)) {
-            return true;
+        	if (clazz!=BaseBean.class) {
+        		return true;
+        	}
         }
         return false;
     }

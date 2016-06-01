@@ -42,7 +42,7 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 		this.clazz = clazz;
         conn = DBUtil.getConnection();
         tableName= getTableName();
-        excludeForSaveGetMethods.addAll(Arrays.asList(new String[] {"id", "name", "namecolumn"}));
+        //excludeForSaveGetMethods.addAll(Arrays.asList(new String[] {"id", "namecolumn", "displayValue"}));
     }
 
     @Override
@@ -109,7 +109,7 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
             while( resultSet.next() ) {
                 bean = ReflectUtil.getNewBean(clazz);
                 bean.setId( resultSet.getInt( "id" ) );
-                bean.setName( resultSet.getString( columnName ) );
+                bean.setDisplayValue( resultSet.getString( columnName ) );
                 beans.add(bean);
             }
             resultSet.close();
@@ -174,10 +174,17 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 	@Override
     public void populateBeanFromResultSet(T bean, ResultSet rs) throws SQLException, ParseException, InvocationTargetException, IllegalAccessException, IOException {
     	Map<Method,Class> methods = ReflectUtil.getPublicSetterMethods(clazz);
+    	String columnName = bean.getNameColumn();
     	for (Method method : methods.keySet()) {
     		Class classType = methods.get(method);
 //            System.out.println("m="+m+" paramClass.getSimpleName()="+paramClass.getSimpleName());
         	String fieldName = ReflectUtil.getFieldName(method);
+        	
+        	// populate the display value
+        	if (fieldName.equals(columnName)) {
+        		bean.setDisplayValue(rs.getString(fieldName));
+        	}
+
         	if (ReflectUtil.isBean(classType)) {
         		// Handle BaseBeans
         		BaseDAO dao = ReflectUtil.getDaoMap().get(classType.getSimpleName().toLowerCase());
@@ -254,7 +261,7 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 	                        break;
 	                }
 	            } catch (SQLException e) {
-	                if (!fieldName.equals("name")) { // ignore "name", as this is custom to BaseBean
+	                if (!fieldName.equals("displayvalue")) { // ignore "displayvalue", as this is custom to BaseBean
 	                    throw e;
 	                }
 	            }

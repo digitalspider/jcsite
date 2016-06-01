@@ -14,15 +14,19 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 
 import au.com.javacloud.dao.BaseDAO;
-import au.com.javacloud.dao.BaseDAOImpl;
 import au.com.javacloud.model.Page;
 import au.com.javacloud.model.User;
 import au.com.javacloud.util.ReflectUtil;
 
 @WebServlet("/page/*")
-public class PageController extends BaseController<Page> {
+public class PageController extends BaseControllerImpl<Page> {
 
-    protected Page populateBean(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public PageController() {
+		super(Page.class);
+	}
+
+    @Override
+	public Page populateBean(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Page page = new Page();
         page.setTitle( request.getParameter( "title" ) );
         page.setDescription( request.getParameter( "description" ) );

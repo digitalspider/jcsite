@@ -2,19 +2,12 @@ package au.com.javacloud.util;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.Properties;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
@@ -26,32 +19,19 @@ public class HttpUtil
     private static final Logger log = Logger.getLogger(HttpUtil.class);
 
     public static String[] getPathParts(HttpServletRequest req) {
-        String path1 = req.getServletPath(); // /gpio
-        String path2 = req.getContextPath(); // null
-        String path3 = req.getPathInfo(); // /4/direction
-        String path4 = req.getQueryString(); // q=test&p2=4
-        String path5 = req.getServerName(); // vittor-desktop
-        String path6 = req.getProtocol(); // http
-        String uri = req.getRequestURI(); // /gpio/4/direction
-        String url = req.getRequestURL().toString(); // http://vittor-desktop:8111/gpio/4/direction
+        String pathInfo = req.getPathInfo();
 
-        if (path3!=null) {
-            return path3.substring(1).split("/");
+        if (pathInfo!=null) {
+            return pathInfo.substring(1).split("/");
         }
         return new String[0];
     }
 
 
     public static String getBaseUrl(HttpServletRequest request) {
-//		System.out.println("request="+request);
-		System.out.println("request.getPathInfo()="+request.getPathInfo());
-//		System.out.println("request.getServletPath()="+request.getServletPath());
-//		System.out.println("request.getQueryString()="+request.getQueryString());
-//		System.out.println("request.getRequestURL()="+request.getRequestURL());
         String url = request.getRequestURL().toString();
         String baseUrl = url.substring(0, url.indexOf("/",9));
         baseUrl = baseUrl + request.getServletPath();
-//		System.out.println("baseUrl="+baseUrl);
         return baseUrl;
     }
 

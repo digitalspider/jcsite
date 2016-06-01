@@ -6,14 +6,16 @@ package au.com.javacloud.model;
 
 public abstract class BaseBean {
     protected int id;
-    protected String name;
+    protected String displayValue;
 
     @Override
     public String toString() {
-        return getClass().getSimpleName()+"["+id+"] name="+name;
+        return getClass().getSimpleName()+"["+id+"] displayValue="+displayValue;
     }
 
-    public abstract String getNameColumn();
+    public String getNameColumn() {
+    	return "id";
+    }
 
     public int getId() {
         return id;
@@ -23,12 +25,12 @@ public abstract class BaseBean {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getDisplayValue() {
+        return displayValue;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDisplayValue(String displayValue) {
+        this.displayValue = displayValue;
     }
 
 }

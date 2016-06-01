@@ -51,7 +51,7 @@
                     <c:forEach items='${lookupMap.get("authorid")}' var="authorBean">
                        <option value='<c:out value="${authorBean.id}"/>'
                             <c:if test="${page.authorId.id == authorBean.id}">selected="true"</c:if>
-                       ><c:out value="${authorBean.id}"/> - <c:out value="${authorBean.name}"/></option>
+                       ><c:out value="${authorBean.id}"/> - <c:out value="${authorBean.displayValue}"/></option>
                     </c:forEach>
 				</select>
 			</div>
