@@ -48,7 +48,7 @@
 				<label for="authorId">Author Id</label>
 				<select name="authorId">
 				    <option value="">Select Author Id...</option>
-                    <c:forEach items='${lookupMap.get("authorid")}' var="authorBean">
+                    <c:forEach items='${lookupMap.get("authorId")}' var="authorBean">
                        <option value='<c:out value="${authorBean.id}"/>'
                             <c:if test="${page.authorId.id == authorBean.id}">selected="true"</c:if>
                        ><c:out value="${authorBean.id}"/> - <c:out value="${authorBean.displayValue}"/></option>
@@ -59,10 +59,10 @@
 				<label for="parentId">Parent Id</label>
 				<select name="parentId">
 				    <option value="">Select Parent Id...</option>
-                    <c:forEach items='${lookupMap.get("parentid")}' var="parentBean">
+                    <c:forEach items='${lookupMap.get("parentId")}' var="parentBean">
                        <option value='<c:out value="${parentBean.id}"/>'
                             <c:if test="${page.parentId.id == parentBean.id}">selected="true"</c:if>
-                       ><c:out value="${parentBean.id}"/> - <c:out value="${parentBean.name}"/></option>
+                       ><c:out value="${parentBean.id}"/> - <c:out value="${parentBean.displayValue}"/></option>
                     </c:forEach>
 				</select>
 			</div>

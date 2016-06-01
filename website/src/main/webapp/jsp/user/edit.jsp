@@ -17,13 +17,13 @@
 					readonly="readonly" placeholder="User ID" />
 			</div>
 			<div>
-				<label for="firstName">First Name</label>
-				<input type="text" name="firstName" value="<c:out value="${user.firstname}" />"
+				<label for="firstname">First Name</label>
+				<input type="text" name="firstname" value="<c:out value="${user.firstname}" />"
 					placeholder="First Name" />
 			</div>
 			<div>
-				<label for="lastName">Last Name</label>
-				<input type="text" name="lastName" value="<c:out value="${user.lastname}" />"
+				<label for="lastname">Last Name</label>
+				<input type="text" name="lastname" value="<c:out value="${user.lastname}" />"
 					placeholder="Last Name" />
 			</div>
 			<div>

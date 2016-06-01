@@ -1,6 +1,7 @@
 package au.com.javacloud.controller;
 
 import java.io.IOException;
+import java.text.DateFormat;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,12 +25,15 @@ public interface BaseController<T extends BaseBean> {
     
     public T populateBean(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
 
+    public Class<T> getBeanClass();
+
     public String getBeanName();
     public void setBeanName(String name);
-    
-    public Class<T> getBeanClass();
-    
+
 	public BaseDAO<T> getDao();
 	public void setDao(BaseDAO<T> dao);
+
+    public DateFormat getDateFormat();
+    public void setDateFormat(DateFormat dateFormat);
 
 }

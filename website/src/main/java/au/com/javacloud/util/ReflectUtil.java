@@ -1,11 +1,20 @@
 package au.com.javacloud.util;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.math.BigDecimal;
 import java.net.URL;
+import java.sql.Blob;
+import java.sql.Clob;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -23,14 +32,11 @@ public class ReflectUtil {
     private static Map<Class,BaseDAO> daoMap = new HashMap<Class,BaseDAO>();
     private static Map<Class,BaseController> controllerMap = new HashMap<Class,BaseController>();
     static {
-//        Reflections reflections = new Reflections("au.com.javacloud.model");
-//        Set<Class<? extends BaseBean>> beanClasses =  reflections.getSubTypesOf(BaseBean.class);
-//
 		try {
 			List<Class> beanClasses = getClasses("au.com.javacloud.model");
 			for (Class classType : beanClasses) {
 				if (!classType.getSimpleName().equals("BaseBean")) {
-					daoMap.put(classType, new BaseDAOImpl<>(classType));
+					daoMap.put(classType, new BaseDAOImpl<>(classType, DBUtil.getConnection()));
 					controllerMap.put(classType, new BaseControllerImpl<>(classType));
 				}
 			}
@@ -38,9 +44,6 @@ public class ReflectUtil {
 			e.printStackTrace();
 		}
 
-//    	daoMap.put(Page.class,new BaseDAOImpl<Page>(Page.class));
-//    	daoMap.put(Student.class,new BaseDAOImpl<Student>(Student.class));
-//    	daoMap.put(User.class,new BaseDAOImpl<User>(User.class));
     }
     
     public static Map<Class,BaseDAO> getDaoMap() {
@@ -53,12 +56,17 @@ public class ReflectUtil {
 
     public static boolean isBean(Class clazz) {
         if (BaseBean.class.isAssignableFrom(clazz)) {
-        	if (clazz!=BaseBean.class) {
-        		return true;
-        	}
+        	return true;
         }
         return false;
     }
+
+	public static boolean isCollection(Class clazz) {
+		if (Collection.class.isAssignableFrom(clazz)) {
+			return true;
+		}
+		return false;
+	}
 
     public static Map<Method,Class> getPublicSetterMethods(Class<?> objectClass) {
     	Method[] allMethods = objectClass.getDeclaredMethods();
@@ -128,12 +136,11 @@ public class ReflectUtil {
     
     public static String getFieldName(String methodName) {
     	String methodString = methodName.substring(3);
-    	return methodString.toLowerCase();
+    	return methodString.substring(0,1).toLowerCase()+methodString.substring(1);
     }
     
     public static String getFieldName(Method method) {
-    	String methodString = method.getName().substring(3);
-    	return methodString.toLowerCase();
+		return getFieldName(method.getName());
     }
 
 	/**
@@ -187,5 +194,69 @@ public class ReflectUtil {
 			}
 		}
 		return classes;
+	}
+
+	public static <T extends BaseBean> void invokeSetterMethodForBeanType(T bean, Method method, Class classType, int id) throws Exception {
+		if (ReflectUtil.isBean(classType)) {
+			BaseDAO fieldDao = ReflectUtil.getDaoMap().get(classType);
+			if (fieldDao != null) {
+				if (!(bean.getClass().equals(classType) && bean.getId()==id)) { // prevent infinite recurssion
+					BaseBean valueBean = fieldDao.get(id);
+					if (valueBean != null) {
+						method.invoke(bean, valueBean);
+					}
+				}
+			}
+		}
+	}
+
+	public static <T extends BaseBean> void invokeSetterMethodForCollection(T bean, Method method, Class classType, String value) throws Exception {
+		if (ReflectUtil.isCollection(classType)) {
+			String[] valueArray = value.split(",");
+			BaseDAO fieldDao = ReflectUtil.getDaoMap().get(classType);
+			if (fieldDao!=null && valueArray.length>0 && StringUtils.isNumeric(valueArray[0])) {
+				List<BaseBean> beans = new ArrayList<BaseBean>();
+				for (String valueString : valueArray) {
+					if (!StringUtils.isBlank(valueString)) {
+						BaseBean valueBean = fieldDao.get(Integer.parseInt(valueString));
+						if (valueBean != null) {
+							beans.add(valueBean);
+						}
+					}
+				}
+				method.invoke(bean, beans);
+			} else {
+				List<String> strings = new ArrayList(Arrays.asList(valueArray));
+				method.invoke(bean, strings);
+			}
+		}
+	}
+
+	public static <T extends BaseBean> void invokeSetterMethodForPrimitive(T bean, Method method, Class classType, String value, DateFormat dateFormat) throws Exception {
+		if (!StringUtils.isBlank(value)) {
+			if (classType.equals(String.class)) {
+				method.invoke(bean, value);
+			} else if (classType.equals(int.class) && classType.equals(Integer.class)) {
+				method.invoke(bean, Integer.parseInt(value));
+			} else if (classType.equals(boolean.class) && classType.equals(Boolean.class)) {
+				method.invoke(bean, Boolean.parseBoolean(value));
+			} else if (classType.equals(Date.class)) {
+				method.invoke(bean, dateFormat.parse(value));
+			} else if (classType.equals(long.class) && classType.equals(Long.class)) {
+				method.invoke(bean, Long.parseLong(value));
+			} else if (classType.equals(short.class) && classType.equals(Short.class)) {
+				method.invoke(bean, Short.parseShort(value));
+			} else if (classType.equals(float.class) && classType.equals(Float.class)) {
+				method.invoke(bean, Float.parseFloat(value));
+			} else if (classType.equals(double.class) && classType.equals(Double.class)) {
+				method.invoke(bean, Double.parseDouble(value));
+			} else if (classType.equals(BigDecimal.class)) {
+				method.invoke(bean, new BigDecimal(value));
+			} else if (classType.equals(Blob.class)) {
+				//method.invoke(bean, Blob.parseBlob(value));
+			} else if (classType.equals(Clob.class)) {
+				//method.invoke(bean, Clob.parseClob(value));
+			}
+		}
 	}
 }

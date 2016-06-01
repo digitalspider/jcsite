@@ -8,13 +8,17 @@ public abstract class BaseBean {
     protected int id;
     protected String displayValue;
 
+    public final static String FIELD_ID = "id";
+    public final static String FIELD_DISPLAYVALUE = "displayValue";
+    public final static String FIELD_NAMECOLUMN = "nameColumn";
+
     @Override
     public String toString() {
         return getClass().getSimpleName()+"["+id+"] displayValue="+displayValue;
     }
 
     public String getNameColumn() {
-    	return "id";
+    	return FIELD_ID;
     }
 
     public int getId() {
