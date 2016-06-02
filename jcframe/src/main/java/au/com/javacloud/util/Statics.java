@@ -30,6 +30,7 @@ public class Statics {
     private static final String PROP_PACKAGE_NAME = "package.name";
     private static final String PROP_AUTH_CLASS = "auth.class";
     private static final String PROP_DS_CLASS = "ds.class";
+	private static final String PROP_DS_CONFIG_FILE = "ds.config.file";
     
     private static Map<Class,BaseDAO> daoMap = new HashMap<Class,BaseDAO>();
     private static Map<Class,BaseController> controllerMap = new HashMap<Class,BaseController>();
@@ -38,10 +39,11 @@ public class Statics {
 
     static {
 		try {
-			Properties props = ResourceUtil.loadProperties(DEFAULT_JC_CONFIG_FILE);
-			String packageName = props.getProperty(PROP_PACKAGE_NAME,DEFAULT_PACKAGE);
-			String authClassName = props.getProperty(PROP_AUTH_CLASS,DEFAULT_AUTH_CLASS);
-			String dsClassName = props.getProperty(PROP_DS_CLASS,DEFAULT_DS_CLASS);
+			Properties properties = ResourceUtil.loadProperties(DEFAULT_JC_CONFIG_FILE);
+			String packageName = properties.getProperty(PROP_PACKAGE_NAME,DEFAULT_PACKAGE);
+			String authClassName = properties.getProperty(PROP_AUTH_CLASS,DEFAULT_AUTH_CLASS);
+			String dsClassName = properties.getProperty(PROP_DS_CLASS,DEFAULT_DS_CLASS);
+			String dsPropertiesFilename = properties.getProperty(PROP_DS_CONFIG_FILE,DEFAULT_DB_CONFIG_FILE);
 			
 			try {
 				authService = (AuthService)Class.forName(authClassName).newInstance();
@@ -51,8 +53,8 @@ public class Statics {
 			try {
 				dataSource = (DataSource)Class.forName(dsClassName).newInstance();
 			} catch (Exception e) {
-				Properties dbProps = ResourceUtil.loadProperties(DEFAULT_DB_CONFIG_FILE);
-				dataSource = new BaseDataSource(dbProps);
+				Properties dbProperties = ResourceUtil.loadProperties(dsPropertiesFilename);
+				dataSource = new BaseDataSource(dbProperties);
 			}
 			List<Class> beanClasses = ReflectUtil.getClasses(packageName);
 			for (Class classType : beanClasses) {
@@ -66,6 +68,14 @@ public class Statics {
 		}
 
     }
+
+	public static AuthService getAuthService() {
+		return authService;
+	}
+
+	public static DataSource getDataSource() {
+		return dataSource;
+	}
     
     public static Map<Class,BaseDAO> getDaoMap() {
     	return daoMap;
