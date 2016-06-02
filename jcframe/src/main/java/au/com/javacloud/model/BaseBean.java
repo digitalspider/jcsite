@@ -4,7 +4,7 @@ package au.com.javacloud.model;
  * Created by david on 22/05/16.
  */
 
-public abstract class BaseBean {
+public class BaseBean {
     protected int id;
     protected String displayValue;
 

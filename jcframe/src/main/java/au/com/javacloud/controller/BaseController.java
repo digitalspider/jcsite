@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import au.com.javacloud.auth.AuthService;
 import au.com.javacloud.dao.BaseDAO;
 import au.com.javacloud.model.BaseBean;
 
@@ -35,5 +36,8 @@ public interface BaseController<T extends BaseBean> {
 
     public DateFormat getDateFormat();
     public void setDateFormat(DateFormat dateFormat);
+    
+    public AuthService getAuthService();
+    public void setAuthService(AuthService auth);
 
 }

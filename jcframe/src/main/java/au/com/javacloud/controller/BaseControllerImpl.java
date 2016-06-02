@@ -1,17 +1,9 @@
 package au.com.javacloud.controller;
 
-import static au.com.javacloud.util.Constants.dft;
-
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.math.BigDecimal;
-import java.sql.Blob;
-import java.sql.Clob;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,10 +16,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 
+import au.com.javacloud.auth.Action;
+import au.com.javacloud.auth.AuthService;
 import au.com.javacloud.dao.BaseDAO;
 import au.com.javacloud.model.BaseBean;
 import au.com.javacloud.util.HttpUtil;
 import au.com.javacloud.util.ReflectUtil;
+import au.com.javacloud.util.Statics;
 
 /**
  * Created by david on 22/05/16.
@@ -45,6 +40,7 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
     protected String baseUrl;
     protected String[] pathParts = new String[0];
 	protected DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	protected AuthService authService;
 
     public static final String BEANS_SUFFIX = "s";
     public static final String BEANS_FIELDSUFFIX = "fields";
@@ -54,10 +50,11 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
     public static final String DEFAULT_SHOW_PAGE = "/show.jsp";
     public static final String DEFAULT_EDIT_PAGE = "/edit.jsp";
 
-    public BaseControllerImpl(Class<T> clazz) {
+    public BaseControllerImpl(Class<T> clazz, AuthService authService) {
 		super();
 		this.clazz = clazz;
-    	dao = ReflectUtil.getDaoMap().get(clazz);
+		this.authService = authService;
+    	dao = Statics.getDaoMap().get(clazz);
     	setBeanName(clazz.getSimpleName().toLowerCase());
     }
 
@@ -85,7 +82,7 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 //			System.out.println("lookupClass="+lookupClass.getName());
     		if (ReflectUtil.isBean(lookupClass)) {
     			try {
-        			BaseDAO lookupDao = ReflectUtil.getDaoMap().get(lookupClass);
+        			BaseDAO lookupDao = Statics.getDaoMap().get(lookupClass);
         			String fieldName = ReflectUtil.getFieldName(method);
 //					System.out.println("fieldName="+fieldName+" lookupDao="+lookupDao);
         			lookupMap.put(fieldName,lookupDao.getLookup());
@@ -143,10 +140,6 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
             } else {
             	update(id, request, response);
             }
-
-	        request.setAttribute(beanName+BEANS_SUFFIX, dao.getAll() );
-	        request.setAttribute(beanName+BEANS_FIELDSUFFIX, dao.getBeanFieldNames() );
-	        request.setAttribute(LOOKUPMAP, lookupMap );
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ServletException(e);
@@ -188,31 +181,39 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 
     @Override
     public void create(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	T bean = populateBean(request, response);
-        dao.saveOrUpdate(bean);
+    	if (authService.checkACL(authService.getUser(request), this.clazz, Action.CREATE)) {
+	    	T bean = populateBean(request, response);
+	        dao.saveOrUpdate(bean);
+    	}
     }
 
     @Override
     public void read(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		if (pathParts.length>1) {
-			int id = Integer.parseInt(pathParts[1]);
-			request.setAttribute(beanName, dao.get(id));
-		}
+    	if (authService.checkACL(authService.getUser(request), this.clazz, Action.READ)) {
+			if (pathParts.length>1) {
+				int id = Integer.parseInt(pathParts[1]);
+				request.setAttribute(beanName, dao.get(id));
+			}
+    	}
     }
 
     @Override
     public void update(String id, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        T bean = populateBean(request, response);
-        bean.setId( Integer.parseInt(id) );
-        dao.saveOrUpdate(bean);
+    	if (authService.checkACL(authService.getUser(request), this.clazz, Action.UPDATE)) {
+	        T bean = populateBean(request, response);
+	        bean.setId( Integer.parseInt(id) );
+	        dao.saveOrUpdate(bean);
+    	}
     }
 
     @Override
     public void delete(HttpServletRequest request, HttpServletResponse response)  throws Exception {
-		if (pathParts.length > 1) {
-			int id = Integer.parseInt(pathParts[1]);
-			dao.delete(id);
-		}
+    	if (authService.checkACL(authService.getUser(request), this.clazz, Action.DELETE)) {
+			if (pathParts.length > 1) {
+				int id = Integer.parseInt(pathParts[1]);
+				dao.delete(id);
+			}
+    	}
     }
 
 	public BaseDAO<T> getDao() {
@@ -249,6 +250,16 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 	public void setDateFormat(DateFormat dateFormat) {
 		this.dateFormat = dateFormat;
 		dao.setDateFormat(dateFormat);
+	}
+
+	@Override
+	public AuthService getAuthService() {
+		return authService;
+	}
+
+	@Override
+	public void setAuthService(AuthService authService) {
+		this.authService = authService;
 	}
 
 }

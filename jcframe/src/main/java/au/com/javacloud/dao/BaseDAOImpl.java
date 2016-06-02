@@ -1,7 +1,5 @@
 package au.com.javacloud.dao;
 
-import static au.com.javacloud.util.Constants.dft;
-
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
@@ -23,7 +21,6 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import au.com.javacloud.model.BaseBean;
-import au.com.javacloud.util.DBUtil;
 import au.com.javacloud.util.ReflectUtil;
 
 /**

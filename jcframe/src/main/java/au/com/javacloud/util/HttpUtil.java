@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
  */
 public class HttpUtil
 {
-    private static final Logger log = Logger.getLogger(HttpUtil.class);
+    private static final Logger LOG = Logger.getLogger(HttpUtil.class);
 
     public static String[] getPathParts(HttpServletRequest req) {
         String pathInfo = req.getPathInfo();
@@ -37,7 +37,7 @@ public class HttpUtil
 
     public static String executeLinuxCmd(String cmd) throws IOException {
         String[] cmdArray = { "/bin/sh", "-c", cmd };
-        log.debug("cmd="+cmdArray[2]);
+        LOG.debug("cmd="+cmdArray[2]);
         Process p = Runtime.getRuntime().exec(cmdArray);
 //        String output = IOUtils.toString(p.getInputStream());
 //        log.debug("output="+output);
@@ -47,7 +47,7 @@ public class HttpUtil
 
     public static InputStream executeLinuxCmdAsStream(String cmd) throws IOException {
         String[] cmdArray = { "/bin/sh", "-c", cmd };
-        log.debug("cmd="+cmdArray[2]);
+        LOG.debug("cmd="+cmdArray[2]);
         Process p = Runtime.getRuntime().exec(cmdArray);
         return p.getInputStream();
     }
@@ -73,13 +73,13 @@ public class HttpUtil
                 content.add(0,line);
             }
         } catch (java.io.IOException e) {
-            log.error(e,e);
+        	LOG.error(e,e);
         } finally {
             if (is!=null) {
                 try {
                     is.close();
                 } catch (IOException e) {
-                    log.error(e,e);
+                	LOG.error(e,e);
                 }
             }
         }
@@ -114,14 +114,4 @@ public class HttpUtil
     public static String firstCharUpperCase(String input) {
         return input.substring(0, 1).toUpperCase()+input.substring(1);
     }
-
-    public static void main( String[] args )
-    {
-        try {
-            log.info( "Hello World!" );
-        } catch (Exception e) {
-            log.error(e,e);
-        }
-    }
-
 }

@@ -1,7 +1,5 @@
 package au.com.javacloud.util;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -21,40 +19,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import au.com.javacloud.controller.BaseController;
-import au.com.javacloud.controller.BaseControllerImpl;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+
 import au.com.javacloud.dao.BaseDAO;
-import au.com.javacloud.dao.BaseDAOImpl;
 import au.com.javacloud.model.BaseBean;
 
+@SuppressWarnings("rawtypes")
 public class ReflectUtil {
 
-    private static Map<Class,BaseDAO> daoMap = new HashMap<Class,BaseDAO>();
-    private static Map<Class,BaseController> controllerMap = new HashMap<Class,BaseController>();
-    static {
-		try {
-			List<Class> beanClasses = getClasses("au.com.javacloud.model");
-			for (Class classType : beanClasses) {
-				if (!classType.getSimpleName().equals("BaseBean")) {
-					daoMap.put(classType, new BaseDAOImpl<>(classType, DBUtil.getConnection()));
-					controllerMap.put(classType, new BaseControllerImpl<>(classType));
-				}
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-
-    }
-    
-    public static Map<Class,BaseDAO> getDaoMap() {
-    	return daoMap;
-    }
-    
-    public static Map<Class,BaseController> getControllerMap() {
-    	return controllerMap;
-    }
-
-    public static boolean isBean(Class clazz) {
+	private static final Logger LOG = Logger.getLogger(ReflectUtil.class);
+	
+	public static boolean isBean(Class clazz) {
         if (BaseBean.class.isAssignableFrom(clazz)) {
         	return true;
         }
@@ -71,7 +47,7 @@ public class ReflectUtil {
     public static Map<Method,Class> getPublicSetterMethods(Class<?> objectClass) {
     	Method[] allMethods = objectClass.getDeclaredMethods();
     	Map<Method,Class> setterMethods = new HashMap<Method,Class>();
-//        System.out.println("set objectClass="+objectClass+" super="+objectClass.getSuperclass());
+    	LOG.debug("set objectClass="+objectClass+" super="+objectClass.getSuperclass());
         if (objectClass.getSuperclass() != null && ReflectUtil.isBean(objectClass.getSuperclass())) {
             Class<?> superClass = objectClass.getSuperclass();
             Map<Method,Class> superClassMethods = getPublicSetterMethods(superClass);
@@ -87,14 +63,14 @@ public class ReflectUtil {
     	        }
     	    }
     	}
-//        System.out.println("setters="+setterMethods);
+    	LOG.debug("setters="+setterMethods);
     	return setterMethods;
     }
     
     public static Map<Method,Class> getPublicGetterMethods(Class<?> objectClass) {
     	Method[] allMethods = objectClass.getDeclaredMethods();
     	Map<Method,Class> getterMethods = new HashMap<Method,Class>();
-//        System.out.println("get objectClass="+objectClass+" super="+objectClass.getSuperclass());
+    	LOG.debug("get objectClass="+objectClass+" super="+objectClass.getSuperclass());
         if (objectClass.getSuperclass() != null && ReflectUtil.isBean(objectClass.getSuperclass())) {
             Class<?> superClass = objectClass.getSuperclass();
             Map<Method,Class> superClassMethods = getPublicGetterMethods(superClass);
@@ -108,7 +84,7 @@ public class ReflectUtil {
     	        }
     	    }
     	}
-//        System.out.println("getters="+getterMethods);
+    	LOG.debug("getters="+getterMethods);
     	return getterMethods;
     }
     
@@ -198,7 +174,7 @@ public class ReflectUtil {
 
 	public static <T extends BaseBean> void invokeSetterMethodForBeanType(T bean, Method method, Class classType, int id) throws Exception {
 		if (ReflectUtil.isBean(classType)) {
-			BaseDAO fieldDao = ReflectUtil.getDaoMap().get(classType);
+			BaseDAO fieldDao = Statics.getDaoMap().get(classType);
 			if (fieldDao != null) {
 				if (!(bean.getClass().equals(classType) && bean.getId()==id)) { // prevent infinite recurssion
 					BaseBean valueBean = fieldDao.get(id);
@@ -210,10 +186,11 @@ public class ReflectUtil {
 		}
 	}
 
+    
 	public static <T extends BaseBean> void invokeSetterMethodForCollection(T bean, Method method, Class classType, String value) throws Exception {
 		if (ReflectUtil.isCollection(classType)) {
 			String[] valueArray = value.split(",");
-			BaseDAO fieldDao = ReflectUtil.getDaoMap().get(classType);
+			BaseDAO fieldDao = Statics.getDaoMap().get(classType);
 			if (fieldDao!=null && valueArray.length>0 && StringUtils.isNumeric(valueArray[0])) {
 				List<BaseBean> beans = new ArrayList<BaseBean>();
 				for (String valueString : valueArray) {
