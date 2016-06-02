@@ -22,8 +22,8 @@ public class Statics {
 	private static final Logger LOG = Logger.getLogger(Statics.class);
 
     private static final String DEFAULT_PACKAGE = "au.com.javacloud.model";
-    private static final String DEFAULT_JC_CONFIG_FILE = "jc.properties.sample";
-    private static final String DEFAULT_DB_CONFIG_FILE = "db.properties.sample";
+    private static final String DEFAULT_JC_CONFIG_FILE = "jc.properties";
+    private static final String DEFAULT_DB_CONFIG_FILE = "db.properties";
     private static final String DEFAULT_AUTH_CLASS = "au.com.javacloud.auth.BaseAuthServiceImpl";
     private static final String DEFAULT_DS_CLASS = "au.com.javacloud.dao.BaseDataSource";
     
@@ -46,12 +46,16 @@ public class Statics {
 			String dsPropertiesFilename = properties.getProperty(PROP_DS_CONFIG_FILE,DEFAULT_DB_CONFIG_FILE);
 			
 			try {
+				System.out.println("authClassName="+authClassName);
 				authService = (AuthService)Class.forName(authClassName).newInstance();
+				System.out.println("authService="+authService);
 			} catch (Exception e) {
 				authService = new BaseAuthServiceImpl();
 			}
 			try {
+				System.out.println("dsClassName="+dsClassName);
 				dataSource = (DataSource)Class.forName(dsClassName).newInstance();
+				System.out.println("dataSource="+dataSource);
 			} catch (Exception e) {
 				Properties dbProperties = ResourceUtil.loadProperties(dsPropertiesFilename);
 				dataSource = new BaseDataSource(dbProperties);

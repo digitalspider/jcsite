@@ -33,6 +33,8 @@ public class BaseDataSource implements DataSource {
     private static final String PROP_PASSWORD = "password";
 
 	private String realPath;
+	private String url;
+	private String driver;
 
 	@Override
 	public PrintWriter getLogWriter() throws SQLException {
@@ -103,8 +105,8 @@ public class BaseDataSource implements DataSource {
     	}
 
     	try {
-	        String driver = properties.getProperty( PROP_DRIVER );
-	        String url = injectRealPath(properties.getProperty( PROP_URL ));
+	        driver = properties.getProperty( PROP_DRIVER );
+	        url = injectRealPath(properties.getProperty( PROP_URL ));
 			LOG.info("url="+url);
 			System.out.println("url="+url);
 	        Class.forName( driver );
@@ -132,5 +134,9 @@ public class BaseDataSource implements DataSource {
 			url = url.replace("${REALPATH}",realPath);
 		}
 		return url;
+	}
+
+	public String toString() {
+		return getClass().getSimpleName()+" driver="+driver+" url="+url;
 	}
 }
