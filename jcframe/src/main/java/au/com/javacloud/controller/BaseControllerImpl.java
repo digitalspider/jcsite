@@ -289,7 +289,11 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 
 	private int getNumberFromPathParts(int pathPartIndex) throws Exception {
 		if (pathParts.length>pathPartIndex && StringUtils.isNumeric(pathParts[pathPartIndex])) {
-			return Integer.parseInt(pathParts[pathPartIndex]);
+			try {
+				return Integer.parseInt(pathParts[pathPartIndex]);
+			} catch (NumberFormatException e) {
+				// ignore
+			}
 		}
 		return 0;
 	}
