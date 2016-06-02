@@ -32,14 +32,15 @@ import au.com.javacloud.util.ReflectUtil;
  */
 public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 
-	private final static Logger LOG = Logger.getLogger(BaseDAOImpl.class);
+	private static final Logger LOG = Logger.getLogger(BaseDAOImpl.class);
+	public static final int DEFAULT_LIMIT = 50;
 
 	protected DataSource dataSource;
 	protected String tableName;
 	protected Class<T> clazz;
 	protected List<String> excludeForSaveGetMethods = new ArrayList<String>();
 	protected String orderBy;
-	protected int limit;
+	protected int limit = DEFAULT_LIMIT;
 	protected DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private Connection conn;
 

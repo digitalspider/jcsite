@@ -109,7 +109,7 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		LOG.info("doGet() called");
+		LOG.info("doGet() START");
 		this.request = request;
 		this.response = response;
 
@@ -185,12 +185,12 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 		}
 
         RequestDispatcher view = request.getRequestDispatcher( forward );
-		LOG.info("view=view");
+		LOG.info("doGet() DONE. view="+view);
         view.forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		LOG.info("doPost() called");
+		LOG.info("doPost() START");
 		this.request = request;
 		this.response = response;
 
@@ -222,7 +222,7 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 			throw new ServletException(e);
 		}
 		RequestDispatcher view = request.getRequestDispatcher( listUrl );
-		LOG.info("view=view");
+		LOG.info("doPost() DONE. view="+view);
 		view.forward(request, response);
 	}
 
