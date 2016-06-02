@@ -44,22 +44,29 @@ public class Statics {
 			String authClassName = properties.getProperty(PROP_AUTH_CLASS,DEFAULT_AUTH_CLASS);
 			String dsClassName = properties.getProperty(PROP_DS_CLASS,DEFAULT_DS_CLASS);
 			String dsPropertiesFilename = properties.getProperty(PROP_DS_CONFIG_FILE,DEFAULT_DB_CONFIG_FILE);
-			
+
+			Properties dbProperties = ResourceUtil.loadProperties(dsPropertiesFilename);
 			try {
-				System.out.println("authClassName="+authClassName);
+				LOG.info("authClassName="+authClassName);
 				authService = (AuthService)Class.forName(authClassName).newInstance();
-				System.out.println("authService="+authService);
+				LOG.info("authService="+authService);
 			} catch (Exception e) {
 				authService = new BaseAuthServiceImpl();
 			}
 			try {
-				System.out.println("dsClassName="+dsClassName);
+				LOG.info("dsClassName="+dsClassName);
 				dataSource = (DataSource)Class.forName(dsClassName).newInstance();
-				System.out.println("dataSource="+dataSource);
+				if (dataSource instanceof BaseDataSource) {
+					((BaseDataSource)dataSource).setProperties(dbProperties);
+				}
+
+				LOG.info("dataSource="+dataSource);
 			} catch (Exception e) {
-				Properties dbProperties = ResourceUtil.loadProperties(dsPropertiesFilename);
-				dataSource = new BaseDataSource(dbProperties);
+				LOG.error(e,e);
+				dataSource = new BaseDataSource();
+				((BaseDataSource)dataSource).setProperties(dbProperties);
 			}
+			LOG.info("dataSource2="+dataSource);
 			List<Class> beanClasses = ReflectUtil.getClasses(packageName);
 			for (Class classType : beanClasses) {
 				if (!classType.getSimpleName().equals("BaseBean")) {

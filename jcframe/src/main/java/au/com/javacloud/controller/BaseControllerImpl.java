@@ -153,6 +153,12 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 					if (authService.checkACL(authService.getUser(request), this.clazz, Action.CONFIG)) {
 						config();
 					}
+				} else if (pathParts[0].equals("p")) {
+					if (authService.checkACL(authService.getUser(request), this.clazz, Action.READ)) {
+						forward = listUrl;
+						int pageNo = getNumberFromPathParts(1);
+						request.setAttribute(beanName+BEANS_SUFFIX, dao.getAll(pageNo) );
+					}
 				}
 			}
 	        if (forward==null) {
@@ -255,6 +261,13 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 		}
     }
 
+	private int getNumberFromPathParts(int pathPartIndex) throws Exception {
+		if (pathParts.length>pathPartIndex && StringUtils.isNumeric(pathParts[pathPartIndex])) {
+			return Integer.parseInt(pathParts[pathPartIndex]);
+		}
+		return 0;
+	}
+
     @Override
     public void update(String id) throws Exception {
 		T bean = populateBean(request, response);
@@ -264,8 +277,8 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 
     @Override
     public void delete()  throws Exception {
-		if (pathParts.length > 1) {
-			int id = Integer.parseInt(pathParts[1]);
+		int id = getNumberFromPathParts(1);
+		if (id>0) {
 			dao.delete(id);
 		}
     }
@@ -275,7 +288,8 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 		if (pathParts.length > 2) {
 			String field = pathParts[1];
 			String value = pathParts[2];
-			request.setAttribute(beanName + BEANS_SUFFIX, dao.find(field, value));
+			int pageNo = getNumberFromPathParts(3);
+			request.setAttribute(beanName + BEANS_SUFFIX, dao.find(field, value, pageNo));
 		}
 	}
 
@@ -296,13 +310,8 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 				}
 			}
 			if (pathParts[1].equals("limit")) {
-				dao.setLimit(-1);
-				if (pathParts.length > 2) {
-					String limitValue = pathParts[2];
-					if (StringUtils.isNumeric(limitValue)) {
-						dao.setLimit(Integer.parseInt(limitValue));
-					}
-				}
+				int limit = getNumberFromPathParts(2);
+				dao.setLimit(limit);
 			}
 		}
 	}

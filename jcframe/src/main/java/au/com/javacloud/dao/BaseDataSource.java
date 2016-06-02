@@ -17,14 +17,6 @@ import au.com.javacloud.util.ResourceUtil;
 
 public class BaseDataSource implements DataSource {
 
-	private Properties properties;
-	
-	public BaseDataSource(Properties properties) {
-		this.properties = properties;
-	}
-	
-    private static Connection conn;
-    
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BaseDataSource.class);
     
     private static final String PROP_DRIVER = "driver";
@@ -35,6 +27,13 @@ public class BaseDataSource implements DataSource {
 	private String realPath;
 	private String url;
 	private String driver;
+
+	private Properties properties;
+	private static Connection conn;
+
+	public void setProperties(Properties properties) {
+		this.properties = properties;
+	}
 
 	@Override
 	public PrintWriter getLogWriter() throws SQLException {
@@ -108,7 +107,6 @@ public class BaseDataSource implements DataSource {
 	        driver = properties.getProperty( PROP_DRIVER );
 	        url = injectRealPath(properties.getProperty( PROP_URL ));
 			LOG.info("url="+url);
-			System.out.println("url="+url);
 	        Class.forName( driver );
 	        conn = DriverManager.getConnection( url, username, password );
         } catch (Exception e) {
@@ -123,10 +121,10 @@ public class BaseDataSource implements DataSource {
 	}
 
 	public void setRealPath(String realPath) {
-		if (!realPath.endsWith(File.pathSeparator)) {
-			realPath = realPath+File.pathSeparator;
+		if (!realPath.endsWith(File.separator)) {
+			realPath = realPath+File.separator;
 		}
-		this.realPath = realPath;
+		this.realPath = realPath+".."+File.separator;
 	}
 
 	public String injectRealPath(String url) {

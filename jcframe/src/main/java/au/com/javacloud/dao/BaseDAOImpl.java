@@ -91,15 +91,23 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 
 	@Override
 	public List<T> getAll() throws Exception {
+		return getAll(0);
+	}
+
+	@Override
+	public List<T> getAll(int pageNo) throws Exception {
 		List<T> beans = new ArrayList<T>();
 		Statement statement = null;
 		ResultSet resultSet = null;
 		try {
+			if (pageNo<0) { pageNo=0; };
+			if (pageNo>MAX_LIMIT) { pageNo=MAX_LIMIT; };
 			statement = getConnection().createStatement();
 			String query = "select * from "+tableName;
 			if (!StringUtils.isBlank(orderBy)) {
 				query += " order by "+orderBy;
 			}
+			query += " limit "+limit+" offset "+(pageNo*limit);
 			resultSet = statement.executeQuery( query );
 			while( resultSet.next() ) {
 				T bean = ReflectUtil.getNewBean(clazz);
@@ -125,6 +133,7 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 			if (!StringUtils.isBlank(orderBy)) {
 				query += " order by "+orderBy;
 			}
+			query += " limit "+limit;
 			resultSet = statement.executeQuery( query );
 			while( resultSet.next() ) {
 				bean = ReflectUtil.getNewBean(clazz);
@@ -165,14 +174,22 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 
 	@Override
 	public List<T> find(String field, String value) throws Exception {
+		return find(field, value, 0);
+	}
+
+	@Override
+	public List<T> find(String field, String value, int pageNo) throws Exception {
 		List<T> results = new ArrayList<T>();
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		try {
+			if (pageNo<0) { pageNo=0; };
+			if (pageNo>MAX_LIMIT) { pageNo=MAX_LIMIT; };
 			String query = "select * from "+tableName+" where "+field+" like ?";
 			if (!StringUtils.isBlank(orderBy)) {
 				query += " order by "+orderBy;
 			}
+			query += " limit "+limit+" offset "+(pageNo*limit);
 			statement = getConnection().prepareStatement( query );
 			statement.setString(1, "%"+value+"%");
 			resultSet = statement.executeQuery();
@@ -458,5 +475,9 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 	@Override
 	public void setDateFormat(DateFormat dateFormat) {
 		this.dateFormat = dateFormat;
+	}
+
+	public String toString() {
+		return getClass().getSimpleName()+" clazz="+clazz+" tableName="+tableName+" dataSource="+dataSource;
 	}
 }
