@@ -39,6 +39,7 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 	protected Class<T> clazz;
 	protected List<String> excludeForSaveGetMethods = new ArrayList<String>();
 	protected String orderBy;
+	protected int limit;
 	protected DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private Connection conn;
 
@@ -431,6 +432,22 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 	@Override
 	public void setOrderBy(String orderBy) {
 		this.orderBy = orderBy;
+	}
+
+	@Override
+	public int getLimit() {
+		return limit;
+	}
+
+	@Override
+	public void setLimit(int limit) {
+		if (limit<0) {
+			limit=0;
+		}
+		if (limit>MAX_LIMIT) {
+			limit=MAX_LIMIT;
+		}
+		this.limit = limit;
 	}
 
 	@Override

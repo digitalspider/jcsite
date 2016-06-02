@@ -44,6 +44,8 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
     protected String[] pathParts = new String[0];
 	protected DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	protected AuthService authService;
+	private HttpServletRequest request;
+	private HttpServletResponse response;
 
 	public static final String BEANS_SUFFIX = "s";
 	public static final String BEANS_FIELDSUFFIX = "fields";
@@ -107,6 +109,8 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String forward = null;
+		this.request = request;
+		this.response = response;
 
         pathParts = HttpUtil.getPathParts(request);
         LOG.debug("pathParts="+pathParts);
@@ -118,23 +122,37 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 
 			if (pathParts!=null && pathParts.length>0) {
 				if (pathParts[0].equals("delete")) {
-					delete(request, response);
+					if (authService.checkACL(authService.getUser(request), this.clazz, Action.DELETE)) {
+						delete();
+					}
 				} else if (pathParts[0].equals("edit")) {
-					read(request, response);
-					forward = insertOrEditUrl;
+					if (authService.checkACL(authService.getUser(request), this.clazz, Action.READ)) {
+						read();
+						forward = insertOrEditUrl;
+					}
 				} else if (pathParts[0].equals("show")) {
-					read(request, response);
-					forward = showUrl;
+					if (authService.checkACL(authService.getUser(request), this.clazz, Action.READ)) {
+						read();
+						forward = showUrl;
+					}
 				} else if (StringUtils.isNumeric(pathParts[0])) {
-					read(request, response);
-					forward = showUrl;
+					if (authService.checkACL(authService.getUser(request), this.clazz, Action.READ)) {
+						read();
+						forward = showUrl;
+					}
 				} else if (pathParts[0].equals("insert")) {
-					forward = insertOrEditUrl;
+					if (authService.checkACL(authService.getUser(request), this.clazz, Action.CREATE)) {
+						forward = insertOrEditUrl;
+					}
 				} else if (pathParts[0].equals("find")) {
-					find(request, response);
-					forward = listUrl;
-				} else if (pathParts[0].equals("order")) {
-					order(request, response);
+					if (authService.checkACL(authService.getUser(request), this.clazz, Action.FIND)) {
+						find();
+						forward = listUrl;
+					}
+				} else if (pathParts[0].equals("config")) {
+					if (authService.checkACL(authService.getUser(request), this.clazz, Action.CONFIG)) {
+						config();
+					}
 				}
 			}
 	        if (forward==null) {
@@ -153,12 +171,19 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		pathParts = HttpUtil.getPathParts(request);
 		baseUrl = HttpUtil.getBaseUrl(request);
+		this.request = request;
+		this.response = response;
+
 		try {
 			String id = request.getParameter("id");
 			if( id == null || id.isEmpty() ) {
-				create(request, response);
+				if (authService.checkACL(authService.getUser(request), this.clazz, Action.CREATE)) {
+					create();
+				}
 			} else {
-				update(id, request, response);
+				if (authService.checkACL(authService.getUser(request), this.clazz, Action.UPDATE)) {
+					update(id);
+				}
 			}
 
 			request.setAttribute(beanName+BEANS_SUFFIX, dao.getAll() );
@@ -172,8 +197,7 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 		view.forward(request, response);
 	}
 
-	@Override
-	public T populateBean(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected T populateBean(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		T bean = ReflectUtil.getNewBean(clazz);
 		Map<Method,Class> methods = ReflectUtil.getPublicSetterMethods(clazz);
 		for (Method method : methods.keySet()) {
@@ -203,71 +227,80 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 		return bean;
 	}
 
+	protected HttpServletRequest getRequest() {
+		return request;
+	}
+
+	protected HttpServletResponse getResponse() {
+		return response;
+	}
+
     @Override
-    public void create(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	if (authService.checkACL(authService.getUser(request), this.clazz, Action.CREATE)) {
-	    	T bean = populateBean(request, response);
-	        dao.saveOrUpdate(bean);
-    	}
+    public void create() throws Exception {
+		T bean = populateBean(request, response);
+		dao.saveOrUpdate(bean);
     }
 
     @Override
-    public void read(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	if (authService.checkACL(authService.getUser(request), this.clazz, Action.READ)) {
-			String idValue = null;
-			if (StringUtils.isNumeric(pathParts[0])) {
-				idValue = pathParts[0];
-			} else if (pathParts.length>1 && StringUtils.isNumeric(pathParts[1])) {
-				idValue = pathParts[1];
-			}
-			if (idValue!=null) {
-				int id = Integer.parseInt(idValue);
-				request.setAttribute(beanName, dao.get(id));
-			}
-    	}
+    public void read() throws Exception {
+		String idValue = null;
+		if (StringUtils.isNumeric(pathParts[0])) {
+			idValue = pathParts[0];
+		} else if (pathParts.length>1 && StringUtils.isNumeric(pathParts[1])) {
+			idValue = pathParts[1];
+		}
+		if (idValue!=null) {
+			int id = Integer.parseInt(idValue);
+			request.setAttribute(beanName, dao.get(id));
+		}
     }
 
     @Override
-    public void update(String id, HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	if (authService.checkACL(authService.getUser(request), this.clazz, Action.UPDATE)) {
-	        T bean = populateBean(request, response);
-	        bean.setId( Integer.parseInt(id) );
-	        dao.saveOrUpdate(bean);
-    	}
+    public void update(String id) throws Exception {
+		T bean = populateBean(request, response);
+		bean.setId( Integer.parseInt(id) );
+		dao.saveOrUpdate(bean);
     }
 
     @Override
-    public void delete(HttpServletRequest request, HttpServletResponse response)  throws Exception {
-    	if (authService.checkACL(authService.getUser(request), this.clazz, Action.DELETE)) {
-			if (pathParts.length > 1) {
-				int id = Integer.parseInt(pathParts[1]);
-				dao.delete(id);
-			}
-    	}
+    public void delete()  throws Exception {
+		if (pathParts.length > 1) {
+			int id = Integer.parseInt(pathParts[1]);
+			dao.delete(id);
+		}
     }
 
 	@Override
-	public void find(HttpServletRequest request, HttpServletResponse response)  throws Exception {
-		if (authService.checkACL(authService.getUser(request), this.clazz, Action.FIND)) {
-			if (pathParts.length > 2) {
-				String field = pathParts[1];
-				String value = pathParts[2];
-				request.setAttribute(beanName + BEANS_SUFFIX, dao.find(field, value));
-			}
+	public void find()  throws Exception {
+		if (pathParts.length > 2) {
+			String field = pathParts[1];
+			String value = pathParts[2];
+			request.setAttribute(beanName + BEANS_SUFFIX, dao.find(field, value));
 		}
 	}
 
 	@Override
-	public void order(HttpServletRequest request, HttpServletResponse response)  throws Exception {
-		if (authService.checkACL(authService.getUser(request), this.clazz, Action.CONFIG)) {
-			dao.setOrderBy("");
-			if (pathParts.length > 1) {
-				String field = pathParts[1];
-				dao.setOrderBy(field);
+	public void config()  throws Exception {
+		if (pathParts.length>1) {
+			if (pathParts[1].equals("order")) {
+				dao.setOrderBy("");
 				if (pathParts.length > 2) {
-					String direction = pathParts[2];
-					if (direction.equalsIgnoreCase("ASC") || direction.equalsIgnoreCase("DESC")) {
-						dao.setOrderBy(field + " " + direction);
+					String field = pathParts[2];
+					dao.setOrderBy(field);
+					if (pathParts.length > 3) {
+						String direction = pathParts[3];
+						if (direction.equalsIgnoreCase("ASC") || direction.equalsIgnoreCase("DESC")) {
+							dao.setOrderBy(field + " " + direction);
+						}
+					}
+				}
+			}
+			if (pathParts[1].equals("limit")) {
+				dao.setLimit(-1);
+				if (pathParts.length > 2) {
+					String limitValue = pathParts[2];
+					if (StringUtils.isNumeric(limitValue)) {
+						dao.setLimit(Integer.parseInt(limitValue));
 					}
 				}
 			}

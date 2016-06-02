@@ -15,6 +15,8 @@ import javax.servlet.ServletConfig;
 import au.com.javacloud.model.BaseBean;
 
 public interface BaseDAO<T extends BaseBean> {
+
+    public static final int MAX_LIMIT=1000;
 	
     public String getTableName();
     public Class<T> getBeanClass();
@@ -34,6 +36,9 @@ public interface BaseDAO<T extends BaseBean> {
 
     public void setOrderBy(String orderBy);
     public String getOrderBy();
+
+    public void setLimit(int limit);
+    public int getLimit();
 
     public List<String> getExcludeForSaveGetMethods();
     public void setExcludeForSaveGetMethods(List<String> excludeForSaveGetMethods);

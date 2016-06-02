@@ -16,19 +16,17 @@ import au.com.javacloud.model.BaseBean;
  */
 public interface BaseController<T extends BaseBean> {
 
-    public void create(HttpServletRequest request, HttpServletResponse response) throws Exception;
+    public void create() throws Exception;
     
-    public void read(HttpServletRequest request, HttpServletResponse response) throws Exception;
+    public void read() throws Exception;
     
-    public void update(String id, HttpServletRequest request, HttpServletResponse response) throws Exception;
+    public void update(String id) throws Exception;
     
-    public void delete(HttpServletRequest request, HttpServletResponse response) throws Exception;
+    public void delete() throws Exception;
 
-    public void find(HttpServletRequest request, HttpServletResponse response) throws Exception;
+    public void find() throws Exception;
 
-    public void order(HttpServletRequest request, HttpServletResponse response) throws Exception;
-
-    public T populateBean(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+    public void config() throws Exception;
 
     public Class<T> getBeanClass();
 
