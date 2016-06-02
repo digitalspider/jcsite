@@ -50,6 +50,7 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 	public static final String BEANS_SUFFIX = "s";
 	public static final String BEANS_FIELDSUFFIX = "fields";
 	public static final String LOOKUPMAP = "lookupMap";
+	public static final String BASEURL = "baseUrl";
 	public static final String DEFAULT_JSPPAGE_PREFIX = "/jsp/";
 	public static final String DEFAULT_LIST_PAGE = "/list.jsp";
 	public static final String DEFAULT_SHOW_PAGE = "/show.jsp";
@@ -108,52 +109,64 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String forward = null;
+		LOG.info("doGet() called");
 		this.request = request;
 		this.response = response;
 
         pathParts = HttpUtil.getPathParts(request);
-        LOG.debug("pathParts="+pathParts);
+        LOG.info("pathParts="+pathParts);
         baseUrl = HttpUtil.getBaseUrl(request);
-        LOG.debug("baseUrl="+baseUrl);
+        LOG.info("baseUrl="+baseUrl);
+
+		String forward = null;
+
     	try {
     		request.setAttribute(beanName+BEANS_FIELDSUFFIX, dao.getBeanFieldNames() );
     		request.setAttribute(LOOKUPMAP, lookupMap );
+			request.setAttribute(BASEURL, baseUrl );
 
 			if (pathParts!=null && pathParts.length>0) {
 				if (pathParts[0].equals("delete")) {
+					LOG.info("action=delete");
 					if (authService.checkACL(authService.getUser(request), this.clazz, Action.DELETE)) {
 						delete();
 					}
 				} else if (pathParts[0].equals("edit")) {
+					LOG.info("action=edit");
 					if (authService.checkACL(authService.getUser(request), this.clazz, Action.READ)) {
 						read();
 						forward = insertOrEditUrl;
 					}
 				} else if (pathParts[0].equals("show")) {
+					LOG.info("action=show");
 					if (authService.checkACL(authService.getUser(request), this.clazz, Action.READ)) {
 						read();
 						forward = showUrl;
 					}
 				} else if (StringUtils.isNumeric(pathParts[0])) {
+					LOG.info("action=<int>");
 					if (authService.checkACL(authService.getUser(request), this.clazz, Action.READ)) {
 						read();
 						forward = showUrl;
 					}
 				} else if (pathParts[0].equals("insert")) {
+					LOG.info("action=insert");
 					if (authService.checkACL(authService.getUser(request), this.clazz, Action.CREATE)) {
 						forward = insertOrEditUrl;
 					}
 				} else if (pathParts[0].equals("find")) {
+					LOG.info("action=find");
 					if (authService.checkACL(authService.getUser(request), this.clazz, Action.FIND)) {
 						find();
 						forward = listUrl;
 					}
 				} else if (pathParts[0].equals("config")) {
+					LOG.info("action=config");
 					if (authService.checkACL(authService.getUser(request), this.clazz, Action.CONFIG)) {
 						config();
 					}
 				} else if (pathParts[0].equals("p")) {
+					LOG.info("action=p");
 					if (authService.checkACL(authService.getUser(request), this.clazz, Action.READ)) {
 						forward = listUrl;
 						int pageNo = getNumberFromPathParts(1);
@@ -162,6 +175,7 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 				}
 			}
 	        if (forward==null) {
+				LOG.info("action=list");
 	            forward = listUrl;
 	           	request.setAttribute(beanName+BEANS_SUFFIX, dao.getAll() );
 	        }
@@ -171,22 +185,29 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 		}
 
         RequestDispatcher view = request.getRequestDispatcher( forward );
+		LOG.info("view=view");
         view.forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		pathParts = HttpUtil.getPathParts(request);
-		baseUrl = HttpUtil.getBaseUrl(request);
+		LOG.info("doPost() called");
 		this.request = request;
 		this.response = response;
+
+		pathParts = HttpUtil.getPathParts(request);
+		LOG.info("pathParts="+pathParts);
+		baseUrl = HttpUtil.getBaseUrl(request);
+		LOG.info("baseUrl="+baseUrl);
 
 		try {
 			String id = request.getParameter("id");
 			if( id == null || id.isEmpty() ) {
+				LOG.info("action=create");
 				if (authService.checkACL(authService.getUser(request), this.clazz, Action.CREATE)) {
 					create();
 				}
 			} else {
+				LOG.info("action=update("+id+")");
 				if (authService.checkACL(authService.getUser(request), this.clazz, Action.UPDATE)) {
 					update(id);
 				}
@@ -195,11 +216,13 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 			request.setAttribute(beanName+BEANS_SUFFIX, dao.getAll() );
 			request.setAttribute(beanName+BEANS_FIELDSUFFIX, dao.getBeanFieldNames() );
 			request.setAttribute(LOOKUPMAP, lookupMap );
+			request.setAttribute(BASEURL, baseUrl );
 		} catch (Exception e) {
 			LOG.error(e,e);
 			throw new ServletException(e);
 		}
 		RequestDispatcher view = request.getRequestDispatcher( listUrl );
+		LOG.info("view=view");
 		view.forward(request, response);
 	}
 

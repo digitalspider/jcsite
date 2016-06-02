@@ -49,24 +49,23 @@ public class Statics {
 			try {
 				LOG.info("authClassName="+authClassName);
 				authService = (AuthService)Class.forName(authClassName).newInstance();
-				LOG.info("authService="+authService);
 			} catch (Exception e) {
+				LOG.error(e,e);
 				authService = new BaseAuthServiceImpl();
 			}
+			LOG.info("authService="+authService);
 			try {
 				LOG.info("dsClassName="+dsClassName);
 				dataSource = (DataSource)Class.forName(dsClassName).newInstance();
 				if (dataSource instanceof BaseDataSource) {
 					((BaseDataSource)dataSource).setProperties(dbProperties);
 				}
-
-				LOG.info("dataSource="+dataSource);
 			} catch (Exception e) {
 				LOG.error(e,e);
 				dataSource = new BaseDataSource();
 				((BaseDataSource)dataSource).setProperties(dbProperties);
 			}
-			LOG.info("dataSource2="+dataSource);
+			LOG.info("dataSource="+dataSource);
 			List<Class> beanClasses = ReflectUtil.getClasses(packageName);
 			for (Class classType : beanClasses) {
 				if (!classType.getSimpleName().equals("BaseBean")) {

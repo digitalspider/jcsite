@@ -8,7 +8,7 @@ import javax.servlet.annotation.WebServlet;
 
 import au.com.javacloud.model.Page;
 
-@WebServlet("/page/*")
+@WebServlet(urlPatterns = {"/page/*", "/page.json/*"})
 public class PageController extends BaseControllerImpl<Page> {
 
     public PageController() {

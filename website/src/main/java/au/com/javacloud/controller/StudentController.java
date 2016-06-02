@@ -7,7 +7,7 @@ import javax.servlet.annotation.WebServlet;
 
 import au.com.javacloud.model.Student;
 
-@WebServlet("/student/*")
+@WebServlet(urlPatterns = {"/student/*", "/student.json/*"})
 public class StudentController extends BaseControllerImpl<Student> {
 
     public StudentController() {

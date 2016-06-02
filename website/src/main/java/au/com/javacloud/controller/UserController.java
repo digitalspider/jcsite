@@ -8,7 +8,7 @@ import javax.servlet.annotation.WebServlet;
 
 import au.com.javacloud.model.User;
 
-@WebServlet("/user/*")
+@WebServlet(urlPatterns = {"/user/*", "/user.json/*"})
 public class UserController extends BaseControllerImpl<User> {
 
     public UserController() {
