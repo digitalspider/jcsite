@@ -9,6 +9,8 @@ RemoteSystemsTempFiles
 *.iml
 *.ipr
 *.iws
+*.log
+*.db
 
 # Package Files #
 *.jar
