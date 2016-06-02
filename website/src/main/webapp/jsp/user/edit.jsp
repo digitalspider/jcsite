@@ -9,7 +9,7 @@
 <title>Add New User</title>
 </head>
 <body>
-	<form action="<%=request.getContextPath()%>/user" method="post">
+	<form action="${beanUrl}" method="post">
 		<fieldset>
 			<div>
 				<label for="id">User ID</label>

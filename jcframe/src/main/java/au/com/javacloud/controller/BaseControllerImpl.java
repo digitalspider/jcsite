@@ -51,6 +51,7 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 	public static final String BEANS_FIELDSUFFIX = "fields";
 	public static final String LOOKUPMAP = "lookupMap";
 	public static final String BASEURL = "baseUrl";
+	public static final String BEANURL = "beanUrl";
 	public static final String DEFAULT_JSPPAGE_PREFIX = "/jsp/";
 	public static final String DEFAULT_LIST_PAGE = "/list.jsp";
 	public static final String DEFAULT_SHOW_PAGE = "/show.jsp";
@@ -124,6 +125,7 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
     		request.setAttribute(beanName+BEANS_FIELDSUFFIX, dao.getBeanFieldNames() );
     		request.setAttribute(LOOKUPMAP, lookupMap );
 			request.setAttribute(BASEURL, baseUrl );
+			request.setAttribute(BEANURL, baseUrl+"/"+clazz.getSimpleName().toLowerCase());
 
 			if (pathParts!=null && pathParts.length>0) {
 				if (pathParts[0].equals("delete")) {
@@ -217,6 +219,7 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 			request.setAttribute(beanName+BEANS_FIELDSUFFIX, dao.getBeanFieldNames() );
 			request.setAttribute(LOOKUPMAP, lookupMap );
 			request.setAttribute(BASEURL, baseUrl );
+			request.setAttribute(BEANURL, baseUrl+"/"+clazz.getSimpleName().toLowerCase());
 		} catch (Exception e) {
 			LOG.error(e,e);
 			throw new ServletException(e);

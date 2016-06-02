@@ -20,8 +20,7 @@ public class HttpUtil
 
     public static String getBaseUrl(HttpServletRequest request) {
         String url = request.getRequestURL().toString();
-        String baseUrl = url.substring(0, url.indexOf("/",9));
-        baseUrl = baseUrl + request.getServletPath();
+        String baseUrl = url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath();
         LOG.debug("baseUrl="+baseUrl);
         return baseUrl;
     }

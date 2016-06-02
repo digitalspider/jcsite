@@ -8,9 +8,9 @@
 <title>User <c:out value="${user.id}" /></title>
 </head>
 <body>
-    <a href="<%=request.getContextPath()%>/user/list">List</a>
+    <a href="${beanUrl}/list">List</a>
     &nbsp;|&nbsp;
-    <a href="<%=request.getContextPath()%>/user/edit/<c:out value="${bean.id}" />">Edit</a>
+    <a href="${beanUrl}/edit/<c:out value="${bean.id}" />">Edit</a>
     <div>
         <label for="id">Student ID</label>
         <div><c:out value="${bean.id}" /></div>
