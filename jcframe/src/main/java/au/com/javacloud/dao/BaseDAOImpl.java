@@ -101,14 +101,14 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 		Statement statement = null;
 		ResultSet resultSet = null;
 		try {
-			if (pageNo<0) { pageNo=0; };
+			if (pageNo<1) { pageNo=1; };
 			if (pageNo>MAX_LIMIT) { pageNo=MAX_LIMIT; };
 			statement = getConnection().createStatement();
 			String query = "select * from "+tableName;
 			if (!StringUtils.isBlank(orderBy)) {
 				query += " order by "+orderBy;
 			}
-			query += " limit "+limit+" offset "+(pageNo*limit);
+			query += " limit "+limit+" offset "+((pageNo-1)*limit);
 			resultSet = statement.executeQuery( query );
 			while( resultSet.next() ) {
 				T bean = ReflectUtil.getNewBean(clazz);
@@ -184,13 +184,13 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		try {
-			if (pageNo<0) { pageNo=0; };
+			if (pageNo<1) { pageNo=1; };
 			if (pageNo>MAX_LIMIT) { pageNo=MAX_LIMIT; };
 			String query = "select * from "+tableName+" where "+field+" like ?";
 			if (!StringUtils.isBlank(orderBy)) {
 				query += " order by "+orderBy;
 			}
-			query += " limit "+limit+" offset "+(pageNo*limit);
+			query += " limit "+limit+" offset "+((pageNo-1)*limit);
 			statement = getConnection().prepareStatement( query );
 			statement.setString(1, "%"+value+"%");
 			resultSet = statement.executeQuery();
