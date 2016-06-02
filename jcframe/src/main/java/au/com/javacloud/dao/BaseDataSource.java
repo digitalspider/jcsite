@@ -1,5 +1,8 @@
 package au.com.javacloud.dao;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.File;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,6 +12,8 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 import javax.sql.DataSource;
+
+import au.com.javacloud.util.ResourceUtil;
 
 public class BaseDataSource implements DataSource {
 
@@ -26,6 +31,8 @@ public class BaseDataSource implements DataSource {
     private static final String PROP_URL = "url";
     private static final String PROP_USER = "user";
     private static final String PROP_PASSWORD = "password";
+
+	private String realPath;
 
 	@Override
 	public PrintWriter getLogWriter() throws SQLException {
@@ -97,7 +104,9 @@ public class BaseDataSource implements DataSource {
 
     	try {
 	        String driver = properties.getProperty( PROP_DRIVER );
-	        String url = properties.getProperty( PROP_URL );
+	        String url = injectRealPath(properties.getProperty( PROP_URL ));
+			LOG.info("url="+url);
+			System.out.println("url="+url);
 	        Class.forName( driver );
 	        conn = DriverManager.getConnection( url, username, password );
         } catch (Exception e) {
@@ -107,5 +116,21 @@ public class BaseDataSource implements DataSource {
         return conn;
 	}
 
+	public String getRealPath() {
+		return realPath;
+	}
 
+	public void setRealPath(String realPath) {
+		if (!realPath.endsWith(File.pathSeparator)) {
+			realPath = realPath+File.pathSeparator;
+		}
+		this.realPath = realPath;
+	}
+
+	public String injectRealPath(String url) {
+		if (url.contains("${REALPATH}") && StringUtils.isNoneBlank(realPath)) {
+			url = url.replace("${REALPATH}",realPath);
+		}
+		return url;
+	}
 }

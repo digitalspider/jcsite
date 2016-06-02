@@ -22,8 +22,8 @@ public class Statics {
 	private static final Logger LOG = Logger.getLogger(Statics.class);
 
     private static final String DEFAULT_PACKAGE = "au.com.javacloud.model";
-    private static final String DEFAULT_JC_CONFIG_FILE = "jc.properties";
-    private static final String DEFAULT_DB_CONFIG_FILE = "db.properties";
+    private static final String DEFAULT_JC_CONFIG_FILE = "jc.properties.sample";
+    private static final String DEFAULT_DB_CONFIG_FILE = "db.properties.sample";
     private static final String DEFAULT_AUTH_CLASS = "au.com.javacloud.auth.BaseAuthServiceImpl";
     private static final String DEFAULT_DS_CLASS = "au.com.javacloud.dao.BaseDataSource";
     
@@ -59,7 +59,7 @@ public class Statics {
 			List<Class> beanClasses = ReflectUtil.getClasses(packageName);
 			for (Class classType : beanClasses) {
 				if (!classType.getSimpleName().equals("BaseBean")) {
-					daoMap.put(classType, new BaseDAOImpl<>(classType, dataSource.getConnection()));
+					daoMap.put(classType, new BaseDAOImpl<>(classType, dataSource));
 					controllerMap.put(classType, new BaseControllerImpl<>(classType, authService));
 				}
 			}

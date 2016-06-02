@@ -5,8 +5,7 @@
 #password=test
 
 # SQLite settings
-driver=org.sqlite.JDBC
-url=jdbc:sqlite:${REALPATH}database.db
-username=test
-password=test
-
+#driver=org.sqlite.JDBC
+#url=jdbc:sqlite:${REALPATH}database.db
+#username=test
+#password=test

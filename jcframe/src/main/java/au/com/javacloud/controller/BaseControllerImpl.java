@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 import au.com.javacloud.auth.Action;
 import au.com.javacloud.auth.AuthService;
@@ -28,6 +29,8 @@ import au.com.javacloud.util.Statics;
  * Created by david on 22/05/16.
  */
 public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implements BaseController<T> {
+
+	private final static Logger LOG = Logger.getLogger(BaseControllerImpl.class);
 
 	private static final long serialVersionUID = -2841993759251817415L;
 	protected BaseDAO<T> dao;
@@ -84,18 +87,19 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 	@Override
     public void init() throws ServletException {
     	super.init();
+		dao.init(getServletConfig());
     	Map<Method,Class> fieldMethods = ReflectUtil.getPublicSetterMethods(dao.getBeanClass());
     	for (Method method : fieldMethods.keySet()) {
     		Class lookupClass = fieldMethods.get(method);
-//			System.out.println("lookupClass="+lookupClass.getName());
+			LOG.debug("lookupClass="+lookupClass.getName());
     		if (ReflectUtil.isBean(lookupClass)) {
     			try {
         			BaseDAO lookupDao = Statics.getDaoMap().get(lookupClass);
         			String fieldName = ReflectUtil.getFieldName(method);
-//					System.out.println("fieldName="+fieldName+" lookupDao="+lookupDao);
+					LOG.debug("fieldName="+fieldName+" lookupDao="+lookupDao);
         			lookupMap.put(fieldName,lookupDao.getLookup());
     			} catch (Exception e) {
-    				e.printStackTrace();
+					LOG.error(e,e);
     			}
     		}
     	}
@@ -105,9 +109,9 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
         String forward = null;
 
         pathParts = HttpUtil.getPathParts(request);
-//        System.out.println("pathParts="+pathParts);
+        LOG.debug("pathParts="+pathParts);
         baseUrl = HttpUtil.getBaseUrl(request);
-//        System.out.println("baseUrl="+baseUrl);
+        LOG.debug("baseUrl="+baseUrl);
     	try {
     		request.setAttribute(beanName+BEANS_FIELDSUFFIX, dao.getBeanFieldNames() );
     		request.setAttribute(LOOKUPMAP, lookupMap );
@@ -138,7 +142,7 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 	           	request.setAttribute(beanName+BEANS_SUFFIX, dao.getAll() );
 	        }
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error(e,e);
 			throw new ServletException(e);
 		}
 
@@ -161,7 +165,7 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 			request.setAttribute(beanName+BEANS_FIELDSUFFIX, dao.getBeanFieldNames() );
 			request.setAttribute(LOOKUPMAP, lookupMap );
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error(e,e);
 			throw new ServletException(e);
 		}
 		RequestDispatcher view = request.getRequestDispatcher( listUrl );
@@ -193,7 +197,7 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 					ReflectUtil.invokeSetterMethodForPrimitive(bean, method, classType, value, dateFormat);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				LOG.error(e,e);
 			}
 		}
 		return bean;

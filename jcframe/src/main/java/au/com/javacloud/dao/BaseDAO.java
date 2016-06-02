@@ -1,17 +1,16 @@
 package au.com.javacloud.dao;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
-import java.text.ParseException;
 /**
  * Created by david on 22/05/16.
  */
 import java.util.List;
+
+import javax.servlet.ServletConfig;
 
 import au.com.javacloud.model.BaseBean;
 
@@ -29,7 +28,10 @@ public interface BaseDAO<T extends BaseBean> {
     public T get(int id) throws Exception;
     public void delete(int beanId) throws Exception;
     public List<T> find(String field, String value) throws Exception;
-    
+
+    public void init(ServletConfig config);
+    public Connection getConnection() throws SQLException;
+
     public void setOrderBy(String orderBy);
     public String getOrderBy();
 

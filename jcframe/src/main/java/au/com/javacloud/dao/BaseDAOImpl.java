@@ -19,6 +19,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+
+import javax.servlet.ServletConfig;
+import javax.sql.DataSource;
 
 import au.com.javacloud.model.BaseBean;
 import au.com.javacloud.util.ReflectUtil;
@@ -28,25 +32,47 @@ import au.com.javacloud.util.ReflectUtil;
  */
 public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 
-	protected Connection conn;
+	private final static Logger LOG = Logger.getLogger(BaseDAOImpl.class);
+
+	protected DataSource dataSource;
 	protected String tableName;
 	protected Class<T> clazz;
 	protected List<String> excludeForSaveGetMethods = new ArrayList<String>();
 	protected String orderBy;
 	protected DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private Connection conn;
 
-	public BaseDAOImpl(Class<T> clazz, Connection conn) {
+	public BaseDAOImpl(Class<T> clazz, DataSource dataSource) {
 		this.clazz = clazz;
-		this.conn = conn;
+		this.dataSource = dataSource;
 		this.tableName= getTableName();
 		this.excludeForSaveGetMethods.addAll(Arrays.asList(new String[] {BaseBean.FIELD_ID, BaseBean.FIELD_DISPLAYVALUE, BaseBean.FIELD_NAMECOLUMN}));
+	}
+
+	public void init(ServletConfig config) {
+		if (dataSource instanceof BaseDataSource) {
+			((BaseDataSource)dataSource).setRealPath(config.getServletContext().getRealPath("/"));
+		}
+	}
+
+	@Override
+	public Connection getConnection() throws SQLException {
+		try {
+			if (conn != null && !conn.isClosed()) {
+				return conn;
+			}
+		} catch (Exception e) {
+			// ignore
+		}
+		conn = dataSource.getConnection();
+		return conn;
 	}
 
 	@Override
 	public void saveOrUpdate( T bean ) throws Exception {
 		PreparedStatement statement = null;
 		try {
-			statement = prepareStatementForSave(conn, bean);
+			statement = prepareStatementForSave(getConnection(), bean);
 			statement.executeUpdate();
 		} finally {
 			if (statement!=null) statement.close();
@@ -56,7 +82,7 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 	@Override
 	public void delete( int id ) throws SQLException {
 		String query = "delete from "+tableName+" where id=?";
-		PreparedStatement preparedStatement = conn.prepareStatement(query);
+		PreparedStatement preparedStatement = getConnection().prepareStatement(query);
 		preparedStatement.setInt(1, id);
 		preparedStatement.executeUpdate();
 		preparedStatement.close();
@@ -68,7 +94,7 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 		Statement statement = null;
 		ResultSet resultSet = null;
 		try {
-			statement = conn.createStatement();
+			statement = getConnection().createStatement();
 			String query = "select * from "+tableName;
 			if (!StringUtils.isBlank(orderBy)) {
 				query += " order by "+orderBy;
@@ -93,7 +119,7 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 		try {
 			T bean = ReflectUtil.getNewBean(clazz);
 			String columnName = bean.getNameColumn();
-			statement = conn.createStatement();
+			statement = getConnection().createStatement();
 			String query = "select id,"+columnName+" from "+tableName;
 			if (!StringUtils.isBlank(orderBy)) {
 				query += " order by "+orderBy;
@@ -122,7 +148,7 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 			if (!StringUtils.isBlank(orderBy)) {
 				query += " order by "+orderBy;
 			}
-			statement = conn.prepareStatement( query );
+			statement = getConnection().prepareStatement( query );
 			statement.setInt(1, id);
 			resultSet = statement.executeQuery();
 			if( resultSet.next() ) {
@@ -146,7 +172,7 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 			if (!StringUtils.isBlank(orderBy)) {
 				query += " order by "+orderBy;
 			}
-			statement = conn.prepareStatement( query );
+			statement = getConnection().prepareStatement( query );
 			statement.setString(1, "%"+value+"%");
 			resultSet = statement.executeQuery();
 			while( resultSet.next() ) {
@@ -168,7 +194,7 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 	}
 
 	@Override
-	public Class getBeanClass() {
+	public Class<T> getBeanClass() {
 		return clazz;
 	}
 
@@ -183,7 +209,7 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 		String columnName = bean.getNameColumn();
 		for (Method method : methods.keySet()) {
 			Class classType = methods.get(method);
-//            System.out.println("m="+m+" paramClass.getSimpleName()="+paramClass.getSimpleName());
+            LOG.debug("method="+method.getName()+" paramClass.getSimpleName()="+classType.getSimpleName());
 			String fieldName = ReflectUtil.getFieldName(method);
 
 			// populate the display value
@@ -263,7 +289,7 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 			updateStmt = true;
 			query = "update "+tableName+" set "+ getUpdateColumnsSQL(columns)+" where id=?";
 		}
-//        System.out.println("query="+query+" columns="+columns);
+        LOG.debug("query="+query+" columns="+columns);
 		PreparedStatement preparedStatement = conn.prepareStatement( query );
 
 		int index = 0;
@@ -272,23 +298,23 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 			Class classType = methods.get(method);
 			if (!excludeForSaveGetMethods.contains(fieldName)) {
 				Object result = method.invoke(bean);
-//                System.out.println("m="+method.getName() + " classType="+classType +" result="+result);
+                LOG.debug("m="+method.getName() + " classType="+classType +" result="+result);
 				if (ReflectUtil.isBean(classType)) {
 					// Handle BaseBeans
 					if (result==null) {
-//                		System.out.println("result.class=null");
+                		LOG.debug("result.class=null");
 						preparedStatement.setInt(++index, 0);
 					} else if (result instanceof BaseBean) {
-//	                    System.out.println("result.class="+result.getClass().getSimpleName());
+	                    LOG.debug("result.class="+result.getClass().getSimpleName());
 						preparedStatement.setInt(++index, ((BaseBean)result).getId());
 					}
 				} else if (ReflectUtil.isCollection(classType)) {
 					// Handle Collections
 					if (result==null) {
-//                		System.out.println("result.class=null");
+                		LOG.debug("result.class=null");
 						preparedStatement.setObject(++index, null);
 					} else {
-//	                    System.out.println("result.class="+result.getClass().getSimpleName());
+	                    LOG.debug("result.class="+result.getClass().getSimpleName());
 						Collection c = (Collection) result;
 						String resString = "";
 						for (Object o : c) {
@@ -306,10 +332,10 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 				} else {
 					// Handle primitives
 					if (result==null) {
-//                		System.out.println("result.class=null");
+                		LOG.debug("result.class=null");
 						preparedStatement.setObject(++index, null);
 					} else {
-//                		System.out.println("result.class="+result.getClass().getSimpleName());
+                		LOG.debug("result.class="+result.getClass().getSimpleName());
 						switch (result.getClass().getSimpleName()) {
 							case "String":
 								preparedStatement.setString(++index, (String) result);

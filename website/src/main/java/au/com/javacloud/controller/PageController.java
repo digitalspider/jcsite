@@ -7,7 +7,6 @@ import javax.servlet.annotation.WebServlet;
  */
 
 import au.com.javacloud.model.Page;
-import au.com.javacloud.util.Statics;
 
 @WebServlet("/page/*")
 public class PageController extends BaseControllerImpl<Page> {
