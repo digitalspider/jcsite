@@ -1,5 +1,7 @@
 package au.com.javacloud.controller;
 
+import com.google.gson.Gson;
+
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.text.DateFormat;
@@ -51,6 +53,7 @@ public class BaseControllerImpl<T extends BaseBean, U> extends HttpServlet imple
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	private Properties configProperties = new Properties();
+	private Gson gson = new Gson();
 
 	public static final String BEANS_SUFFIX = "s";
 	public static final String BEANS_FIELDSUFFIX = "fields";
@@ -63,6 +66,7 @@ public class BaseControllerImpl<T extends BaseBean, U> extends HttpServlet imple
 	public static final String DEFAULT_SHOW_PAGE = "/show.jsp";
 	public static final String DEFAULT_EDIT_PAGE = "/edit.jsp";
 	public static final String DEFAULT_INDEX_PAGE = "/index.jsp";
+	public static final String JSON_SUFFIX = ".json";
 	
 	public static final String PROP_USE_INDEX = "useindex";
 	public static final String PROP_AUTH = "auth";
@@ -194,21 +198,16 @@ public class BaseControllerImpl<T extends BaseBean, U> extends HttpServlet imple
 					if (checkAuthAndAcl(request, Action.CONFIG)) {
 						config();
 					}
-				} else if (pathParts.get(0).equals("p")) {
-					LOG.info("action=p");
-					if (checkAuthAndAcl(request, Action.LIST)) {
-						forward = listUrl;
-						int pageNo = pathParts.getInt(1);
-						request.setAttribute(beanName+BEANS_SUFFIX, dao.getAll(pageNo) );
-					}
 				}
 			}
 	        if (forward==null) {
         		LOG.info("action=list(default)");
-				request.setAttribute(beanName+BEANS_SUFFIX, dao.getAll() );
-				forward = listUrl;
-				if (configProperties.getProperty(PROP_USE_INDEX).equalsIgnoreCase("true")) {
-					forward = indexUrl;
+				if (checkAuthAndAcl(request, Action.LIST)) {
+					list();
+					forward = listUrl;
+					if (configProperties.getProperty(PROP_USE_INDEX).equalsIgnoreCase("true")) {
+						forward = indexUrl;
+					}
 				}
 	        }
 		} catch (Exception e) {
@@ -220,6 +219,15 @@ public class BaseControllerImpl<T extends BaseBean, U> extends HttpServlet imple
 		LOG.info("doGet() DONE. view="+view);
         view.forward(request, response);
     }
+
+	protected boolean handleJson(Object o) throws IOException {
+		if (baseUrl.endsWith(JSON_SUFFIX)) {
+			String output = gson.toJson(o);
+			response.getWriter().write(output);
+			return true;
+		}
+		return false;
+	}
 
     private boolean checkAuthAndAcl(HttpServletRequest request, Action action) {
     	return checkAuth(request) && checkACL(request, action); 
@@ -260,7 +268,7 @@ public class BaseControllerImpl<T extends BaseBean, U> extends HttpServlet imple
 				}
 			}
 
-			request.setAttribute(beanName+BEANS_SUFFIX, dao.getAll() );
+			request.setAttribute(beanName+BEANS_SUFFIX, dao.getAll(0) );
 			request.setAttribute(beanName+BEANS_FIELDSUFFIX, dao.getBeanFieldNames() );
 			request.setAttribute(LOOKUPMAP, lookupMap );
     		request.setAttribute(CONTEXTURL, contextUrl );
@@ -337,13 +345,22 @@ public class BaseControllerImpl<T extends BaseBean, U> extends HttpServlet imple
 		}
 		if (idValue!=null) {
 			int id = Integer.parseInt(idValue);
-			request.setAttribute(beanName, dao.get(id));
+			T bean = dao.get(id);
+			if (handleJson(bean)) {
+				return;
+			}
+			request.setAttribute(beanName, bean);
 		}
     }
 
 	@Override
 	public void list() throws Exception {
-		request.setAttribute(beanName+BEANS_SUFFIX, dao.getAll() );
+		int pageNo = pathParts.getInt(1);
+		List<T> beans = dao.getAll(pageNo);
+		if (handleJson(beans)) {
+			return;
+		}
+		request.setAttribute(beanName+BEANS_SUFFIX, beans );
 	}
 
     @Override
@@ -367,7 +384,11 @@ public class BaseControllerImpl<T extends BaseBean, U> extends HttpServlet imple
 			String field = pathParts.get(1);
 			String value = pathParts.get(2);
 			int pageNo = pathParts.getInt(3);
-			request.setAttribute(beanName + BEANS_SUFFIX, dao.find(field, value, pageNo));
+			List<T> beans = dao.find(field, value, pageNo);
+			if (handleJson(beans)) {
+				return;
+			}
+			request.setAttribute(beanName + BEANS_SUFFIX, beans);
 		}
 	}
 

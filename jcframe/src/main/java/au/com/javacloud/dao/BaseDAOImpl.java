@@ -90,11 +90,6 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 	}
 
 	@Override
-	public List<T> getAll() throws Exception {
-		return getAll(0);
-	}
-
-	@Override
 	public List<T> getAll(int pageNo) throws Exception {
 		List<T> beans = new ArrayList<T>();
 		Statement statement = null;
@@ -170,11 +165,6 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 			if (statement!=null) statement.close();
 		}
 		return bean;
-	}
-
-	@Override
-	public List<T> find(String field, String value) throws Exception {
-		return find(field, value, 0);
 	}
 
 	@Override

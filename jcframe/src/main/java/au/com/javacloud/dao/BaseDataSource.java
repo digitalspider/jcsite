@@ -104,7 +104,7 @@ public class BaseDataSource implements DataSource {
     	try {
 	        driver = properties.getProperty( PROP_DRIVER );
 	        url = injectRealPath(properties.getProperty( PROP_URL ));
-			LOG.info("url="+url);
+			LOG.debug("url="+url);
 	        Class.forName( driver );
 	        conn = DriverManager.getConnection( url, username, password );
         } catch (Exception e) {

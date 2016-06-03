@@ -25,12 +25,10 @@ public interface BaseDAO<T extends BaseBean> {
     public List<String> getBeanFieldNames();
     
     public void saveOrUpdate(T bean) throws Exception;
-    public List<T> getAll() throws Exception;
     public List<T> getAll(int pageNo) throws Exception;
     public List<T> getLookup() throws Exception;
     public T get(int id) throws Exception;
     public void delete(int beanId) throws Exception;
-    public List<T> find(String field, String value) throws Exception;
     public List<T> find(String field, String value, int pageNo) throws Exception;
 
     public void init(ServletConfig config);
