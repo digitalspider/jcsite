@@ -131,12 +131,13 @@ public class BaseControllerImpl<T extends BaseBean, U> extends HttpServlet imple
 		this.request = request;
 		this.response = response;
 
-        pathParts = HttpUtil.getPathParts(request);
-        LOG.info("pathParts="+pathParts);
+		contextUrl = HttpUtil.getContextUrl(request);
+		LOG.debug("contextUrl="+contextUrl);
         baseUrl = HttpUtil.getBaseUrl(request);
         LOG.info("baseUrl="+baseUrl);
-        contextUrl = HttpUtil.getContextUrl(request);
-        LOG.info("contextUrl="+contextUrl);
+		pathParts = HttpUtil.getPathParts(request);
+		LOG.info("pathParts="+pathParts);
+
 
 		String forward = null;
 
@@ -342,7 +343,7 @@ public class BaseControllerImpl<T extends BaseBean, U> extends HttpServlet imple
 
 	@Override
 	public void list() throws Exception {
-		// no default
+		request.setAttribute(beanName+BEANS_SUFFIX, dao.getAll() );
 	}
 
     @Override
