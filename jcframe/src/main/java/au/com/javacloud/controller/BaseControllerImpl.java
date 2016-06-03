@@ -215,33 +215,13 @@ public class BaseControllerImpl<T extends BaseBean, U> extends HttpServlet imple
 			throw new ServletException(e);
 		}
 
-        RequestDispatcher view = request.getRequestDispatcher( forward );
-		LOG.info("doGet() DONE. view="+view);
-        view.forward(request, response);
-    }
-
-	protected boolean handleJson(Object o) throws IOException {
 		if (baseUrl.endsWith(JSON_SUFFIX)) {
-			String output = gson.toJson(o);
-			response.getWriter().write(output);
-			return true;
+			return ;
 		}
-		return false;
-	}
 
-    private boolean checkAuthAndAcl(HttpServletRequest request, Action action) {
-    	return checkAuth(request) && checkACL(request, action); 
-    }
-
-    private boolean checkACL(HttpServletRequest request, Action action) {
-    	return (authService.checkACL(authService.getUser(request), this.clazz, action));
-    }
-    
-    private boolean checkAuth(HttpServletRequest request) {
-		if (configProperties.get(PROP_AUTH).equals("true")) {
-			return authService.isAuthenticated(request);
-		}
-    	return true;
+        RequestDispatcher view = request.getRequestDispatcher( forward );
+		LOG.info("doGet() DONE. forward="+forward);
+        view.forward(request, response);
     }
     
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -311,6 +291,30 @@ public class BaseControllerImpl<T extends BaseBean, U> extends HttpServlet imple
 			}
 		}
 		return bean;
+	}
+
+	protected boolean handleJson(Object o) throws IOException {
+		if (baseUrl.endsWith(JSON_SUFFIX)) {
+			String output = gson.toJson(o);
+			response.getWriter().write(output);
+			return true;
+		}
+		return false;
+	}
+
+	private boolean checkAuthAndAcl(HttpServletRequest request, Action action) {
+		return checkAuth(request) && checkACL(request, action);
+	}
+
+	private boolean checkACL(HttpServletRequest request, Action action) {
+		return (authService.checkACL(authService.getUser(request), this.clazz, action));
+	}
+
+	private boolean checkAuth(HttpServletRequest request) {
+		if (configProperties.get(PROP_AUTH).equals("true")) {
+			return authService.isAuthenticated(request);
+		}
+		return true;
 	}
 
 	protected HttpServletRequest getRequest() {
