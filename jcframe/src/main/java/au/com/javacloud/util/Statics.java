@@ -1,5 +1,6 @@
 package au.com.javacloud.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,12 +17,13 @@ import au.com.javacloud.controller.BaseControllerImpl;
 import au.com.javacloud.dao.BaseDAO;
 import au.com.javacloud.dao.BaseDAOImpl;
 import au.com.javacloud.dao.BaseDataSource;
+import au.com.javacloud.model.BaseBean;
 
 public class Statics {
 
 	private static final Logger LOG = Logger.getLogger(Statics.class);
 
-    private static final String DEFAULT_PACKAGE = "au.com.javacloud.model";
+    private static final String DEFAULT_PACKAGE_NAME = "au.com.javacloud.model";
     private static final String DEFAULT_JC_CONFIG_FILE = "jc.properties";
     private static final String DEFAULT_DB_CONFIG_FILE = "db.properties";
     private static final String DEFAULT_AUTH_CLASS = "au.com.javacloud.auth.BaseAuthServiceImpl";
@@ -31,21 +33,25 @@ public class Statics {
     private static final String PROP_AUTH_CLASS = "auth.class";
     private static final String PROP_DS_CLASS = "ds.class";
 	private static final String PROP_DS_CONFIG_FILE = "ds.config.file";
-    
+
+	private static List<Class<? extends BaseBean>> beanClassTypes = new ArrayList<>();
     private static Map<Class,BaseDAO> daoMap = new HashMap<Class,BaseDAO>();
     private static Map<Class,BaseController> controllerMap = new HashMap<Class,BaseController>();
     private static AuthService authService;
     private static DataSource dataSource;
+	private static String packageName = DEFAULT_PACKAGE_NAME;
 
     static {
 		try {
 			Properties properties = ResourceUtil.loadProperties(DEFAULT_JC_CONFIG_FILE);
-			String packageName = properties.getProperty(PROP_PACKAGE_NAME,DEFAULT_PACKAGE);
+			packageName = properties.getProperty(PROP_PACKAGE_NAME,DEFAULT_PACKAGE_NAME);
 			String authClassName = properties.getProperty(PROP_AUTH_CLASS,DEFAULT_AUTH_CLASS);
 			String dsClassName = properties.getProperty(PROP_DS_CLASS,DEFAULT_DS_CLASS);
 			String dsPropertiesFilename = properties.getProperty(PROP_DS_CONFIG_FILE,DEFAULT_DB_CONFIG_FILE);
 
 			Properties dbProperties = ResourceUtil.loadProperties(dsPropertiesFilename);
+
+			// Register the authService
 			try {
 				LOG.info("authClassName="+authClassName);
 				authService = (AuthService)Class.forName(authClassName).newInstance();
@@ -54,6 +60,8 @@ public class Statics {
 				authService = new BaseAuthServiceImpl();
 			}
 			LOG.info("authService="+authService);
+
+			// Register the dataSource
 			try {
 				LOG.info("dsClassName="+dsClassName);
 				dataSource = (DataSource)Class.forName(dsClassName).newInstance();
@@ -66,18 +74,29 @@ public class Statics {
 				((BaseDataSource)dataSource).setProperties(dbProperties);
 			}
 			LOG.info("dataSource="+dataSource);
-			List<Class> beanClasses = ReflectUtil.getClasses(packageName);
-			for (Class classType : beanClasses) {
-				if (!classType.getSimpleName().equals("BaseBean")) {
-					daoMap.put(classType, new BaseDAOImpl<>(classType, dataSource));
-					controllerMap.put(classType, new BaseControllerImpl<>(classType, authService));
+
+			// Find all the beanClassTypes
+			try {
+				List<Class> classTypes = ReflectUtil.getClasses(packageName);
+				for (Class classType : classTypes) {
+					if (BaseBean.class.isAssignableFrom(classType) && !classType.equals(BaseBean.class)) {
+						beanClassTypes.add(classType);
+						daoMap.put(classType, new BaseDAOImpl<>(classType, dataSource));
+						controllerMap.put(classType, new BaseControllerImpl<>(classType,authService));
+					}
 				}
+			} catch (Exception e) {
+				LOG.error(e, e);
 			}
+			LOG.info("beanClassTypes="+beanClassTypes);
 		} catch(Exception e) {
 			LOG.error(e,e);
 		}
-
     }
+
+	public static List<Class<? extends BaseBean>> getBeanClassTypes() {
+		return beanClassTypes;
+	}
 
 	public static AuthService getAuthService() {
 		return authService;
