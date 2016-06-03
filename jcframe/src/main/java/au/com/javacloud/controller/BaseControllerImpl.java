@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -22,6 +23,7 @@ import au.com.javacloud.auth.AuthService;
 import au.com.javacloud.dao.BaseDAO;
 import au.com.javacloud.model.BaseBean;
 import au.com.javacloud.util.HttpUtil;
+import au.com.javacloud.util.PathParts;
 import au.com.javacloud.util.ReflectUtil;
 import au.com.javacloud.util.Statics;
 
@@ -37,25 +39,31 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 	protected Class<T> clazz;
     protected String beanName = "bean";
     protected Map<String,List<BaseBean>> lookupMap = new HashMap<String, List<BaseBean>>();
+    protected String indexUrl = "/";
     protected String listUrl = "/";
 	protected String showUrl = "/";
     protected String insertOrEditUrl = "/";
     protected String baseUrl;
-    protected String[] pathParts = new String[0];
+    protected String contextUrl;
+    protected PathParts pathParts;
 	protected DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	protected AuthService authService;
 	private HttpServletRequest request;
 	private HttpServletResponse response;
+	private Properties configProperties = new Properties();
 
 	public static final String BEANS_SUFFIX = "s";
 	public static final String BEANS_FIELDSUFFIX = "fields";
 	public static final String LOOKUPMAP = "lookupMap";
+	public static final String CONTEXTURL = "contextUrl";
 	public static final String BASEURL = "baseUrl";
 	public static final String BEANURL = "beanUrl";
 	public static final String DEFAULT_JSPPAGE_PREFIX = "/jsp/";
 	public static final String DEFAULT_LIST_PAGE = "/list.jsp";
 	public static final String DEFAULT_SHOW_PAGE = "/show.jsp";
 	public static final String DEFAULT_EDIT_PAGE = "/edit.jsp";
+	public static final String DEFAULT_INDEX_PAGE = "/index.jsp";
+	public static final String PROP_USE_INDEX = "useindex";
 
 	public BaseControllerImpl(Class<T> clazz) {
 		this(clazz, Statics.getAuthService());
@@ -66,14 +74,12 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 		this.clazz = clazz;
 		this.authService = authService;
 		dao = Statics.getDaoMap().get(clazz);
-		updateUrls(clazz.getSimpleName().toLowerCase());
+		updateUrls(DEFAULT_JSPPAGE_PREFIX,clazz.getSimpleName().toLowerCase());
+		configProperties.setProperty(PROP_USE_INDEX, "false");
     }
 
-	protected void updateUrls(String contextName) {
-		updateUrls(DEFAULT_JSPPAGE_PREFIX,contextName);
-	}
-
 	protected void updateUrls(String prefix, String contextName) {
+		this.indexUrl = prefix+contextName+DEFAULT_INDEX_PAGE;
 		this.listUrl = prefix+contextName+DEFAULT_LIST_PAGE;
 		this.showUrl = prefix+contextName+DEFAULT_SHOW_PAGE;
 		this.insertOrEditUrl = prefix+contextName+DEFAULT_EDIT_PAGE;
@@ -118,68 +124,80 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
         LOG.info("pathParts="+pathParts);
         baseUrl = HttpUtil.getBaseUrl(request);
         LOG.info("baseUrl="+baseUrl);
+        contextUrl = HttpUtil.getContextUrl(request);
+        LOG.info("contextUrl="+contextUrl);
 
 		String forward = null;
 
     	try {
     		request.setAttribute(beanName+BEANS_FIELDSUFFIX, dao.getBeanFieldNames() );
     		request.setAttribute(LOOKUPMAP, lookupMap );
-			request.setAttribute(BASEURL, baseUrl );
-			request.setAttribute(BEANURL, baseUrl+"/"+clazz.getSimpleName().toLowerCase());
+    		request.setAttribute(CONTEXTURL, contextUrl );
+    		request.setAttribute(BASEURL, baseUrl );
+    		request.setAttribute(BEANURL, contextUrl+"/"+clazz.getSimpleName().toLowerCase());
 
-			if (pathParts!=null && pathParts.length>0) {
-				if (pathParts[0].equals("delete")) {
+			if (pathParts!=null && !pathParts.isEmpty()) {
+				if (pathParts.getFirst().equalsIgnoreCase(Action.DELETE.name())) {
 					LOG.info("action=delete");
 					if (authService.checkACL(authService.getUser(request), this.clazz, Action.DELETE)) {
 						delete();
 					}
-				} else if (pathParts[0].equals("edit")) {
+				} else if (pathParts.getFirst().equalsIgnoreCase(Action.EDIT.name())) {
 					LOG.info("action=edit");
-					if (authService.checkACL(authService.getUser(request), this.clazz, Action.READ)) {
+					if (authService.checkACL(authService.getUser(request), this.clazz, Action.EDIT)) {
 						read();
 						forward = insertOrEditUrl;
 					}
-				} else if (pathParts[0].equals("show")) {
+				} else if (pathParts.getFirst().equalsIgnoreCase(Action.SHOW.name())) {
 					LOG.info("action=show");
-					if (authService.checkACL(authService.getUser(request), this.clazz, Action.READ)) {
+					if (authService.checkACL(authService.getUser(request), this.clazz, Action.SHOW)) {
 						read();
 						forward = showUrl;
 					}
-				} else if (StringUtils.isNumeric(pathParts[0])) {
+				} else if (pathParts.getFirst().equalsIgnoreCase(Action.LIST.name())) {
+					LOG.info("action=list");
+					if (authService.checkACL(authService.getUser(request), this.clazz, Action.LIST)) {
+						list();
+						forward = listUrl;
+					}
+				} else if (StringUtils.isNumeric(pathParts.getFirst())) {
 					LOG.info("action=<int>");
-					if (authService.checkACL(authService.getUser(request), this.clazz, Action.READ)) {
+					if (authService.checkACL(authService.getUser(request), this.clazz, Action.SHOW)) {
 						read();
 						forward = showUrl;
 					}
-				} else if (pathParts[0].equals("insert")) {
+				} else if (pathParts.getFirst().equalsIgnoreCase(Action.INSERT.name())) {
 					LOG.info("action=insert");
-					if (authService.checkACL(authService.getUser(request), this.clazz, Action.CREATE)) {
+					if (authService.checkACL(authService.getUser(request), this.clazz, Action.INSERT)) {
 						forward = insertOrEditUrl;
 					}
-				} else if (pathParts[0].equals("find")) {
+				} else if (pathParts.getFirst().equalsIgnoreCase(Action.FIND.name())) {
 					LOG.info("action=find");
 					if (authService.checkACL(authService.getUser(request), this.clazz, Action.FIND)) {
 						find();
 						forward = listUrl;
 					}
-				} else if (pathParts[0].equals("config")) {
+				} else if (pathParts.getFirst().equalsIgnoreCase(Action.CONFIG.name())) {
 					LOG.info("action=config");
 					if (authService.checkACL(authService.getUser(request), this.clazz, Action.CONFIG)) {
 						config();
 					}
-				} else if (pathParts[0].equals("p")) {
+				} else if (pathParts.getFirst().equals("p")) {
 					LOG.info("action=p");
-					if (authService.checkACL(authService.getUser(request), this.clazz, Action.READ)) {
+					if (authService.checkACL(authService.getUser(request), this.clazz, Action.LIST)) {
 						forward = listUrl;
-						int pageNo = getNumberFromPathParts(1);
+						int pageNo = pathParts.getInt(1);
 						request.setAttribute(beanName+BEANS_SUFFIX, dao.getAll(pageNo) );
 					}
 				}
 			}
 	        if (forward==null) {
-				LOG.info("action=list");
-	            forward = listUrl;
-	           	request.setAttribute(beanName+BEANS_SUFFIX, dao.getAll() );
+        		LOG.info("action=list(default)");
+				request.setAttribute(beanName+BEANS_SUFFIX, dao.getAll() );
+				forward = listUrl;
+				if (configProperties.getProperty(PROP_USE_INDEX).equalsIgnoreCase("true")) {
+					forward = indexUrl;
+				}
 	        }
 		} catch (Exception e) {
 			LOG.error(e,e);
@@ -202,15 +220,15 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 		LOG.info("baseUrl="+baseUrl);
 
 		try {
-			String id = request.getParameter("id");
+			String id = request.getParameter(BaseBean.FIELD_ID);
 			if( id == null || id.isEmpty() ) {
 				LOG.info("action=create");
-				if (authService.checkACL(authService.getUser(request), this.clazz, Action.CREATE)) {
+				if (authService.checkACL(authService.getUser(request), this.clazz, Action.INSERT)) {
 					create();
 				}
 			} else {
 				LOG.info("action=update("+id+")");
-				if (authService.checkACL(authService.getUser(request), this.clazz, Action.UPDATE)) {
+				if (authService.checkACL(authService.getUser(request), this.clazz, Action.EDIT)) {
 					update(id);
 				}
 			}
@@ -218,8 +236,9 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 			request.setAttribute(beanName+BEANS_SUFFIX, dao.getAll() );
 			request.setAttribute(beanName+BEANS_FIELDSUFFIX, dao.getBeanFieldNames() );
 			request.setAttribute(LOOKUPMAP, lookupMap );
-			request.setAttribute(BASEURL, baseUrl );
-			request.setAttribute(BEANURL, baseUrl+"/"+clazz.getSimpleName().toLowerCase());
+    		request.setAttribute(CONTEXTURL, contextUrl );
+    		request.setAttribute(BASEURL, baseUrl );
+    		request.setAttribute(BEANURL, contextUrl+"/"+clazz.getSimpleName().toLowerCase());
 		} catch (Exception e) {
 			LOG.error(e,e);
 			throw new ServletException(e);
@@ -266,6 +285,14 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 	protected HttpServletResponse getResponse() {
 		return response;
 	}
+	
+    public String getConfigProperty(String key) {
+    	return configProperties.getProperty(key);
+    }
+    
+    public void setConfigProperty(String key, String value) {
+    	configProperties.setProperty(key, value);
+    }
 
     @Override
     public void create() throws Exception {
@@ -276,10 +303,10 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
     @Override
     public void read() throws Exception {
 		String idValue = null;
-		if (StringUtils.isNumeric(pathParts[0])) {
-			idValue = pathParts[0];
-		} else if (pathParts.length>1 && StringUtils.isNumeric(pathParts[1])) {
-			idValue = pathParts[1];
+		if (pathParts.isNumeric(0)) {
+			idValue = pathParts.getFirst();
+		} else if (pathParts.isNumeric(1)) {
+			idValue = pathParts.get(1);
 		}
 		if (idValue!=null) {
 			int id = Integer.parseInt(idValue);
@@ -287,15 +314,9 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 		}
     }
 
-	private int getNumberFromPathParts(int pathPartIndex) throws Exception {
-		if (pathParts.length>pathPartIndex && StringUtils.isNumeric(pathParts[pathPartIndex])) {
-			try {
-				return Integer.parseInt(pathParts[pathPartIndex]);
-			} catch (NumberFormatException e) {
-				// ignore
-			}
-		}
-		return 0;
+	@Override
+	public void list() throws Exception {
+		// no default
 	}
 
     @Override
@@ -307,7 +328,7 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 
     @Override
     public void delete()  throws Exception {
-		int id = getNumberFromPathParts(1);
+		int id = pathParts.getInt(1);
 		if (id>0) {
 			dao.delete(id);
 		}
@@ -315,33 +336,47 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 
 	@Override
 	public void find()  throws Exception {
-		if (pathParts.length > 2) {
-			String field = pathParts[1];
-			String value = pathParts[2];
-			int pageNo = getNumberFromPathParts(3);
+		if (pathParts.size() > 2) {
+			String field = pathParts.get(1);
+			String value = pathParts.get(2);
+			int pageNo = pathParts.getInt(3);
 			request.setAttribute(beanName + BEANS_SUFFIX, dao.find(field, value, pageNo));
 		}
 	}
 
 	@Override
 	public void config()  throws Exception {
-		if (pathParts.length>1) {
-			if (pathParts[1].equals("order")) {
+		if (pathParts.size()>1) {
+			if (pathParts.get(1).equals("order")) {
 				dao.setOrderBy("");
-				if (pathParts.length > 2) {
-					String field = pathParts[2];
+				if (pathParts.size() > 2) {
+					String field = pathParts.get(2);
 					dao.setOrderBy(field);
-					if (pathParts.length > 3) {
-						String direction = pathParts[3];
+					if (pathParts.size() > 3) {
+						String direction = pathParts.get(3);
 						if (direction.equalsIgnoreCase("ASC") || direction.equalsIgnoreCase("DESC")) {
 							dao.setOrderBy(field + " " + direction);
 						}
 					}
 				}
-			}
-			if (pathParts[1].equals("limit")) {
-				int limit = getNumberFromPathParts(2);
+			} else if (pathParts.get(1).equals("limit")) {
+				int limit = pathParts.getInt(2);
 				dao.setLimit(limit);
+			} else if (pathParts.get(1).equals("set")) {
+				if (pathParts.size() > 3) {
+					String key = pathParts.get(2);
+					String value = pathParts.get(3);
+					if (StringUtils.isNotBlank(key) && StringUtils.isNotBlank(value)) {
+						configProperties.setProperty(key, value);
+					}
+				} else if (pathParts.size() > 2) {
+					String key = pathParts.get(2);
+					if (StringUtils.isNotBlank(key)) {
+						if (configProperties.contains(key)) {
+							configProperties.setProperty(key, null);
+						}
+					}
+				}
 			}
 		}
 	}

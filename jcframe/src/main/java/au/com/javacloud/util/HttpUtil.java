@@ -8,19 +8,29 @@ public class HttpUtil
 {
     private static final Logger LOG = Logger.getLogger(HttpUtil.class);
 
-    public static String[] getPathParts(HttpServletRequest req) {
+    public static PathParts getPathParts(HttpServletRequest req) {
         String pathInfo = req.getPathInfo();
         LOG.debug("pathInfo="+pathInfo);
         if (pathInfo!=null) {
-            return pathInfo.substring(1).split("/");
+            return new PathParts(pathInfo.substring(1).split("/"));
         }
-        return new String[0];
+        return new PathParts(new String[0]);
     }
 
 
-    public static String getBaseUrl(HttpServletRequest request) {
+    public static String getContextUrl(HttpServletRequest request) {
         String url = request.getRequestURL().toString();
-        String baseUrl = url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath();
+        String contextUrl = url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath();
+        LOG.debug("contextUrl="+contextUrl);
+        return contextUrl;
+    }
+    
+    public static String getBaseUrl(HttpServletRequest request) {
+        String baseUrl = getContextUrl(request);
+        PathParts pathParts = getPathParts(request);
+        if (!pathParts.isEmpty()) {
+        	baseUrl += pathParts.getFirst();
+        }
         LOG.debug("baseUrl="+baseUrl);
         return baseUrl;
     }
