@@ -2,6 +2,8 @@ package au.com.javacloud.model;
 
 import java.util.Date;
 
+import au.com.javacloud.annotation.Exclude;
+
 /**
  * Created by david on 22/05/16.
  */
@@ -23,6 +25,7 @@ public class User extends BaseBean {
     private String token;
     private String image;
 
+    @Exclude
     public String getNameColumn() {
         return "email";
     }

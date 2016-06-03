@@ -1,5 +1,7 @@
 package au.com.javacloud.model;
 
+import au.com.javacloud.annotation.Exclude;
+
 /**
  * Created by david on 22/05/16.
  */
@@ -10,6 +12,7 @@ public class Student extends BaseBean {
     private String course;
     private int year;
 
+    @Exclude
     public String getNameColumn() {
         return "firstName";
     }

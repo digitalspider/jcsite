@@ -57,10 +57,12 @@ public class ReflectUtil {
     	for (Method method : allMethods) {
     	    if (Modifier.isPublic(method.getModifiers()) && !Modifier.isAbstract(method.getModifiers())) {
     	        if (method.getName().startsWith("set")) {
-    	        	Class[] params = method.getParameterTypes();
-    	        	if (params.length==1) {
-    	        		setterMethods.put(method,params[0]);
-    	        	}
+					if (!method.isAnnotationPresent(Exclude.class)) {
+						Class[] params = method.getParameterTypes();
+						if (params.length == 1) {
+							setterMethods.put(method, params[0]);
+						}
+					}
     	        }
     	    }
     	}

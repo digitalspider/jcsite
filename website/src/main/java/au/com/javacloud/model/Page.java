@@ -2,6 +2,8 @@ package au.com.javacloud.model;
 
 import java.util.Date;
 
+import au.com.javacloud.annotation.Exclude;
+
 /**
  * Created by david on 22/05/16.
  */
@@ -19,6 +21,7 @@ public class Page extends BaseBean {
     private String content;
     private String url;
 
+    @Exclude
     public String getNameColumn() {
         return "title";
     }
