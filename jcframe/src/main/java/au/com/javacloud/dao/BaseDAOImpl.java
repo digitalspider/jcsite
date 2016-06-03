@@ -144,6 +144,28 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 	}
 
 	@Override
+	public T getLookup(int id) throws Exception {
+		T bean = ReflectUtil.getNewBean(clazz);
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		try {
+			String columnName = bean.getNameColumn();
+			String query = "select id,"+columnName+" from "+tableName+" where id=?";
+			statement = getConnection().prepareStatement( query );
+			statement.setInt(1, id);
+			resultSet = statement.executeQuery();
+			if( resultSet.next() ) {
+				bean.setId( resultSet.getInt( BaseBean.FIELD_ID ) );
+				bean.setDisplayValue( resultSet.getString( columnName ) );
+			}
+		} finally {
+			if (resultSet!=null) resultSet.close();
+			if (statement!=null) statement.close();
+		}
+		return bean;
+	}
+
+	@Override
 	public T get(int id) throws Exception {
 		T bean = ReflectUtil.getNewBean(clazz);
 		PreparedStatement statement = null;

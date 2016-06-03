@@ -180,7 +180,7 @@ public class ReflectUtil {
 			BaseDAO fieldDao = Statics.getDaoMap().get(classType);
 			if (fieldDao != null) {
 				if (!(bean.getClass().equals(classType) && bean.getId()==id)) { // prevent infinite recurssion
-					BaseBean valueBean = fieldDao.get(id);
+					BaseBean valueBean = fieldDao.getLookup(id);
 					if (valueBean != null) {
 						method.invoke(bean, valueBean);
 					}
@@ -198,7 +198,7 @@ public class ReflectUtil {
 				List<BaseBean> beans = new ArrayList<BaseBean>();
 				for (String valueString : valueArray) {
 					if (!StringUtils.isBlank(valueString)) {
-						BaseBean valueBean = fieldDao.get(Integer.parseInt(valueString));
+						BaseBean valueBean = fieldDao.getLookup(Integer.parseInt(valueString));
 						if (valueBean != null) {
 							beans.add(valueBean);
 						}
