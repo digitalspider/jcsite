@@ -179,11 +179,9 @@ public class ReflectUtil {
 		if (ReflectUtil.isBean(classType)) {
 			BaseDAO fieldDao = Statics.getDaoMap().get(classType);
 			if (fieldDao != null) {
-				if (!(bean.getClass().equals(classType) && bean.getId()==id)) { // prevent infinite recurssion
-					BaseBean valueBean = fieldDao.getLookup(id);
-					if (valueBean != null) {
-						method.invoke(bean, valueBean);
-					}
+				BaseBean valueBean = fieldDao.getLookup(id);
+				if (valueBean != null) {
+					method.invoke(bean, valueBean);
 				}
 			}
 		}
