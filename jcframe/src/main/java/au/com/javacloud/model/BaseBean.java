@@ -1,6 +1,7 @@
 package au.com.javacloud.model;
 
 import au.com.javacloud.annotation.Exclude;
+import au.com.javacloud.annotation.GSonExclude;
 
 /**
  * Created by david on 22/05/16.
@@ -8,11 +9,11 @@ import au.com.javacloud.annotation.Exclude;
 
 public class BaseBean {
     protected int id;
+    @GSonExclude
     protected String displayValue;
 
     public final static String FIELD_ID = "id";
     public final static String FIELD_DISPLAYVALUE = "displayValue";
-    public final static String FIELD_NAMECOLUMN = "nameColumn";
 
     @Override
     public String toString() {

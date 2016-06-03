@@ -1,6 +1,7 @@
 package au.com.javacloud.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -24,6 +25,7 @@ import au.com.javacloud.auth.Action;
 import au.com.javacloud.auth.AuthService;
 import au.com.javacloud.dao.BaseDAO;
 import au.com.javacloud.model.BaseBean;
+import au.com.javacloud.util.GsonExclusionStrategy;
 import au.com.javacloud.util.HttpUtil;
 import au.com.javacloud.util.PathParts;
 import au.com.javacloud.util.ReflectUtil;
@@ -53,7 +55,7 @@ public class BaseControllerImpl<T extends BaseBean, U> extends HttpServlet imple
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	private Properties configProperties = new Properties();
-	private Gson gson = new Gson();
+	private Gson gson = new GsonBuilder().setExclusionStrategies(new GsonExclusionStrategy()).create();
 
 	public static final String BEANS_SUFFIX = "s";
 	public static final String BEANS_FIELDSUFFIX = "fields";
