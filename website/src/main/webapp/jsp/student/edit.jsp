@@ -9,7 +9,7 @@
 <title>Add New Student</title>
 </head>
 <body>
-	<form action="${beanUrl}" method="post">
+	<form action="${baseUrl}" method="post">
 		<fieldset>
 			<div>
 				<label for="id">Student ID</label>

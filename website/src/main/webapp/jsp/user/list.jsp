@@ -31,7 +31,7 @@
             <tbody>
                 <c:forEach items="${beans}" var="bean">
                     <tr>
-                        <td><a href="${beanUrl}/show/<c:out value='${bean.id}'/>"><c:out value="${bean.id}" escapeXml="false"/></a></td>
+                        <td><a href="${baseUrl}/show/<c:out value='${bean.id}'/>"><c:out value="${bean.id}" escapeXml="false"/></a></td>
                         <td><c:out value="${bean.firstname}"/></td>
                         <td><c:out value="${bean.lastname}"/></td>
                         <td><c:out value="${bean.email}"/></td>
@@ -41,14 +41,14 @@
                         <td><c:out value="${bean.type}" /></td>
                         <td><c:out value="${bean.tags}" /></td>
                         <td><c:out value="${bean.status}" /></td>
-                        <td><a href="${beanUrl}/edit/<c:out value='${bean.id}' />">Update</a></td>
-                        <td><a href="${beanUrl}/delete/<c:out value='${bean.id}'/>">Delete</a></td>
+                        <td><a href="${baseUrl}/edit/<c:out value='${bean.id}' />">Update</a></td>
+                        <td><a href="${baseUrl}/delete/<c:out value='${bean.id}'/>">Delete</a></td>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
         <p>
-            <a href="${beanUrl}/insert">Add User</a>
+            <a href="${baseUrl}/insert">Add User</a>
         </p>
     </body>
 </html>

@@ -9,7 +9,7 @@
 <title>Add New Page</title>
 </head>
 <body>
-	<form action="${beanUrl}" method="post">
+	<form action="${baseUrl}" method="post">
 		<fieldset>
 			<div>
 				<label for="id">Page ID</label>

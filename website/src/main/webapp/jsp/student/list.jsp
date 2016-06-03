@@ -26,19 +26,19 @@
             <tbody>
                 <c:forEach items="${beans}" var="bean">
                     <tr>
-                        <td><a href="${beanUrl}/show/<c:out value='${bean.id}'/>"><c:out value="${bean.id}"/></td>
+                        <td><a href="${baseUrl}/show/<c:out value='${bean.id}'/>"><c:out value="${bean.id}"/></td>
                         <td><c:out value="${bean.firstName}" escapeXml="false"/></td>
                         <td><c:out value="${bean.lastName}" escapeXml="false"/></td>
                         <td><c:out value="${bean.course}" escapeXml="false"/></td>
                         <td><c:out value="${bean.year}" escapeXml="false"/></td>
-                        <td><a href="${beanUrl}/edit/<c:out value='${bean.id}'/>">Update</a></td>
-                        <td><a href="${beanUrl}/delete/<c:out value='${bean.id}'/>">Delete</a></td>
+                        <td><a href="${baseUrl}/edit/<c:out value='${bean.id}'/>">Update</a></td>
+                        <td><a href="${baseUrl}/delete/<c:out value='${bean.id}'/>">Delete</a></td>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
         <p>
-            <a href="${beanUrl}/insert">Add Student</a>
+            <a href="${baseUrl}/insert">Add Student</a>
         </p>
     </body>
 </html>

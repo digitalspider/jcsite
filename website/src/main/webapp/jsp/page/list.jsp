@@ -31,7 +31,7 @@
             <tbody>
                 <c:forEach items="${beans}" var="bean">
                     <tr>
-                        <td><a href="${beanUrl}/show/<c:out value='${bean.id}'/>"><c:out value="${bean.id}" /></a></td>
+                        <td><a href="${baseUrl}/show/<c:out value='${bean.id}'/>"><c:out value="${bean.id}" /></a></td>
                         <td><c:out value="${bean.title}" escapeXml="false"/></td>
                         <td><c:out value="${bean.description}" escapeXml="false"/></td>
                         <td><c:out value="${bean.content}" escapeXml="false"/></td>
@@ -39,16 +39,16 @@
                         <td><c:out value="${bean.type}" /></td>
                         <td><c:out value="${bean.tags}" /></td>
                         <td><c:out value="${bean.status}" /></td>
-                        <td><a href="${baseUrl}/user/show/<c:out value='${bean.authorId.id}'/>"><c:out value="${bean.authorId.id}" /> - <c:out value="${bean.authorId.displayValue}" /></a></td>
-                        <td><a href="${baseUrl}/page/show/<c:out value='${bean.parentId.id}'/>"><c:out value="${bean.parentId.id}" /> - <c:out value="${bean.parentId.displayValue}" /></a></td>
-                        <td><a href="${beanUrl}/edit/<c:out value='${bean.id}'/>">Update</a></td>
-                        <td><a href="${beanUrl}/delete/<c:out value='${bean.id}'/>">Delete</a></td>
+                        <td><a href="${contextUrl}/user/show/<c:out value='${bean.authorId.id}'/>"><c:out value="${bean.authorId.id}" /> - <c:out value="${bean.authorId.displayValue}" /></a></td>
+                        <td><a href="${contextUrl}/page/show/<c:out value='${bean.parentId.id}'/>"><c:out value="${bean.parentId.id}" /> - <c:out value="${bean.parentId.displayValue}" /></a></td>
+                        <td><a href="${baseUrl}/edit/<c:out value='${bean.id}'/>">Update</a></td>
+                        <td><a href="${baseUrl}/delete/<c:out value='${bean.id}'/>">Delete</a></td>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
         <p>
-            <a href="${beanUrl}/insert">Add Page</a>
+            <a href="${baseUrl}/insert">Add Page</a>
         </p>
     </body>
 </html>
