@@ -39,7 +39,6 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 	protected DataSource dataSource;
 	protected String tableName;
 	protected Class<T> clazz;
-	protected List<String> excludeForSaveGetMethods = new ArrayList<String>();
 	protected String orderBy;
 	protected int limit = DEFAULT_LIMIT;
 	protected DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -49,7 +48,6 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 		this.clazz = clazz;
 		this.dataSource = dataSource;
 		this.tableName= getTableName();
-		this.excludeForSaveGetMethods.addAll(Arrays.asList(new String[] {BaseBean.FIELD_ID, BaseBean.FIELD_DISPLAYVALUE, BaseBean.FIELD_NAMECOLUMN}));
 	}
 
 	public void init(ServletConfig config) {
@@ -220,7 +218,7 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 
 	@Override
 	public List<String> getBeanFieldNames() {
-		return ReflectUtil.getBeanFieldNames(clazz, excludeForSaveGetMethods);
+		return ReflectUtil.getBeanFieldNames(clazz);
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -289,9 +287,7 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 		Map<Method,Class> methods = ReflectUtil.getPublicGetterMethods(clazz);
 		for (Method method : methods.keySet()) {
 			String fieldName = ReflectUtil.getFieldName(method);
-			if (!excludeForSaveGetMethods.contains(fieldName)) {
-				columns.add(fieldName);
-			}
+			columns.add(fieldName);
 		}
 		String query = "insert into "+tableName+" "+ getInsertIntoColumnsSQL(columns);
 		if (bean.getId()>0) {
@@ -305,69 +301,67 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 		for (Method method : methods.keySet()) {
 			String fieldName = ReflectUtil.getFieldName(method);
 			Class classType = methods.get(method);
-			if (!excludeForSaveGetMethods.contains(fieldName)) {
-				Object result = method.invoke(bean);
-                LOG.debug("m="+method.getName() + " classType="+classType +" result="+result);
-				if (ReflectUtil.isBean(classType)) {
-					// Handle BaseBeans
-					if (result==null) {
-                		LOG.debug("result.class=null");
-						preparedStatement.setInt(++index, 0);
-					} else if (result instanceof BaseBean) {
-	                    LOG.debug("result.class="+result.getClass().getSimpleName());
-						preparedStatement.setInt(++index, ((BaseBean)result).getId());
-					}
-				} else if (ReflectUtil.isCollection(classType)) {
-					// Handle Collections
-					if (result==null) {
-                		LOG.debug("result.class=null");
-						preparedStatement.setObject(++index, null);
-					} else {
-	                    LOG.debug("result.class="+result.getClass().getSimpleName());
-						Collection c = (Collection) result;
-						String resString = "";
-						for (Object o : c) {
-							if (resString.length()>0) {
-								resString+=",";
-							}
-							if (o instanceof BaseBean) {
-								resString += ((BaseBean)o).getId();
-							} else {
-								resString += o.toString();
-							}
-						}
-						preparedStatement.setInt(++index, ((BaseBean)result).getId());
-					}
+			Object result = method.invoke(bean);
+			LOG.debug("m="+method.getName() + " classType="+classType +" result="+result);
+			if (ReflectUtil.isBean(classType)) {
+				// Handle BaseBeans
+				if (result==null) {
+					LOG.debug("result.class=null");
+					preparedStatement.setInt(++index, 0);
+				} else if (result instanceof BaseBean) {
+					LOG.debug("result.class="+result.getClass().getSimpleName());
+					preparedStatement.setInt(++index, ((BaseBean)result).getId());
+				}
+			} else if (ReflectUtil.isCollection(classType)) {
+				// Handle Collections
+				if (result==null) {
+					LOG.debug("result.class=null");
+					preparedStatement.setObject(++index, null);
 				} else {
-					// Handle primitives
-					if (result==null) {
-                		LOG.debug("result.class=null");
-						preparedStatement.setObject(++index, null);
-					} else {
-                		LOG.debug("result.class="+result.getClass().getSimpleName());
-    					if (classType.equals(String.class)) {
-    						preparedStatement.setString(++index, (String) result);
-    					} else if (classType.equals(int.class) || classType.equals(Integer.class)) {
-    						preparedStatement.setInt(++index, (Integer) result);
-    					} else if (classType.equals(boolean.class) || classType.equals(Boolean.class)) {
-    						preparedStatement.setBoolean(++index, (Boolean) result);
-    					} else if (classType.equals(Date.class)) {
-    						preparedStatement.setString(++index, dateFormat.format(result));
-    					} else if (classType.equals(long.class) || classType.equals(Long.class)) {
-    						preparedStatement.setLong(++index, (Long) result);
-    					} else if (classType.equals(short.class) || classType.equals(Short.class)) {
-    						preparedStatement.setShort(++index, (Short) result);
-    					} else if (classType.equals(float.class) || classType.equals(Float.class)) {
-    						preparedStatement.setFloat(++index, (Float) result);
-    					} else if (classType.equals(double.class) || classType.equals(Double.class)) {
-    						preparedStatement.setDouble(++index, (Double) result);
-    					} else if (classType.equals(BigDecimal.class)) {
-    						preparedStatement.setBigDecimal(++index, (BigDecimal) result);
-    					} else if (classType.equals(Blob.class)) {
-    						preparedStatement.setBlob(++index, (Blob) result);
-    					} else if (classType.equals(Clob.class)) {
-    						preparedStatement.setClob(++index, (Clob) result);
-    					}
+					LOG.debug("result.class="+result.getClass().getSimpleName());
+					Collection c = (Collection) result;
+					String resString = "";
+					for (Object o : c) {
+						if (resString.length()>0) {
+							resString+=",";
+						}
+						if (o instanceof BaseBean) {
+							resString += ((BaseBean)o).getId();
+						} else {
+							resString += o.toString();
+						}
+					}
+					preparedStatement.setInt(++index, ((BaseBean)result).getId());
+				}
+			} else {
+				// Handle primitives
+				if (result==null) {
+					LOG.debug("result.class=null");
+					preparedStatement.setObject(++index, null);
+				} else {
+					LOG.debug("result.class="+result.getClass().getSimpleName());
+					if (classType.equals(String.class)) {
+						preparedStatement.setString(++index, (String) result);
+					} else if (classType.equals(int.class) || classType.equals(Integer.class)) {
+						preparedStatement.setInt(++index, (Integer) result);
+					} else if (classType.equals(boolean.class) || classType.equals(Boolean.class)) {
+						preparedStatement.setBoolean(++index, (Boolean) result);
+					} else if (classType.equals(Date.class)) {
+						preparedStatement.setString(++index, dateFormat.format(result));
+					} else if (classType.equals(long.class) || classType.equals(Long.class)) {
+						preparedStatement.setLong(++index, (Long) result);
+					} else if (classType.equals(short.class) || classType.equals(Short.class)) {
+						preparedStatement.setShort(++index, (Short) result);
+					} else if (classType.equals(float.class) || classType.equals(Float.class)) {
+						preparedStatement.setFloat(++index, (Float) result);
+					} else if (classType.equals(double.class) || classType.equals(Double.class)) {
+						preparedStatement.setDouble(++index, (Double) result);
+					} else if (classType.equals(BigDecimal.class)) {
+						preparedStatement.setBigDecimal(++index, (BigDecimal) result);
+					} else if (classType.equals(Blob.class)) {
+						preparedStatement.setBlob(++index, (Blob) result);
+					} else if (classType.equals(Clob.class)) {
+						preparedStatement.setClob(++index, (Clob) result);
 					}
 				}
 			}
@@ -407,16 +401,6 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 			sql += column+"=?";
 		}
 		return sql;
-	}
-
-	@Override
-	public List<String> getExcludeForSaveGetMethods() {
-		return excludeForSaveGetMethods;
-	}
-
-	@Override
-	public void setExcludeForSaveGetMethods(List<String> excludeForSaveGetMethods) {
-		this.excludeForSaveGetMethods = excludeForSaveGetMethods;
 	}
 
 	@Override

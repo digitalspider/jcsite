@@ -22,6 +22,7 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import au.com.javacloud.annotation.Exclude;
 import au.com.javacloud.dao.BaseDAO;
 import au.com.javacloud.model.BaseBean;
 
@@ -79,8 +80,10 @@ public class ReflectUtil {
     	for (Method method : allMethods) {
     	    if (Modifier.isPublic(method.getModifiers()) && !Modifier.isAbstract(method.getModifiers())) {
     	        if (method.getName().startsWith("get")) {
-    	        	Class returnClass = method.getReturnType();
-    	        	getterMethods.put(method,returnClass);
+					if (!method.isAnnotationPresent(Exclude.class)) {
+						Class returnClass = method.getReturnType();
+						getterMethods.put(method, returnClass);
+					}
     	        }
     	    }
     	}
@@ -97,14 +100,12 @@ public class ReflectUtil {
     	return null;
     }
     
-	public static <U extends BaseBean> List<String> getBeanFieldNames(Class<U> clazz, List<String> excludeValues) {
+	public static <U extends BaseBean> List<String> getBeanFieldNames(Class<U> clazz) {
 		Set<Method> methods = ReflectUtil.getPublicGetterMethods(clazz).keySet();
 		List<String> beanFieldNames = new ArrayList<String>();
 		for (Method method : methods) {
             String fieldName = ReflectUtil.getFieldName(method);
-            if (!excludeValues.contains(fieldName)) {
-                beanFieldNames.add(fieldName);
-            }
+			beanFieldNames.add(fieldName);
 		}
 		return beanFieldNames;
 	}

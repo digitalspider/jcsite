@@ -42,9 +42,6 @@ public interface BaseDAO<T extends BaseBean> {
     public void setLimit(int limit);
     public int getLimit();
 
-    public List<String> getExcludeForSaveGetMethods();
-    public void setExcludeForSaveGetMethods(List<String> excludeForSaveGetMethods);
-
     public DateFormat getDateFormat();
     public void setDateFormat(DateFormat dateFormat);
 }

@@ -1,5 +1,7 @@
 package au.com.javacloud.model;
 
+import au.com.javacloud.annotation.Exclude;
+
 /**
  * Created by david on 22/05/16.
  */
@@ -17,10 +19,12 @@ public class BaseBean {
         return getClass().getSimpleName()+"["+id+"] displayValue="+displayValue;
     }
 
+    @Exclude
     public String getNameColumn() {
     	return FIELD_ID;
     }
 
+    @Exclude
     public int getId() {
         return id;
     }
@@ -29,6 +33,7 @@ public class BaseBean {
         this.id = id;
     }
 
+    @Exclude
     public String getDisplayValue() {
         return displayValue;
     }
