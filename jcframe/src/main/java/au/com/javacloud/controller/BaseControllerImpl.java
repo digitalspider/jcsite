@@ -136,7 +136,7 @@ public class BaseControllerImpl<T extends BaseBean, U> extends HttpServlet imple
         baseUrl = HttpUtil.getBaseUrl(request);
         LOG.info("baseUrl="+baseUrl);
         contextUrl = HttpUtil.getContextUrl(request);
-        LOG.debug("contextUrl="+contextUrl);
+        LOG.info("contextUrl="+contextUrl);
 
 		String forward = null;
 
@@ -229,7 +229,10 @@ public class BaseControllerImpl<T extends BaseBean, U> extends HttpServlet imple
     }
     
     private boolean checkAuth(HttpServletRequest request) {
-    	return (configProperties.get(PROP_AUTH).equals("true") && authService.isAuthenticated(request));
+		if (configProperties.get(PROP_AUTH).equals("true")) {
+			return authService.isAuthenticated(request);
+		}
+    	return true;
     }
     
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
