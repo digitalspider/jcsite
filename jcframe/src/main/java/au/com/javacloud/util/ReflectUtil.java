@@ -203,7 +203,7 @@ public class ReflectUtil {
 				}
 				method.invoke(bean, beans);
 			} else {
-				List<String> strings = new ArrayList(Arrays.asList(valueArray));
+				List<String> strings = new ArrayList<String>(Arrays.asList(valueArray));
 				method.invoke(bean, strings);
 			}
 		}

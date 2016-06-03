@@ -1,7 +1,5 @@
 package au.com.javacloud.dao;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.File;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -13,7 +11,7 @@ import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
-import au.com.javacloud.util.ResourceUtil;
+import org.apache.commons.lang3.StringUtils;
 
 public class BaseDataSource implements DataSource {
 

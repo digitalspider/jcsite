@@ -10,7 +10,7 @@ public class BaseAuthServiceImpl implements AuthService<Principal> {
 
 	@Override
 	public boolean isAuthenticated(HttpServletRequest request) {
-		return true; // Always authenticated
+		return getUser(request) != null;
 	}
 
 	@Override

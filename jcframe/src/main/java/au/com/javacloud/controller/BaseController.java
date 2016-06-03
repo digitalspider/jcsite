@@ -9,7 +9,7 @@ import au.com.javacloud.model.BaseBean;
 /**
  * Created by david on 22/05/16.
  */
-public interface BaseController<T extends BaseBean> {
+public interface BaseController<T extends BaseBean, U> {
 
 	public void list() throws Exception;
 	
@@ -36,8 +36,8 @@ public interface BaseController<T extends BaseBean> {
     public DateFormat getDateFormat();
     public void setDateFormat(DateFormat dateFormat);
     
-    public AuthService getAuthService();
-    public void setAuthService(AuthService auth);
+    public AuthService<U> getAuthService();
+    public void setAuthService(AuthService<U> auth);
     
     public String getConfigProperty(String key);
     public void setConfigProperty(String key, String value);

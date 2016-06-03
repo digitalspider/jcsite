@@ -30,7 +30,7 @@ import au.com.javacloud.util.Statics;
 /**
  * Created by david on 22/05/16.
  */
-public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implements BaseController<T> {
+public class BaseControllerImpl<T extends BaseBean, U> extends HttpServlet implements BaseController<T,U> {
 
 	private final static Logger LOG = Logger.getLogger(BaseControllerImpl.class);
 
@@ -47,7 +47,7 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
     protected String contextUrl;
     protected PathParts pathParts;
 	protected DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	protected AuthService authService;
+	protected AuthService<U> authService;
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	private Properties configProperties = new Properties();
@@ -63,19 +63,29 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 	public static final String DEFAULT_SHOW_PAGE = "/show.jsp";
 	public static final String DEFAULT_EDIT_PAGE = "/edit.jsp";
 	public static final String DEFAULT_INDEX_PAGE = "/index.jsp";
+	
 	public static final String PROP_USE_INDEX = "useindex";
+	public static final String PROP_AUTH = "auth";
+	public static final String PROP_ORDER = "order";
+	public static final String PROP_ORDER_ASC = "ASC";
+	public static final String PROP_ORDER_DESC = "DESC";
+	public static final String PROP_LIMIT = "limit";
+	public static final String PROP_SET = "set";
 
+	@SuppressWarnings("unchecked")
 	public BaseControllerImpl(Class<T> clazz) {
 		this(clazz, Statics.getAuthService());
 	}
 
-    public BaseControllerImpl(Class<T> clazz, AuthService authService) {
+	@SuppressWarnings("unchecked")
+    public BaseControllerImpl(Class<T> clazz, AuthService<U> authService) {
 		super();
 		this.clazz = clazz;
 		this.authService = authService;
 		dao = Statics.getDaoMap().get(clazz);
 		updateUrls(DEFAULT_JSPPAGE_PREFIX,clazz.getSimpleName().toLowerCase());
 		configProperties.setProperty(PROP_USE_INDEX, "false");
+		configProperties.setProperty(PROP_AUTH, "false");
     }
 
 	protected void updateUrls(String prefix, String contextName) {
@@ -94,6 +104,7 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
         this.insertOrEditUrl = insertOrEditUrl;
 	}
 
+    @SuppressWarnings("rawtypes")
 	@Override
     public void init() throws ServletException {
     	super.init();
@@ -125,7 +136,7 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
         baseUrl = HttpUtil.getBaseUrl(request);
         LOG.info("baseUrl="+baseUrl);
         contextUrl = HttpUtil.getContextUrl(request);
-        LOG.info("contextUrl="+contextUrl);
+        LOG.debug("contextUrl="+contextUrl);
 
 		String forward = null;
 
@@ -137,54 +148,54 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
     		request.setAttribute(BEANURL, contextUrl+"/"+clazz.getSimpleName().toLowerCase());
 
 			if (pathParts!=null && !pathParts.isEmpty()) {
-				if (pathParts.getFirst().equalsIgnoreCase(Action.DELETE.name())) {
+				if (pathParts.get(0).equalsIgnoreCase(Action.DELETE.name())) {
 					LOG.info("action=delete");
-					if (authService.checkACL(authService.getUser(request), this.clazz, Action.DELETE)) {
+					if (checkAuthAndAcl(request, Action.DELETE)) {
 						delete();
 					}
-				} else if (pathParts.getFirst().equalsIgnoreCase(Action.EDIT.name())) {
+				} else if (pathParts.get(0).equalsIgnoreCase(Action.EDIT.name())) {
 					LOG.info("action=edit");
-					if (authService.checkACL(authService.getUser(request), this.clazz, Action.EDIT)) {
+					if (checkAuthAndAcl(request, Action.EDIT)) {
 						read();
 						forward = insertOrEditUrl;
 					}
-				} else if (pathParts.getFirst().equalsIgnoreCase(Action.SHOW.name())) {
+				} else if (pathParts.get(0).equalsIgnoreCase(Action.SHOW.name())) {
 					LOG.info("action=show");
-					if (authService.checkACL(authService.getUser(request), this.clazz, Action.SHOW)) {
+					if (checkAuthAndAcl(request, Action.SHOW)) {
 						read();
 						forward = showUrl;
 					}
-				} else if (pathParts.getFirst().equalsIgnoreCase(Action.LIST.name())) {
+				} else if (pathParts.get(0).equalsIgnoreCase(Action.LIST.name())) {
 					LOG.info("action=list");
-					if (authService.checkACL(authService.getUser(request), this.clazz, Action.LIST)) {
+					if (checkAuthAndAcl(request, Action.LIST)) {
 						list();
 						forward = listUrl;
 					}
-				} else if (StringUtils.isNumeric(pathParts.getFirst())) {
+				} else if (StringUtils.isNumeric(pathParts.get(0))) {
 					LOG.info("action=<int>");
-					if (authService.checkACL(authService.getUser(request), this.clazz, Action.SHOW)) {
+					if (checkAuthAndAcl(request, Action.SHOW)) {
 						read();
 						forward = showUrl;
 					}
-				} else if (pathParts.getFirst().equalsIgnoreCase(Action.INSERT.name())) {
+				} else if (pathParts.get(0).equalsIgnoreCase(Action.INSERT.name())) {
 					LOG.info("action=insert");
-					if (authService.checkACL(authService.getUser(request), this.clazz, Action.INSERT)) {
+					if (checkAuthAndAcl(request, Action.INSERT)) {
 						forward = insertOrEditUrl;
 					}
-				} else if (pathParts.getFirst().equalsIgnoreCase(Action.FIND.name())) {
+				} else if (pathParts.get(0).equalsIgnoreCase(Action.FIND.name())) {
 					LOG.info("action=find");
-					if (authService.checkACL(authService.getUser(request), this.clazz, Action.FIND)) {
+					if (checkAuthAndAcl(request, Action.FIND)) {
 						find();
 						forward = listUrl;
 					}
-				} else if (pathParts.getFirst().equalsIgnoreCase(Action.CONFIG.name())) {
+				} else if (pathParts.get(0).equalsIgnoreCase(Action.CONFIG.name())) {
 					LOG.info("action=config");
-					if (authService.checkACL(authService.getUser(request), this.clazz, Action.CONFIG)) {
+					if (checkAuthAndAcl(request, Action.CONFIG)) {
 						config();
 					}
-				} else if (pathParts.getFirst().equals("p")) {
+				} else if (pathParts.get(0).equals("p")) {
 					LOG.info("action=p");
-					if (authService.checkACL(authService.getUser(request), this.clazz, Action.LIST)) {
+					if (checkAuthAndAcl(request, Action.LIST)) {
 						forward = listUrl;
 						int pageNo = pathParts.getInt(1);
 						request.setAttribute(beanName+BEANS_SUFFIX, dao.getAll(pageNo) );
@@ -209,6 +220,18 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
         view.forward(request, response);
     }
 
+    private boolean checkAuthAndAcl(HttpServletRequest request, Action action) {
+    	return checkAuth(request) && checkACL(request, action); 
+    }
+
+    private boolean checkACL(HttpServletRequest request, Action action) {
+    	return (authService.checkACL(authService.getUser(request), this.clazz, action));
+    }
+    
+    private boolean checkAuth(HttpServletRequest request) {
+    	return (configProperties.get(PROP_AUTH).equals("true") && authService.isAuthenticated(request));
+    }
+    
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		LOG.info("doPost() START");
 		this.request = request;
@@ -248,6 +271,7 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 		view.forward(request, response);
 	}
 
+    @SuppressWarnings("rawtypes")
 	protected T populateBean(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		T bean = ReflectUtil.getNewBean(clazz);
 		Map<Method,Class> methods = ReflectUtil.getPublicSetterMethods(clazz);
@@ -265,7 +289,6 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 					}
 				} else if (ReflectUtil.isCollection(classType)) {
 					// Handle Collections
-					String[] valueArray = value.split(",");
 					ReflectUtil.invokeSetterMethodForCollection(bean, method, classType, value);
 				} else {
 					// Handle primitives
@@ -304,7 +327,7 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
     public void read() throws Exception {
 		String idValue = null;
 		if (pathParts.isNumeric(0)) {
-			idValue = pathParts.getFirst();
+			idValue = pathParts.get(0);
 		} else if (pathParts.isNumeric(1)) {
 			idValue = pathParts.get(1);
 		}
@@ -347,22 +370,22 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 	@Override
 	public void config()  throws Exception {
 		if (pathParts.size()>1) {
-			if (pathParts.get(1).equals("order")) {
+			if (pathParts.get(1).equals(PROP_ORDER)) {
 				dao.setOrderBy("");
 				if (pathParts.size() > 2) {
 					String field = pathParts.get(2);
 					dao.setOrderBy(field);
 					if (pathParts.size() > 3) {
 						String direction = pathParts.get(3);
-						if (direction.equalsIgnoreCase("ASC") || direction.equalsIgnoreCase("DESC")) {
+						if (direction.equalsIgnoreCase(PROP_ORDER_ASC) || direction.equalsIgnoreCase(PROP_ORDER_DESC)) {
 							dao.setOrderBy(field + " " + direction);
 						}
 					}
 				}
-			} else if (pathParts.get(1).equals("limit")) {
+			} else if (pathParts.get(1).equals(PROP_LIMIT)) {
 				int limit = pathParts.getInt(2);
 				dao.setLimit(limit);
-			} else if (pathParts.get(1).equals("set")) {
+			} else if (pathParts.get(1).equals(PROP_SET)) {
 				if (pathParts.size() > 3) {
 					String key = pathParts.get(2);
 					String value = pathParts.get(3);
@@ -416,12 +439,12 @@ public class BaseControllerImpl<T extends BaseBean> extends HttpServlet implemen
 	}
 
 	@Override
-	public AuthService getAuthService() {
+	public AuthService<U> getAuthService() {
 		return authService;
 	}
 
 	@Override
-	public void setAuthService(AuthService authService) {
+	public void setAuthService(AuthService<U> authService) {
 		this.authService = authService;
 	}
 

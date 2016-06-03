@@ -15,14 +15,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-
 import javax.servlet.ServletConfig;
 import javax.sql.DataSource;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 import au.com.javacloud.model.BaseBean;
 import au.com.javacloud.util.ReflectUtil;
@@ -222,6 +223,7 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 		return ReflectUtil.getBeanFieldNames(clazz, excludeForSaveGetMethods);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void populateBeanFromResultSet(T bean, ResultSet rs) throws Exception {
 		Map<Method,Class> methods = ReflectUtil.getPublicSetterMethods(clazz);
@@ -247,41 +249,28 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 			} else {
 				// Handle primitives
 				try {
-					switch (classType.getSimpleName()) {
-						case "String":
-							method.invoke(bean, rs.getString(fieldName));
-							break;
-						case "Integer":
-						case "int":
-							method.invoke(bean, rs.getInt(fieldName));
-							break;
-						case "Boolean":
-							method.invoke(bean, rs.getBoolean(fieldName));
-							break;
-						case "Date":
-							method.invoke(bean, dateFormat.parse(rs.getString(fieldName)));
-							break;
-						case "Long":
-							method.invoke(bean, rs.getLong(fieldName));
-							break;
-						case "Short":
-							method.invoke(bean, rs.getShort(fieldName));
-							break;
-						case "Float":
-							method.invoke(bean, rs.getFloat(fieldName));
-							break;
-						case "Double":
-							method.invoke(bean, rs.getDouble(fieldName));
-							break;
-						case "BigDecimal":
-							method.invoke(bean, rs.getBigDecimal(fieldName));
-							break;
-						case "Blob":
-							method.invoke(bean, rs.getBlob(fieldName));
-							break;
-						case "Clob":
-							method.invoke(bean, rs.getClob(fieldName));
-							break;
+					if (classType.equals(String.class)) {
+						method.invoke(bean, rs.getString(fieldName));
+					} else if (classType.equals(int.class) || classType.equals(Integer.class)) {
+						method.invoke(bean, rs.getInt(fieldName));
+					} else if (classType.equals(boolean.class) || classType.equals(Boolean.class)) {
+						method.invoke(bean, rs.getBoolean(fieldName));
+					} else if (classType.equals(Date.class)) {
+						method.invoke(bean, dateFormat.parse(rs.getString(fieldName)));
+					} else if (classType.equals(long.class) || classType.equals(Long.class)) {
+						method.invoke(bean, rs.getLong(fieldName));
+					} else if (classType.equals(short.class) || classType.equals(Short.class)) {
+						method.invoke(bean, rs.getShort(fieldName));
+					} else if (classType.equals(float.class) || classType.equals(Float.class)) {
+						method.invoke(bean, rs.getFloat(fieldName));
+					} else if (classType.equals(double.class) || classType.equals(Double.class)) {
+						method.invoke(bean, rs.getDouble(fieldName));
+					} else if (classType.equals(BigDecimal.class)) {
+						method.invoke(bean, rs.getBigDecimal(fieldName));
+					} else if (classType.equals(Blob.class)) {
+						method.invoke(bean, rs.getBlob(fieldName));
+					} else if (classType.equals(Clob.class)) {
+						method.invoke(bean, rs.getClob(fieldName));
 					}
 				} catch (SQLException e) {
 					if (!fieldName.equals(BaseBean.FIELD_DISPLAYVALUE)) { // ignore "displayvalue", as this is custom to BaseBean
@@ -292,6 +281,7 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public PreparedStatement prepareStatementForSave(Connection conn, T bean) throws Exception {
 		boolean updateStmt = false;
@@ -355,42 +345,29 @@ public class BaseDAOImpl<T extends BaseBean> implements BaseDAO<T> {
 						preparedStatement.setObject(++index, null);
 					} else {
                 		LOG.debug("result.class="+result.getClass().getSimpleName());
-						switch (result.getClass().getSimpleName()) {
-							case "String":
-								preparedStatement.setString(++index, (String) result);
-								break;
-							case "Integer":
-							case "int":
-								preparedStatement.setInt(++index, (Integer) result);
-								break;
-							case "Boolean":
-								preparedStatement.setBoolean(++index, (Boolean) result);
-								break;
-							case "Date":
-								preparedStatement.setString(++index, dateFormat.format(result));
-								break;
-							case "Long":
-								preparedStatement.setLong(++index, (Long) result);
-								break;
-							case "Short":
-								preparedStatement.setShort(++index, (Short) result);
-								break;
-							case "Float":
-								preparedStatement.setFloat(++index, (Float) result);
-								break;
-							case "Double":
-								preparedStatement.setDouble(++index, (Double) result);
-								break;
-							case "BigDecimal":
-								preparedStatement.setBigDecimal(++index, (BigDecimal) result);
-								break;
-							case "Blob":
-								preparedStatement.setBlob(++index, (Blob) result);
-								break;
-							case "Clob":
-								preparedStatement.setClob(++index, (Clob) result);
-								break;
-						}
+    					if (classType.equals(String.class)) {
+    						preparedStatement.setString(++index, (String) result);
+    					} else if (classType.equals(int.class) || classType.equals(Integer.class)) {
+    						preparedStatement.setInt(++index, (Integer) result);
+    					} else if (classType.equals(boolean.class) || classType.equals(Boolean.class)) {
+    						preparedStatement.setBoolean(++index, (Boolean) result);
+    					} else if (classType.equals(Date.class)) {
+    						preparedStatement.setString(++index, dateFormat.format(result));
+    					} else if (classType.equals(long.class) || classType.equals(Long.class)) {
+    						preparedStatement.setLong(++index, (Long) result);
+    					} else if (classType.equals(short.class) || classType.equals(Short.class)) {
+    						preparedStatement.setShort(++index, (Short) result);
+    					} else if (classType.equals(float.class) || classType.equals(Float.class)) {
+    						preparedStatement.setFloat(++index, (Float) result);
+    					} else if (classType.equals(double.class) || classType.equals(Double.class)) {
+    						preparedStatement.setDouble(++index, (Double) result);
+    					} else if (classType.equals(BigDecimal.class)) {
+    						preparedStatement.setBigDecimal(++index, (BigDecimal) result);
+    					} else if (classType.equals(Blob.class)) {
+    						preparedStatement.setBlob(++index, (Blob) result);
+    					} else if (classType.equals(Clob.class)) {
+    						preparedStatement.setClob(++index, (Clob) result);
+    					}
 					}
 				}
 			}
