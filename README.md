@@ -24,7 +24,7 @@ The development process is:
     </dependenc>y
 ```
 * Create a new controller for each *bean*, e.g. the below is created for the *Page* bean:
-```
+```java
 import java.security.Principal;
 import javax.servlet.annotation.WebServlet;
 import au.com.javacloud.model.Page;
@@ -43,7 +43,7 @@ public class PageController extends BaseControllerImpl<Page,Principal> {
  * src/main/webapp/jsp/page/index.jsp (optional)
 * Populate these pages using the variable *bean* or *beans*
  * e.g. content for *list.jsp*
-```
+```html
 <c:forEach items="${beans}" var="bean">
     <tr>
         <td><a href="${baseUrl}/show/<c:out value='${bean.id}'/>"><c:out value="${bean.id}" /></a></td>
@@ -57,7 +57,7 @@ public class PageController extends BaseControllerImpl<Page,Principal> {
 ```
 * Create a new file for the database configuration in
  * src/main/resources/**db.properties**
-```
+```properties
 # MySQL
 driver=com.mysql.jdbc.Driver
 url=jdbc:mysql://localhost:3306/TestDB
@@ -72,7 +72,7 @@ password=test
 ```
 * Create a new file for the javacloud configuration in
  * src/main/resources/**jc.properties**
-```
+```properties
 # JavaCloud configuration file
 
 package.model.name=au.com.javacloud.model
