@@ -41,7 +41,7 @@ public class PageController extends BaseControllerImpl<Page,Principal> {
  * src/main/webapp/jsp/page/show.jsp
  * src/main/webapp/jsp/page/edit.jsp
  * src/main/webapp/jsp/page/index.jsp (optional)
-* Populate these pages using the variable *bean* or *beans*
+* Populate these pages using the variable **${bean}** or **${beans}**
  * e.g. content for *list.jsp*
 ```html
 <c:forEach items="${beans}" var="bean">
