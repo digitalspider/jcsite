@@ -35,7 +35,7 @@ public class PageController extends BaseControllerImpl<Page,Principal> {
 		super(Page.class);
 	}
 }
-``
+```
 * Create some jsp pages for the *bean* "page"
  * src/main/webapp/jsp/page/list.jsp
  * src/main/webapp/jsp/page/show.jsp
