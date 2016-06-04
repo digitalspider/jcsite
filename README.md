@@ -2,11 +2,15 @@
 
 The JavaCloud Framework (jcframe) makes building Java web CRUD applications really simple.
 
-The process is:
+This project contains 2 artefacts:
+* A [jcframe](https://github.com/digitalspider/jcsite/tree/master/jcframe) java library for building CRUD applications
+* A [demo website](https://github.com/digitalspider/jcsite/tree/master/website), which is a sample war file using the jcframe code.
+
+The development process is:
 * Create a new database table schema, or get the connection properties to existing database
 * Use a tool to generate a series of *beans* against the database schema
  * e.g. [oracle jpa page](http://www.oracle.com/technetwork/developer-tools/eclipse/jpatutorial-2-092215.html) or [eclipse jpa page](http://help.eclipse.org/juno/index.jsp?topic=%2Forg.eclipse.jpt.doc.user%2Ftasks021.htm)
- * A *bean* is an object representing a table in the database
+ * A **bean** is an object representing a table in the database
 * Import this JCFrame jar file into your maven
  * Download the source code using <code> git clone https://github.com/digitalspider/jcsite.git </code>
  * Run <code>maven clean install</code>
@@ -27,15 +31,32 @@ import au.com.javacloud.model.Page;
 
 @WebServlet(urlPatterns = {"/page/*", "/page.json/*"})
 public class PageController extends BaseControllerImpl<Page,Principal> {
-
     public PageController() {
 		super(Page.class);
 	}
-
 }
+``
+* Create some jsp pages for the *bean* "page"
+ * src/main/webapp/jsp/page/list.jsp
+ * src/main/webapp/jsp/page/show.jsp
+ * src/main/webapp/jsp/page/edit.jsp
+ * src/main/webapp/jsp/page/index.jsp (optional)
+* Populate these pages using the variable *bean* or *beans*
+ * e.g. content for *list.jsp*
+```
+<c:forEach items="${beans}" var="bean">
+    <tr>
+        <td><a href="${baseUrl}/show/<c:out value='${bean.id}'/>"><c:out value="${bean.id}" /></a></td>
+        <td><c:out value="${bean.title}"/></td>
+        <td><c:out value="${bean.description}" escapeXml="false"/></td>
+        <td><a href="${baseUrl}/edit/<c:out value='${bean.id}'/>">Update</a></td>
+        <td><a href="${baseUrl}/delete/<c:out value='${bean.id}'/>">Delete</a></td>
+    </tr>
+</c:forEach>
+<a href="${baseUrl}/insert">Add Page</a>
 ```
 * Create a new file for the database configuration in
- * src/main/resources/**db.properties*
+ * src/main/resources/**db.properties**
 ```
 # MySQL
 driver=com.mysql.jdbc.Driver
@@ -50,7 +71,7 @@ password=test
 #password=test
 ```
 * Create a new file for the javacloud configuration in
- * src/main/resources/**jc.properties*
+ * src/main/resources/**jc.properties**
 ```
 # JavaCloud configuration file
 
@@ -60,6 +81,6 @@ package.model.name=au.com.javacloud.model
 #ds.config.file=db.properties.sample
 ```
 * Build your application
-** <code>maven package</code>
+ * <code>maven package</code>
 * Deploy your application
-** Place the war file into a tomcat "webapps" directory
+ * Place the war file into a tomcat "webapps" directory
