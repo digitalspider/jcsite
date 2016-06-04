@@ -1,10 +1,10 @@
-# MySQL settings
+# MySQL
 #driver=com.mysql.jdbc.Driver
 #url=jdbc:mysql://localhost:3306/TestDB
 #username=test
 #password=test
 
-# SQLite settings
+# SQLite
 #driver=org.sqlite.JDBC
 #url=jdbc:sqlite:${REALPATH}database.db
 #username=test

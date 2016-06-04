@@ -9,7 +9,6 @@ import au.com.javacloud.annotation.GSonExclude;
 
 public class BaseBean {
     protected int id;
-    @GSonExclude
     protected String displayValue;
 
     public final static String FIELD_ID = "id";

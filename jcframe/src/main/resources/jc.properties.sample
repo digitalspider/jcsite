@@ -1,4 +1,4 @@
-# JavaCloud settings file
+# JavaCloud configuration file
 
 #package.model.name=au.com.javacloud.model
 #auth.class=au.com.javacloud.auth.BaseAuthServiceImpl
