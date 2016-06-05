@@ -64,7 +64,7 @@
                                     </div>
                                     <ul>
                                         <li>1 GB Cloud Storage</li>
-                                        <li>0.5 GB RAM</li>
+                                        <li>128 MB RAM</li>
                                         <li>AlpineLinux,Apache,Jetty Server</li>
                                         <li>SQLite Database</li>
                                         <li>Self Support only</li>
@@ -81,7 +81,7 @@
                                     </div>
                                     <ul>
                                         <li>10 GB Cloud Storage</li>
-                                        <li>1 GB RAM</li>
+                                        <li>512 MB RAM (+$10/m for 1GB)</li>
                                         <li>Ubuntu,Apache,Tomcat Server</li>
                                         <li>MySQL Database</li>
                                         <li>Self and Basic Support only</li>
@@ -102,7 +102,7 @@
                                         <li>Any Linux, Any Web Server, JBoss, Wildfly or Glassfish</li>
                                         <li>Any of our support plans</li>
                                     </ul>
-                                    <button class="btn btn-warning">Buy Now</button>
+                                    <button class="btn btn-warning">Coming Soon</button>
                                 </div>
                             </div>
                         </div>
