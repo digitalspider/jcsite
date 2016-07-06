@@ -7,8 +7,8 @@
                 <div class="tm-footer-content-box">
                     <h3 class="tm-gold-text tm-title tm-footer-content-box-title">Quote</h3>
                     <div class="tm-gray-bg">
-                        <p>Java can be really simple!</p>
-                        <p><strong>David Vittor (Founder)</strong></p>
+                        <p>Making web apps simple!</p>
+                        <p><strong>The Java Cloud Team</strong></p>
                     </div>
                 </div>
             </div>
