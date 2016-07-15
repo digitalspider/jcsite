@@ -1,5 +1,6 @@
 *.class
 target
+stripes
 .settings
 .classpath
 .project
