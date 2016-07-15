@@ -22,9 +22,9 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-xs-center">
-                        <h2 class="tm-gold-text tm-title">Welcome to Java Cloud</h2>
+                        <h2 class="tm-gold-text tm-title">Welcome to JCloud</h2>
                         <p class="tm-subtitle">Welcome to Australias premier java hosting solution.<br/>
-                        Java Cloud allows you to host your web application with simplicity.</p>
+                        JCloud allows you to host your web application with simplicity.</p>
                     </div>
                 </div>
                 <div class="row">
