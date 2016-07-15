@@ -5,11 +5,11 @@
 	<artifactId>website</artifactId>
 	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
-	<name>JavaCloud website</name>
+	<name>jcloud website</name>
 	<url>http://jcloud.com.au</url>
 
 	<organization>
-		<name>JavaCloud</name>
+		<name>JCloud</name>
 		<url>http://www.jcloud.com.au</url>
 	</organization>
 
