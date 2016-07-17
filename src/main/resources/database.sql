@@ -1,65 +1,46 @@
-CREATE TABLE page (
-	id	INTEGER PRIMARY KEY AUTOINCREMENT,
-	cdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    mdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	type    text,
-	title   text,
-	content text,
-	authorId integer,
-	parentId integer,
-	statusId integer,
-	tags     text
-);
-
-INSERT into page (firstName,lastName,course,year) VALUES ("test","user","PhD", 2012);
-INSERT into page (firstName,lastName,course,year) VALUES ("david","vittor","MBT", 2016);
-INSERT into page (firstName,lastName,course,year) VALUES ("daniela","vittor","PhD", 2014);
+-- INSERT into page (firstName,lastName,course,year) VALUES ("test","user","PhD", 2012);
+-- INSERT into page (firstName,lastName,course,year) VALUES ("david","vittor","MBT", 2016);
+-- INSERT into page (firstName,lastName,course,year) VALUES ("daniela","vittor","PhD", 2014);
 
 CREATE TABLE page (
 	id	INTEGER PRIMARY KEY AUTOINCREMENT,
 	cdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	cuser integer NOT NULL,
     mdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    muser integer NOT NULL,
 	type    text NOT NULL DEFAULT 'blog',
 	title   text NOT NULL,
 	description text NOT NULL,
 	content text NOT NULL,
 	url     text NOT NULL,
 	status  text NOT NULL,
-	authorId integer NOT NULL,
-	parentId integer,
+	user integer NOT NULL,
+	parent integer,
 	tags    text
 );
 
-CREATE TABLE pageComment (
+CREATE TABLE comment (
 	id	INTEGER PRIMARY KEY AUTOINCREMENT,
-	cdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    mdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	blogId integer,
-	title   text,
-	content text,
-	authorId integer,
-	parentId integer,
-	type text,
+	title   text NOT NULL,
+	content text NOT NULL,
+	user integer NOT NULL,
+	parent integer NULL,
 	status text NOT NULL,
-	ip     text,
-	requestmd text
+	ip     text
 );
 
-CREATE TABLE pageRating (
+CREATE TABLE rating (
 	id	INTEGER PRIMARY KEY AUTOINCREMENT,
-	cdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    mdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	blogId integer,
-	rating  text,
-	authorId integer,
+	rating  int NOT NULL,
+	content text,
+	user integer NOT NULL,
 	status text NOT NULL,
-	ip     text,
-	requestmd text
+	ip     text
 );
 
 
 CREATE TABLE pageExtra (
-	blogId integer NOT NULL,
+	pageId integer NOT NULL,
 	likesCount  integer,
 	commentCount integer,
 	ratingAvg integer,
@@ -71,7 +52,9 @@ CREATE TABLE pageExtra (
 CREATE TABLE user (
 	id	INTEGER PRIMARY KEY AUTOINCREMENT,
 	cdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	cuser integer NOT NULL,
     mdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    muser integer NOT NULL,
 	email text NOT NULL,
 	username text NOT NULL,
 	password text NOT NULL,
@@ -97,104 +80,154 @@ CREATE TABLE userExtra (
 	pageCount integer
 );
 
-CREATE TABLE container (
+
+CREATE TABLE role (
 	id	INTEGER PRIMARY KEY AUTOINCREMENT,
-	cdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    mdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    name text NOT NULL,
-	lxcid text,
-	alias text,
-	description text,
-	tags text,
-	status text NOT NULL,
-	authorId integer NOT NULL,
-	osId integer NOT NULL,
-	pdate 	date
+	name text NOT NULL,
+    status text NOT NULL
+);
+
+CREATE TABLE request (
+	id	INTEGER PRIMARY KEY AUTOINCREMENT,
+	name text NOT NULL,
+	title text NOT NULL,
+	content text NOT NULL,
+	type int NOT NULL,
+	user int NOT NULL,
+    status text NOT NULL
 );
 
 CREATE TABLE os (
 	id	INTEGER PRIMARY KEY AUTOINCREMENT,
-	cdate 	date NOT NULL DEFAULT now(),
-	mdate 	date NOT NULL DEFAULT now(),
     distribution text NOT NULL,
     version text NOT NULL,
-    architecture text NOT NULL,
-    tags     text
+    architecture text NOT NULL
 );
 
-CREATE TABLE box (
+CREATE TABLE server (
 	id	INTEGER PRIMARY KEY AUTOINCREMENT,
-	cdate 	date NOT NULL DEFAULT now(),
-	mdate 	date NOT NULL DEFAULT now(),
-	name text NOT NULL,
-	containerId integer NOT NULL,
-	userId integer NOT NULL,
-	lxcid text,
+	cdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	cuser integer NOT NULL,
+    mdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    muser integer NOT NULL,
+    name text NOT NULL,
+	user integer NOT NULL,
+	lxdId text,
 	alias text,
 	type text,
 	description text,
 	tags text,
 	status text NOT NULL,
-	authorId integer NOT NULL,
-	parentId integer NOT NULL,
+	os integer NOT NULL,
 	pdate 	date,
 	price double,
-	cpulimit integer,
-	cpuusage integer,
-	memlimit integer,
-	memusage integer,
-	hddlimit integer,
-	hddusage integer,
+	cpulimit double,
+	cpuusage double,
+	cpupeak double,
+	memlimit double,
+	memusage double,
+	mempeak double,
+	hddlimit double,
+	hddusage double,
+	hddpeak double
 );
 
 CREATE TABLE service (
 	id	INTEGER PRIMARY KEY AUTOINCREMENT,
 	cdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    mdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    name    text NOT NULL,
-    version text NOT NULL,
-    description text,
+	cuser integer NOT NULL,
+	mdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	muser integer NOT NULL,
+	name text NOT NULL,
+	version text NOT NULL,
     status text NOT NULL,
-    type text NOT NULL,
-    tags     text
+	server integer NOT NULL,
+	alias text,
+	description text,
+	tags text
 );
 
-CREATE TABLE userService (
+CREATE TABLE cart (
+	id	INTEGER PRIMARY KEY AUTOINCREMENT,
+	user integer NOT NULL,
+    status text NOT NULL
+);
+
+CREATE TABLE product (
 	id	INTEGER PRIMARY KEY AUTOINCREMENT,
 	cdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    mdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    serviceId  integer NOT NULL,
-    userId  integer NOT NULL,
-    boxId  integer NOT NULL,
-    name text NOT NULL,
-    version text,
-    linuxName text NOT NULL,
-    description text,
+	cuser integer NOT NULL,
+	mdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	muser integer NOT NULL,
+	name text NOT NULL,
     status text NOT NULL,
-    type text NOT NULL DEFAULT 'package'
-    tags     text
+    category int NULL,
+	costPrice double NOT NULL,
+	listPrice double NOT NULL,
+	salePrice double NOT NULL,
+    parent int NULL
 );
 
-CREATE TABLE userPage (
-	userId	INTEGER NOT NULL,
-	pageId	INTEGER NOT NULL
-);
-
-CREATE TABLE serviceOS (
-	serviceId	INTEGER NOT NULL,
-	osId	INTEGER NOT NULL
-);
-
-CREATE TABLE financial (
+CREATE TABLE category (
 	id	INTEGER PRIMARY KEY AUTOINCREMENT,
 	cdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    mdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    userId  integer NOT NULL,
+	cuser integer NOT NULL,
+	mdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	muser integer NOT NULL,
+	name text NOT NULL,
+    status text NOT NULL
+);
+
+CREATE TABLE purchase (
+	id	INTEGER PRIMARY KEY AUTOINCREMENT,
+	name text NOT NULL,
+	user integer NOT NULL,
+    status text NOT NULL
+);
+
+CREATE TABLE invoice (
+	id	INTEGER PRIMARY KEY AUTOINCREMENT,
+	cdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	cuser integer NOT NULL,
+	mdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	muser integer NOT NULL,
+	name text NOT NULL,
+	purchase integer NOT NULL,
+	user integer NOT NULL,
     month   integer NOT NULL,
     year   integer NOT NULL,
     description text NOT NULL,
-    price   double,
+    price   double NOT NULL,
     currency text NOT NULL DEFAULT 'AUD',
-    status text NOT NULL,
-    tags     text
+    status text NOT NULL
 );
+
+CREATE TABLE invoiceline (
+	id	INTEGER PRIMARY KEY AUTOINCREMENT,
+	cdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	cuser integer NOT NULL,
+	mdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	muser integer NOT NULL,
+	name text NOT NULL,
+	invoice integer NOT NULL,
+    description text NOT NULL,
+    price   double NOT NULL,
+    currency text NOT NULL DEFAULT 'AUD',
+    status text NOT NULL
+);
+
+CREATE TABLE userRole (
+	user	INTEGER NOT NULL,
+	role	INTEGER NOT NULL
+);
+
+CREATE TABLE cartProduct (
+	cart	INTEGER NOT NULL,
+	product	INTEGER NOT NULL
+);
+
+CREATE TABLE purchaseProduct (
+	purchase	INTEGER NOT NULL,
+	product	INTEGER NOT NULL
+);
+
