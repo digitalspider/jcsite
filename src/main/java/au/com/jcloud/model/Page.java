@@ -9,9 +9,7 @@ import au.com.jcloud.jcframe.model.BaseBean;
  * Created by david on 22/05/16.
  */
 @DisplayValueColumn("title")
-public class Page extends BaseBean {
-    protected Date cdate;
-    protected Date mdate;
+public class Page extends AuditBean {
     protected String description;
     protected String tags;
     protected String type;
@@ -21,38 +19,6 @@ public class Page extends BaseBean {
     private String title;
     private String content;
     private String url;
-
-    @Override
-    public String toString() {
-        return super.toString()+
-        		", cdate=" + cdate +
-                ", mdate=" + mdate +
-                ", description=" + description +
-                ", tags=" + tags +
-                ", type=" + type +
-                ", status=" + status +
-                ", authorId=" + authorId +
-                ", parentId=" + parentId +
-                ", title=" + title +
-                ", content=" + content +
-                ", url=" + url;
-    }
-        
-    public Date getCdate() {
-        return cdate;
-    }
-
-    public void setCdate(Date cdate) {
-        this.cdate = cdate;
-    }
-
-    public Date getMdate() {
-        return mdate;
-    }
-
-    public void setMdate(Date mdate) {
-        this.mdate = mdate;
-    }
 
     public String getDescription() {
         return description;

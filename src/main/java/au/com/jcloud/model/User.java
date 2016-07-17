@@ -3,6 +3,8 @@ package au.com.jcloud.model;
 import java.util.Date;
 
 import au.com.jcloud.jcframe.annotation.DisplayValueColumn;
+import au.com.jcloud.jcframe.annotation.ExcludeDBRead;
+import au.com.jcloud.jcframe.annotation.ExcludeDBWrite;
 import au.com.jcloud.jcframe.model.BaseBean;
 
 /**
@@ -10,9 +12,8 @@ import au.com.jcloud.jcframe.model.BaseBean;
  */
 
 @DisplayValueColumn("email")
-public class User extends BaseBean {
-    private Date cdate;
-    private Date mdate;
+public class User extends AuditBean {
+
     private String description;
     private String tags;
     private String type;
@@ -26,38 +27,6 @@ public class User extends BaseBean {
     private String mobile;
     private String token;
     private String image;
-
-    @Override
-    public String toString() {
-        return super.toString()+
-        		", cdate=" + cdate +
-                ", mdate=" + mdate +
-                ", description=" + description +
-                ", tags=" + tags +
-                ", type=" + type +
-                ", status=" + status +
-                ", firstname=" + firstname +
-                ", lastname=" + lastname +
-                ", email=" + email +
-                ", username=" + username +
-                ", url=" + url;
-    }
-    
-    public Date getCdate() {
-        return cdate;
-    }
-
-    public void setCdate(Date cdate) {
-        this.cdate = cdate;
-    }
-
-    public Date getMdate() {
-        return mdate;
-    }
-
-    public void setMdate(Date mdate) {
-        this.mdate = mdate;
-    }
 
     public String getDescription() {
         return description;

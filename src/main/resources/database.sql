@@ -21,12 +21,11 @@ CREATE TABLE page (
 
 CREATE TABLE comment (
 	id	INTEGER PRIMARY KEY AUTOINCREMENT,
-	title   text NOT NULL,
+	name   text NOT NULL,
 	content text NOT NULL,
 	user integer NOT NULL,
 	parent integer NULL,
-	status text NOT NULL,
-	ip     text
+	status text NOT NULL
 );
 
 CREATE TABLE rating (
@@ -34,8 +33,7 @@ CREATE TABLE rating (
 	rating  int NOT NULL,
 	content text,
 	user integer NOT NULL,
-	status text NOT NULL,
-	ip     text
+	status text NOT NULL
 );
 
 
@@ -58,8 +56,8 @@ CREATE TABLE user (
 	email text NOT NULL,
 	username text NOT NULL,
 	password text NOT NULL,
-	fname text NOT NULL,
-	lname text NOT NULL,
+	firstname text NOT NULL,
+	lastname text NOT NULL,
 	url text NOT NULL,
 	mobile text,
 	description text,
@@ -92,7 +90,7 @@ CREATE TABLE request (
 	name text NOT NULL,
 	title text NOT NULL,
 	content text NOT NULL,
-	type int NOT NULL,
+	type text NOT NULL,
 	user int NOT NULL,
     status text NOT NULL
 );
@@ -170,9 +168,9 @@ CREATE TABLE product (
 
 CREATE TABLE category (
 	id	INTEGER PRIMARY KEY AUTOINCREMENT,
-	cdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	cdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	cuser integer NOT NULL,
-	mdate 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	mdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	muser integer NOT NULL,
 	name text NOT NULL,
     status text NOT NULL
@@ -182,6 +180,7 @@ CREATE TABLE purchase (
 	id	INTEGER PRIMARY KEY AUTOINCREMENT,
 	name text NOT NULL,
 	user integer NOT NULL,
+	date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     status text NOT NULL
 );
 
