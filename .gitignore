@@ -8,6 +8,7 @@ stripes
 .metadata
 RemoteSystemsTempFiles
 push.sh
+generate.sh
 *.iml
 *.ipr
 *.iws
