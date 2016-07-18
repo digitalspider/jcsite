@@ -16,7 +16,7 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
 
-                        <form method="post" action="login.jsp"  class="tm-login-form">
+                        <form method="post" action="<%=request.getContextPath()%>/jc/login/login?redirect=/index.jsp"  class="tm-login-form">
                             <div class="h4">Login</div>
                             <div class="form-group">
                                 <input type="text" id="login_username" name="login_username" class="form-control" placeholder="Username"  required/>
@@ -29,7 +29,7 @@
                     </div>
 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                        <form method="post" action="login.jsp" class="tm-login-form">
+                        <form method="post" action="<%=request.getContextPath()%>/jc/user" class="tm-login-form">
                             <div class="h4">Register</div>
                             <div class="form-group">
                                 <input type="text" id="login_firstname" name="login_firstname" class="form-control" placeholder="First Name"  required/>
