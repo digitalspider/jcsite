@@ -58,7 +58,7 @@ CREATE TABLE user (
 	password text NOT NULL,
 	firstname text NOT NULL,
 	lastname text NOT NULL,
-	url text NOT NULL,
+	url text,
 	mobile text,
 	description text,
 	tags text,

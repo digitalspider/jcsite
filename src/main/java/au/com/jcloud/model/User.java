@@ -16,8 +16,8 @@ public class User extends AuditBean {
 
     private String description;
     private String tags;
-    private String type;
-    private String status;
+    private String type = "CUSTOMER";
+    private String status = "NEW";
     private String firstname;
     private String lastname;
     private String email;

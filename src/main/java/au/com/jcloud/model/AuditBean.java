@@ -5,6 +5,7 @@ import java.util.Date;
 import au.com.jcloud.jcframe.annotation.ExcludeDBRead;
 import au.com.jcloud.jcframe.annotation.ExcludeDBWrite;
 import au.com.jcloud.jcframe.model.BaseBean;
+import au.com.jcloud.util.Constants;
 
 /**
  * Created by david on 17/07/16.
@@ -14,12 +15,12 @@ public abstract class AuditBean extends BaseBean<Integer> {
     protected Date cdate;
     @ExcludeDBWrite
     @ExcludeDBRead
-    protected User cuser;
+    protected User cuser = Constants.getSystemUser();
     @ExcludeDBWrite
     protected Date mdate;
     @ExcludeDBWrite
     @ExcludeDBRead
-    protected User muser;
+    protected User muser = Constants.getSystemUser();
 
     public User getCuser() {
         return cuser;
