@@ -15,14 +15,17 @@ public abstract class AuditBean extends BaseBean<Integer> {
     protected Date cdate;
     @ExcludeDBWrite
     @ExcludeDBRead
-    protected User cuser = Constants.getSystemUser();
+    protected User cuser;
     @ExcludeDBWrite
     protected Date mdate;
     @ExcludeDBWrite
     @ExcludeDBRead
-    protected User muser = Constants.getSystemUser();
+    protected User muser;
 
     public User getCuser() {
+        if (cuser==null) {
+            cuser = Constants.getSystemUser();
+        }
         return cuser;
     }
 
@@ -31,6 +34,9 @@ public abstract class AuditBean extends BaseBean<Integer> {
     }
 
     public User getMuser() {
+        if (muser==null) {
+            muser = Constants.getSystemUser();
+        }
         return muser;
     }
 
