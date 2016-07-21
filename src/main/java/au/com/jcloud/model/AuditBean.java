@@ -13,13 +13,9 @@ import au.com.jcloud.util.Constants;
 public abstract class AuditBean extends BaseBean<Integer> {
     @ExcludeDBWrite
     protected Date cdate;
-    @ExcludeDBWrite
-    @ExcludeDBRead
     protected User cuser;
     @ExcludeDBWrite
     protected Date mdate;
-    @ExcludeDBWrite
-    @ExcludeDBRead
     protected User muser;
 
     public User getCuser() {

@@ -69,7 +69,7 @@
                                         <li>SQLite Database</li>
                                         <li>Self Support only</li>
                                     </ul>
-                                    <button class="btn btn-warning">Buy Now</button>
+                                    <button class="btn btn-warning">Coming Soon</button>
                                 </div>
                             </div>
                             <div class="col-md-4 col-sm-6">
@@ -86,7 +86,7 @@
                                         <li>MySQL Database</li>
                                         <li>Self and Basic Support only</li>
                                     </ul>
-                                    <button class="btn btn-warning">Buy Now</button>
+                                    <button class="btn btn-warning">Coming Soon</button>
                                 </div>
                             </div>
                             <div class="col-md-4 col-sm-6">

@@ -16,7 +16,7 @@
                             <a href="about.jsp" class="nav-link">Services</a>
                         </li>
                         <li class="nav-item">
-                            <a href="blog.jsp" class="nav-link">Blog</a>
+                            <a href="http://blog.jcloud.com.au" class="nav-link">Blog</a>
                         </li>
                         <li class="nav-item">
                             <a href="contact.jsp" class="nav-link">Contact</a>

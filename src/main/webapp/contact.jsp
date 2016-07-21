@@ -46,7 +46,7 @@
                                     <textarea id="contact_message" name="contact_message" class="form-control" rows="6" placeholder="Message" required></textarea>
                                 </div>
                             
-                                <button type="submit" class="tm-btn">Submit</button>                          
+                                <button type="submit" class="tm-btn">Coming Soon</button>                          
                             </form>   
                         </section>
                         
