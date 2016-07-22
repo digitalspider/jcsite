@@ -1,11 +1,6 @@
 package au.com.jcloud.model;
 
-import java.util.Date;
-
 import au.com.jcloud.jcframe.annotation.DisplayValueColumn;
-import au.com.jcloud.jcframe.annotation.ExcludeDBRead;
-import au.com.jcloud.jcframe.annotation.ExcludeDBWrite;
-import au.com.jcloud.jcframe.model.BaseBean;
 
 /**
  * Created by david on 22/05/16.
