@@ -2,11 +2,11 @@ package au.com.jcloud.controller;
 
 import org.apache.log4j.Logger;
 
-import au.com.jcloud.jcframe.controller.BaseLoginController;
 import au.com.jcloud.jcframe.annotation.BeanClass;
-import au.com.jcloud.jcframe.model.BaseLogin;
+import au.com.jcloud.jcframe.controller.BaseLoginController;
+import au.com.jcloud.model.Login;
 
-@BeanClass(BaseLogin.class)
+@BeanClass(Login.class)
 public class LoginController extends BaseLoginController {
 
     private static final Logger LOG = Logger.getLogger(UserController.class);
