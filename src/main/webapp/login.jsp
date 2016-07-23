@@ -16,13 +16,13 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
 
-                        <form method="post" action="<%=request.getContextPath() %>/jc/login/login"  class="tm-login-form">
+                        <form method="post" action="<%=request.getContextPath() %>/login.action"  class="tm-login-form">
                             <div class="h4">Login</div>
                             <div class="form-group">
-                                <input type="text" id="j_username" name="j_username" class="form-control" placeholder="Username"  required/>
+                                <input type="text" id="username" name="username" class="form-control" placeholder="Username"  required/>
                             </div>
                             <div class="form-group">
-                                <input type="password" id="j_password" name="j_password" class="form-control" placeholder="Password"  required/>
+                                <input type="password" id="password" name="password" class="form-control" placeholder="Password"  required/>
                             </div>
                             <input type="submit" value="Login" class="tm-btn text-uppercase" />
                         </form>
@@ -32,19 +32,19 @@
                         <form method="post" action="<%=request.getContextPath() %>/jc/user" class="tm-login-form">
                             <div class="h4">Register</div>
                             <div class="form-group">
-                                <input type="text" id="login_firstname" name="login_firstname" class="form-control" placeholder="First Name"  required/>
+                                <input type="text" id="firstname" name="firstname" class="form-control" placeholder="First Name"  required/>
                             </div>
                             <div class="form-group">
-                                <input type="text" id="login_lastname" name="login_lastname" class="form-control" placeholder="Last Name"  required/>
+                                <input type="text" id="lastname" name="lastname" class="form-control" placeholder="Last Name"  required/>
                             </div>
                             <div class="form-group">
-                                <input type="email" id="login_email" name="login_email" class="form-control" placeholder="Email"  required/>
+                                <input type="email" id="email" name="email" class="form-control" placeholder="Email"  required/>
                             </div>
                             <div class="form-group">
-                                <input type="username" id="login_username" name="login_username" class="form-control" placeholder="Username"  required/>
+                                <input type="username" id="username" name="username" class="form-control" placeholder="Username"  required/>
                             </div>
                             <div class="form-group">
-                                <input type="password" id="login_password" name="login_password" class="form-control" placeholder="Password"  required/>
+                                <input type="password" id="password" name="password" class="form-control" placeholder="Password"  required/>
                             </div>
                             <input type="submit" value="Register" class="tm-btn text-uppercase"/>
                         </form>
