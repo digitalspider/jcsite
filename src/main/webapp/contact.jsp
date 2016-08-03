@@ -36,6 +36,7 @@
 
                             <s:form action="/contact.action" method="post" class="tm-contact-form">
                                 <div class="form-group">
+                                    <s:label for="name"/>:
                                     <s:text name="name" id="name" class="form-control"/>
                                 </div>
                                 <div class="form-group">
@@ -48,7 +49,7 @@
                                     <textarea id="message" name="message" class="form-control" rows="6" placeholder="Message" required></textarea>
                                 </div>
                             
-                                <s:submit name="contactus" class="tm-btn">Coming Soon</s:submit>
+                                <s:submit name="contactus" class="tm-btn">Send Email</s:submit>
                             </s:form>
                         </section>
                         

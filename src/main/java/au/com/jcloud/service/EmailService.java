@@ -32,7 +32,8 @@ public class EmailService {
     }
 
     public void init() throws Exception {
-        properties.load(new FileInputStream(EMAIL_PROPERTIES));
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        properties.load(classLoader.getResourceAsStream(EMAIL_PROPERTIES));
         validateProperties(properties);
 
         mailer = new Mailer(
