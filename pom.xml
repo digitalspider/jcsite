@@ -22,6 +22,11 @@
 			</roles>
 		</developer>
 	</developers>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <ebeanorm-enhancement.plugin.args>debug=0</ebeanorm-enhancement.plugin.args>
+    </properties>
 	
     <build>
         <finalName>website</finalName>
@@ -81,7 +86,6 @@
 	    <artifactId>stripes</artifactId>
 	    <version>1.7.0-async-beta</version>
 	</dependency>
-
 
     <!-- GSon library -->
     <dependency>
@@ -172,7 +176,27 @@
         <artifactId>sqlite-jdbc</artifactId>
        <version>3.8.11.2</version>
     </dependency>
-    
+
+    <!-- EBean library -->
+    <dependency>
+      <groupId>org.avaje.ebeanorm</groupId>
+      <artifactId>avaje-ebeanorm</artifactId>
+      <version>8.1.1</version>
+    </dependency>
+    <!-- support for query beans -->
+    <dependency>
+      <groupId>org.avaje.ebeanorm</groupId>
+      <artifactId>avaje-ebeanorm-querybean</artifactId>
+      <version>7.15.1</version>
+    </dependency>
+    <!-- java annotation processor to generate query beans -->
+    <dependency>
+      <groupId>org.avaje.ebeanorm</groupId>
+      <artifactId>querybean-generator</artifactId>
+      <version>2.3.1</version>
+      <scope>provided</scope>
+    </dependency>
+
 	<!-- OrmLite
 	<dependency>
 		<groupId>com.j256.ormlite</groupId>
@@ -194,7 +218,7 @@
 	</dependency>
 	-->
 
-    <!-- Other tools 
+    <!-- Other tools
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
@@ -217,6 +241,7 @@
         <scope>provided</scope>
     </dependency>
 
+      <!--
 	<dependency>
 		<groupId>javax.activation</groupId>
 		<artifactId>activation</artifactId>
@@ -228,6 +253,14 @@
 		<version>1.4</version>
 		<optional>true</optional>
 	</dependency>
+	-->
+    <!-- https://mvnrepository.com/artifact/org.simplejavamail/simple-java-mail -->
+    <dependency>
+      <groupId>org.simplejavamail</groupId>
+      <artifactId>simple-java-mail</artifactId>
+      <version>4.1.1</version>
+    </dependency>
+
 	<!-- Spring framework
     <dependency>
         <groupId>org.springframework</groupId>

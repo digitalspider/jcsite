@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
+<%@ taglib prefix="d" uri="http://stripes.sourceforge.net/stripes-dynattr.tld" %>
 <!DOCTYPE html>
 
 <html>
@@ -32,22 +34,22 @@
                             </p>
 
 
-                            <form action="index.jsp" method="post" class="tm-contact-form">
+                            <s:form action="/contact.action" method="post" class="tm-contact-form">
                                 <div class="form-group">
-                                    <input type="text" id="contact_name" name="contact_name" class="form-control" placeholder="Name"  required/>
+                                    <s:text name="name" id="name" class="form-control"/>
                                 </div>
                                 <div class="form-group">
-                                    <input type="email" id="contact_email" name="contact_email" class="form-control" placeholder="Email"  required/>
+                                    <input type="email" id="email" name="email" class="form-control" placeholder="Email"  required/>
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" id="contact_subject" name="contact_subject" class="form-control" placeholder="Subject"  required/>
+                                    <input type="text" id="subject" name="subject" class="form-control" placeholder="Subject"  required/>
                                 </div>
                                 <div class="form-group">
-                                    <textarea id="contact_message" name="contact_message" class="form-control" rows="6" placeholder="Message" required></textarea>
+                                    <textarea id="message" name="message" class="form-control" rows="6" placeholder="Message" required></textarea>
                                 </div>
                             
-                                <button type="submit" class="tm-btn">Coming Soon</button>                          
-                            </form>   
+                                <s:submit name="contactus" class="tm-btn">Coming Soon</s:submit>
+                            </s:form>
                         </section>
                         
                         <section class="tm-margin-t-mid tm-map-section">

@@ -49,7 +49,7 @@ public class LoginActionBean implements ActionBean {
             	throw new Exception("Invalid login for username " + username);
             }
         }
-        return new ForwardResolution("index.jsp"); 
+        return new ForwardResolution("index.jsp");
     }
     
     public Resolution post() throws Exception {

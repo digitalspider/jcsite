@@ -101,10 +101,10 @@
                             <img src="img/tm-img-660x330-1.jpg" alt="Image" class="tm-margin-b-40 img-fluid">
                             -->
                             <p>Register and login to get your own linux container. This container will be available
-                            through the internet at http://&lt;username&gt;.javacloud.com.au. Inside your linux container
+                            through the internet at http://&lt;username&gt;.jcloud.com.au. Inside your linux container
                             choose your application server, e.g. jetty, tomcat, jboss, wildfly or glassfish. Then deploy your
                             web applications (war files) into your containers, using our admin portal. You application
-                            will appear at http://&lt;username&gt;.javacloud.com.au/&lt;yourapp&gt;</p>
+                            will appear at http://&lt;username&gt;.jcloud.com.au/&lt;yourapp&gt;</p>
                             <p>It&apos;s just that simple! You get root access to your linux container.
                             Our default container is pretty small, but if you need more RAM, Disk Space,
                             a Database, or anything else, we can help you to scale to your needs. </p>
