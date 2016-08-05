@@ -2,9 +2,12 @@ package au.com.jcloud.emodel;
 
 import java.sql.Date;
 
+import javax.persistence.MappedSuperclass;
+
 /**
  * Created by david on 5/08/16.
  */
+@MappedSuperclass
 public class BaseBean extends IdBean {
     protected String name;
     protected Date cdate;

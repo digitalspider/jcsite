@@ -76,6 +76,25 @@
                 </configuration>
             </plugin>
              -->
+            <plugin>
+                <groupId>org.avaje.ebean</groupId>
+                <artifactId>ebean-maven-plugin</artifactId>
+                <version>8.1.1</version>
+                <executions>
+                    <execution>
+                        <id>test</id>
+                        <phase>process-test-classes</phase>
+                        <configuration>
+                            <classSource>target/classes</classSource>
+                            <transformArgs>debug=1</transformArgs>
+                            <packages>au.com.jcloud.emodel.**</packages>
+                        </configuration>
+                        <goals>
+                            <goal>enhance</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -114,6 +133,12 @@
       <artifactId>log4j</artifactId>
       <version>1.2.17</version>
     </dependency>
+      <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+          <version>1.7.21</version>
+      </dependency>
+
 
     <!-- Apache Commons -->
     <dependency>

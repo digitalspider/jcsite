@@ -1,7 +1,6 @@
 package au.com.jcloud.emodel;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -10,8 +9,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name="user")
 public class User extends BaseBean {
-    @Id
-    private Long id;
     protected String email;
     protected String password;
     protected String firstName;

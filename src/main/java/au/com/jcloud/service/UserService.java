@@ -20,7 +20,7 @@ public class UserService {
         EBeanServerService.init();
     }
 
-    public void createUser(String username, String firstName, String lastName, String email, String password) throws Exception {
+    public User createUser(String username, String firstName, String lastName, String email, String password) throws Exception {
         User user = new User();
         user.setName(username);
         user.setFirstName(firstName);
@@ -32,6 +32,7 @@ public class UserService {
 
         Ebean.save(user);
         // EBeanServerService.getEBeanServer().save(user);
+        return user;
     }
 
     public User get(int id) {
@@ -40,12 +41,12 @@ public class UserService {
     }
 
     public List<User> getByUsername(String username) {
-        List<User> users = Ebean.find(User.class).where().ilike("username", username).findList();
+        List<User> users = Ebean.find(User.class).where().ilike("name", username).findList();
         return users;
     }
 
     public User getUserByAuth(String username, String password) {
-        User user = Ebean.find(User.class).fetch("id").where().eq("username", username).eq("password",password).findUnique();
+        User user = Ebean.find(User.class).fetch("id").where().eq("name", username).eq("password",password).findUnique();
         return user;
     }
 
@@ -54,6 +55,10 @@ public class UserService {
             UserService us = new UserService();
             LOG.info("us=" + us);
             EbeanServer e2 = EBeanServerService.createEbeanServer();
+            User user = us.createUser("test","first","last","email","pass");
+            LOG.info("user=" + user);
+            LOG.info("test="+us.getByUsername("test"));
+            LOG.info("te="+us.getByUsername("te"));
         } catch (Exception e) {
             LOG.error(e,e);
         }
