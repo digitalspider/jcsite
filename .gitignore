@@ -6,6 +6,8 @@ stripes
 .project
 .bin
 .metadata
+.gradle
+.idea
 RemoteSystemsTempFiles
 push.sh
 generate.sh
