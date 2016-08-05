@@ -1,6 +1,7 @@
 package au.com.jcloud.emodel;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -9,6 +10,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name="server")
 public class Server extends BaseBean {
+    @Id
+    private Long id;
     protected String ip;
     protected String alias;
     protected String os;

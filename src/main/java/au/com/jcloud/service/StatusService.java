@@ -25,7 +25,7 @@ public class StatusService {
         BaseBean bean = Ebean.find(classType).select("id, status").where().idEq(id).findUnique();
         if (bean!=null) {
             bean.setStatus(status.name());
-            bean.save();
+            Ebean.save(bean);
         }
     }
 }

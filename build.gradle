@@ -15,6 +15,7 @@ repositories {
      maven { url "https://maven.atlassian.com/repository/public" }
      maven { url "http://repository.codehaus.org/" }
      mavenCentral()
+     mavenLocal()
 }
 
 dependencies {
@@ -37,4 +38,7 @@ dependencies {
     compile group: 'org.avaje.ebeanorm', name: 'querybean-generator', version:'2.3.1'
     compile group: 'javax.servlet', name: 'javax.servlet-api', version:'3.1.0'
     compile group: 'javax.servlet.jsp', name: 'jsp-api', version:'2.2'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
+    compile group: 'com.h2database', name: 'h2', version: '1.4.192'
+
 }
