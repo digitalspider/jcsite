@@ -21,6 +21,8 @@ public class EmailService {
     public static final String PROP_EMAIL_PORT = "email.port";
     public static final String PROP_EMAIL_USERNAME = "email.username";
     public static final String PROP_EMAIL_PASSWORD = "email.password";
+    public static final String PROP_DEFAULT_FROM_USERNAME = "default.from.username";
+    public static final String PROP_DEFAULT_FROM_EMAIL = "default.from.email";
 
     private static Properties properties = new Properties();
     private static Mailer mailer;
@@ -61,6 +63,18 @@ public class EmailService {
         if (StringUtils.isBlank(properties.getProperty(PROP_EMAIL_PASSWORD))) {
             throw new Exception("Property "+PROP_EMAIL_PASSWORD+" has not been set! Please update "+EMAIL_PROPERTIES);
         }
+    }
+
+    public void sendEmail(String toName, String toEmail, String subject, String message) throws Exception {
+        if (StringUtils.isBlank(properties.getProperty(PROP_DEFAULT_FROM_EMAIL))) {
+            throw new Exception("Property "+PROP_DEFAULT_FROM_EMAIL+" has not been set! Please update "+EMAIL_PROPERTIES);
+        }
+        if (StringUtils.isBlank(properties.getProperty(PROP_DEFAULT_FROM_USERNAME))) {
+            throw new Exception("Property "+PROP_DEFAULT_FROM_USERNAME+" has not been set! Please update "+EMAIL_PROPERTIES);
+        }
+        String fromName = properties.getProperty(PROP_DEFAULT_FROM_USERNAME);
+        String fromEmail = properties.getProperty(PROP_DEFAULT_FROM_EMAIL);
+        sendEmail(fromName, fromEmail, toName, toEmail, subject, message);
     }
 
     public void sendEmail(String fromName, String fromEmail, String toName, String toEmail, String subject, String message) throws Exception {

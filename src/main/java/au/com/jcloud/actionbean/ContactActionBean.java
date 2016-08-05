@@ -34,7 +34,7 @@ public class ContactActionBean implements ActionBean {
     public Resolution contact() {
         try {
             EmailService emailService = new EmailService();
-            emailService.sendEmail(name,email,"David Vittor", "dvittor@gmail.com", subject, message);
+            emailService.sendEmail(name, email, subject, message);
         } catch (Exception e) {
             LOG.error(e,e);
         }
