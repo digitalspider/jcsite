@@ -1,9 +1,11 @@
 package au.com.jcloud.emodel;
 
+import com.avaje.ebean.Model;
+
 /**
  * Created by david.vittor on 5/08/16.
  */
-public class IdBean {
+public class IdBean extends Model {
     protected int id;
 
     @Override

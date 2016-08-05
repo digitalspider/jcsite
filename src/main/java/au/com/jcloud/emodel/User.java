@@ -1,8 +1,13 @@
 package au.com.jcloud.emodel;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  * Created by david.vittor on 5/08/16.
  */
+@Entity
+@Table(name="user")
 public class User extends BaseBean {
     protected String email;
     protected String password;

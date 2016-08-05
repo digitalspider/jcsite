@@ -1,0 +1,31 @@
+package au.com.jcloud.service;
+
+import com.avaje.ebean.Ebean;
+
+import au.com.jcloud.emodel.BaseBean;
+import au.com.jcloud.emodel.User;
+
+/**
+ * Created by david on 5/08/16.
+ */
+public class StatusService {
+    public enum Status {
+        ENABLED,DISABLED
+    }
+
+    public void enable(Class<? extends BaseBean> classType, Integer id) {
+        setStatus(classType, id,Status.ENABLED);
+    }
+
+    public void disable(Class<? extends BaseBean> classType, Integer id) {
+        setStatus(classType, id,Status.DISABLED);
+    }
+
+    public void setStatus(Class<? extends BaseBean> classType, Object id, Status status) {
+        BaseBean bean = Ebean.find(classType).select("id, status").where().idEq(id).findUnique();
+        if (bean!=null) {
+            bean.setStatus(status.name());
+            bean.save();
+        }
+    }
+}
