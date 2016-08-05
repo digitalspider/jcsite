@@ -1,5 +1,6 @@
 *.class
 target
+build
 stripes
 .settings
 .classpath
@@ -8,6 +9,7 @@ stripes
 .metadata
 .gradle
 .idea
+local.properties
 RemoteSystemsTempFiles
 push.sh
 generate.sh
