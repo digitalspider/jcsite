@@ -25,6 +25,7 @@ public class EmailService {
     public static final String PROP_DEFAULT_FROM_EMAIL = "default.from.email";
 
     private static Properties properties = new Properties();
+    private static PropertyReaderService propertyReaderService = new PropertyReaderService();
     private static Mailer mailer;
 
     public EmailService() throws Exception {
@@ -34,8 +35,7 @@ public class EmailService {
     }
 
     public void init() throws Exception {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        properties.load(classLoader.getResourceAsStream(EMAIL_PROPERTIES));
+        properties = propertyReaderService.loadProperties(EMAIL_PROPERTIES);
         validateProperties(properties);
 
         mailer = new Mailer(
