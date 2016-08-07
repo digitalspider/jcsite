@@ -25,6 +25,10 @@ public class EBeanServerService {
     private static EbeanServer ebeanServer;
     private static PropertyReaderService propertyReaderService = new PropertyReaderService();
 
+    public EBeanServerService() {
+        this(false);
+    }
+
     public EBeanServerService(boolean test) {
         if (test) {
             init(EBEAN_PROPERTIES_TEST);

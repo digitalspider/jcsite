@@ -16,11 +16,7 @@ import au.com.jcloud.emodel.User;
 public class UserService {
     private static final Logger LOG = Logger.getLogger(UserService.class);
 
-    private static EBeanServerService eBeanServerService;
-
-    public UserService(boolean test) {
-        eBeanServerService = new EBeanServerService(test);
-    }
+    private static EBeanServerService eBeanServerService = new EBeanServerService();
 
     public User createUser(String username, String firstName, String lastName, String email, String password) throws Exception {
         User user = new User();
@@ -64,7 +60,7 @@ public class UserService {
 
     public static void main(String[] args) {
         try {
-            UserService us = new UserService(true);
+            UserService us = new UserService();
             LOG.info("us=" + us);
             User user = us.createUser("test","first","last","email","pass");
 //            user.setStatus(StatusService.Status.DISABLED.name());

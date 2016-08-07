@@ -1,13 +1,16 @@
 package au.com.jcloud.actionbean;
 
+import com.avaje.ebean.Ebean;
+
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import au.com.jcloud.emodel.User;
 import au.com.jcloud.jcframe.dao.BaseDAO;
 import au.com.jcloud.jcframe.util.Statics;
-import au.com.jcloud.model.Login;
-import au.com.jcloud.model.User;
+import au.com.jcloud.service.UserService;
+
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.DefaultHandler;
@@ -22,41 +25,46 @@ import net.sourceforge.stripes.action.UrlBinding;
 public class LoginActionBean implements ActionBean {
 
 	private static final Logger LOG = Logger.getLogger(LoginActionBean.class);
-	
+
+	private UserService userService = new UserService();
 	private ActionBeanContext context;
     private String username;
     private String password;
+	private String email;
+	private String firstname;
+	private String lastname;
+	private String newusername;
+	private String newpassword;
     private User user;
     
     @DefaultHandler
     public Resolution login() throws Exception {
-    	BaseDAO dao = Statics.getDaoMap().get(Login.class);
+
     	int pageNo = 0;
     	boolean exact = true;
     	boolean populateBean = true;
-        List<Login> logins = dao.find("username", username, pageNo, exact, populateBean);
-        if (!logins.isEmpty()) {
-            if (logins.size() > 1) {
-                throw new Exception("Too many users with username=" + username);
-            }
-            Login login = logins.get(0);
-            LOG.info("login=" + login);
-            if (login.getPassword() != null && login.getPassword().equals(password)) {
-            	BaseDAO<Integer,User> userDao = (BaseDAO<Integer,User>) Statics.getDaoMap().get(User.class);
-            	user = userDao.get(login.getId(),populateBean);
-            	context.getRequest().getSession().setAttribute("user", user);
-            } else {
-            	throw new Exception("Invalid login for username " + username);
-            }
+        User user = userService.getUserByAuth(username,password);
+        if (user == null) {
+			throw new Exception("Invalid login for username " + username);
+		} else {
+			context.getRequest().getSession().setAttribute("user", user);
         }
         return new ForwardResolution("index.jsp");
     }
-    
-    public Resolution post() throws Exception {
-    	login();
-    	if (user!=null) {
-    		return new JsonResolution( user );
-    	}
+
+	@UrlBinding("/register")
+    public Resolution register() throws Exception {
+    	User user = new User();
+		List<User> exists = userService.getByUsername(newusername);
+		if (exists.size()>0) {
+			throw new Exception("Username already exists! Please select a different one");
+		}
+		user.setName(newusername);
+		user.setPassword(newpassword);
+		user.setEmail(email);
+		user.setFirstName(firstname);
+		user.setLastName(lastname);
+		Ebean.save(user);
     	return null;
     }
     
@@ -93,7 +101,52 @@ public class LoginActionBean implements ActionBean {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
-	
 
+	public UserService getUserService() {
+		return userService;
+	}
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	public String getNewusername() {
+		return newusername;
+	}
+
+	public void setNewusername(String newusername) {
+		this.newusername = newusername;
+	}
+
+	public String getNewpassword() {
+		return newpassword;
+	}
+
+	public void setNewpassword(String newpassword) {
+		this.newpassword = newpassword;
+	}
 }
