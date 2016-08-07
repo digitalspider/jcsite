@@ -54,7 +54,7 @@ public class UserService {
         try {
             UserService us = new UserService();
             LOG.info("us=" + us);
-            EbeanServer e2 = EBeanServerService.createEbeanServer();
+            EbeanServer e2 = EBeanServerService.getEBeanServer();
             User user = us.createUser("test","first","last","email","pass");
             LOG.info("user=" + user);
             LOG.info("test="+us.getByUsername("test"));

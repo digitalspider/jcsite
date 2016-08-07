@@ -18,11 +18,12 @@ import au.com.jcloud.emodel.User;
  * Created by david on 5/08/16.
  */
 public class EBeanServerService {
-    static private ServerConfig serverConfig;
-    static private EbeanServer ebeanServer;
+    private static ServerConfig serverConfig;
+    private static EbeanServer ebeanServer;
+    private static PropertyReaderService propertyReaderService = new PropertyReaderService();
 
     static {
-        //init();
+        init();
     }
 
     public static void init() {
@@ -31,12 +32,7 @@ public class EBeanServerService {
                 serverConfig = new ServerConfig();
                 serverConfig.setName("jc");
                 serverConfig.setDefaultServer(true);
-                Properties properties = new Properties();
-                properties.setProperty("ebean.jc","au.com.jcloud.emodel.*");
-                properties.setProperty("datasource.jc.username","sa");
-                properties.setProperty("datasource.jc.password","");
-                properties.setProperty("datasource.jc.databaseUrl","jdbc:h2:mem:tests;DB_CLOSE_DELAY=-1");
-                properties.setProperty("datasource.jc.databaseDriver","org.h2.Driver");
+                Properties properties = propertyReaderService.loadProperties("test-ebean.properties");
                 serverConfig.loadFromProperties(properties);
                 ebeanServer = EbeanServerFactory.create(serverConfig);
             }
