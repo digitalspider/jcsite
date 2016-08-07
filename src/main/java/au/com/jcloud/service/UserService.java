@@ -67,7 +67,7 @@ public class UserService {
             User user = us.createUser("test","first","last","email","pass");
             LOG.info("user=" + user);
             LOG.info("test="+us.getByUsername("test"));
-            LOG.info("te="+us.getByUsername("te"));
+            LOG.info("te%="+us.getByUsername("te%"));
         } catch (Exception e) {
             LOG.error(e,e);
         }
