@@ -16,8 +16,10 @@ import au.com.jcloud.emodel.User;
 public class UserService {
     private static final Logger LOG = Logger.getLogger(UserService.class);
 
-    public UserService() {
-        EBeanServerService.init();
+    private static EBeanServerService eBeanServerService;
+
+    public UserService(boolean test) {
+        eBeanServerService = new EBeanServerService(test);
     }
 
     public User createUser(String username, String firstName, String lastName, String email, String password) throws Exception {
@@ -50,11 +52,18 @@ public class UserService {
         return user;
     }
 
+    public static EBeanServerService geteBeanServerService() {
+        return eBeanServerService;
+    }
+
+    public static void seteBeanServerService(EBeanServerService eBeanServerService) {
+        UserService.eBeanServerService = eBeanServerService;
+    }
+
     public static void main(String[] args) {
         try {
-            UserService us = new UserService();
+            UserService us = new UserService(true);
             LOG.info("us=" + us);
-            EbeanServer e2 = EBeanServerService.getEBeanServer();
             User user = us.createUser("test","first","last","email","pass");
             LOG.info("user=" + user);
             LOG.info("test="+us.getByUsername("test"));

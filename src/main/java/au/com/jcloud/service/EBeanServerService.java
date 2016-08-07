@@ -18,21 +18,32 @@ import au.com.jcloud.emodel.User;
  * Created by david on 5/08/16.
  */
 public class EBeanServerService {
+    public static final String EBEAN_PROPERTIES = "ebean.properties";
+    public static final String EBEAN_PROPERTIES_TEST = "test-ebean.properties";
+
     private static ServerConfig serverConfig;
     private static EbeanServer ebeanServer;
     private static PropertyReaderService propertyReaderService = new PropertyReaderService();
 
-    static {
-        init();
+    public EBeanServerService(boolean test) {
+        if (test) {
+            init(EBEAN_PROPERTIES_TEST);
+        } else {
+            init(EBEAN_PROPERTIES);
+        }
     }
 
-    public static void init() {
+    public EBeanServerService(String properiesFile) {
+        init(properiesFile);
+    }
+
+    public void init(String propertiesFile) {
         try {
             if (ebeanServer == null) {
                 serverConfig = new ServerConfig();
                 serverConfig.setName("jc");
                 serverConfig.setDefaultServer(true);
-                Properties properties = propertyReaderService.loadProperties("test-ebean.properties");
+                Properties properties = propertyReaderService.loadProperties(propertiesFile);
                 serverConfig.loadFromProperties(properties);
                 ebeanServer = EbeanServerFactory.create(serverConfig);
             }
