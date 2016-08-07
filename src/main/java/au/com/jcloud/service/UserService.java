@@ -48,7 +48,9 @@ public class UserService {
     }
 
     public User getUserByAuth(String username, String password) {
-        User user = Ebean.find(User.class).fetch("id").where().eq("name", username).eq("password",password).findUnique();
+        User user = Ebean.find(User.class).select("id, name, email, status, firstName, lastName").where()
+                .eq("name", username).eq("password",password).eq("status", StatusService.Status.ENABLED.name())
+                .findUnique();
         return user;
     }
 
@@ -65,9 +67,12 @@ public class UserService {
             UserService us = new UserService(true);
             LOG.info("us=" + us);
             User user = us.createUser("test","first","last","email","pass");
+//            user.setStatus(StatusService.Status.DISABLED.name());
+//            Ebean.save(user);
             LOG.info("user=" + user);
             LOG.info("test="+us.getByUsername("test"));
             LOG.info("te%="+us.getByUsername("te%"));
+            LOG.info("auth="+us.getUserByAuth("test","pass"));
         } catch (Exception e) {
             LOG.error(e,e);
         }
