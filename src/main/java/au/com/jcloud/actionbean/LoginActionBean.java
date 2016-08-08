@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 
 import au.com.jcloud.context.JCActionBeanContext;
 import au.com.jcloud.emodel.User;
-import au.com.jcloud.service.EncryptService;
 import au.com.jcloud.service.UserService;
 
 import net.sourceforge.stripes.action.ActionBean;
@@ -27,7 +26,6 @@ public class LoginActionBean implements ActionBean {
 	private static final Logger LOG = Logger.getLogger(LoginActionBean.class);
 
 	private UserService userService = new UserService();
-	private EncryptService encryptService = new EncryptService();
 	private JCActionBeanContext context;
     private String username;
     private String password;
@@ -45,8 +43,7 @@ public class LoginActionBean implements ActionBean {
     	int pageNo = 0;
     	boolean exact = true;
     	boolean populateBean = true;
-		String passValue = getEncryptService().md5(password);
-        User user = userService.getUserByAuth(username,passValue);
+        User user = userService.getUserByAuth(username,password);
         if (user == null) {
 			throw new Exception("Invalid login for username " + username);
 		} else {
@@ -58,22 +55,7 @@ public class LoginActionBean implements ActionBean {
 	@HandlesEvent("register")
     public Resolution register() throws Exception {
 		LOG.info("register attempt for user="+newusername);
-    	User user = new User();
-		List<User> exists = userService.getByUsername(newusername);
-		if (exists.size()>0) {
-			throw new Exception("Username already exists! Please select a different one");
-		}
-		exists = userService.getByEmail(email);
-		if (exists.size()>0) {
-			throw new Exception("This email is already registered! Please select a different one");
-		}
-		user.setName(newusername);
-		String passValue = getEncryptService().md5(newpassword);
-		user.setPassword(passValue);
-		user.setEmail(email);
-		user.setFirstName(firstname);
-		user.setLastName(lastname);
-		Ebean.save(user);
+		userService.createUser(newusername,firstname,lastname,email,newpassword);
 
 		// save the logged in user to the session
 		context.setUser(user);
@@ -121,14 +103,6 @@ public class LoginActionBean implements ActionBean {
 
 	public void setUserService(UserService userService) {
 		this.userService = userService;
-	}
-
-	protected EncryptService getEncryptService() {
-		return encryptService;
-	}
-
-	public void setEncryptService(EncryptService encryptService) {
-		this.encryptService = encryptService;
 	}
 
 	public String getEmail() {

@@ -76,8 +76,8 @@
                 this.name = $(".submit").attr("name");
                 this.submit();
             }
-            $('#loginForm').submit(encodeAndSubmit);
-            $('#registerForm').submit(encodeAndSubmit);
+           // $('#loginForm').submit(encodeAndSubmit);
+           // $('#registerForm').submit(encodeAndSubmit);
         </script>
 </body>
 </html>

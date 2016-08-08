@@ -17,14 +17,24 @@ public class UserService {
     private static final Logger LOG = Logger.getLogger(UserService.class);
 
     private static EBeanServerService eBeanServerService = new EBeanServerService();
+    private EncryptService encryptService = new EncryptService();
 
     public User createUser(String username, String firstName, String lastName, String email, String password) throws Exception {
+        List<User> exists = getByUsername(username);
+        if (exists.size()>0) {
+            throw new Exception("Username already exists! Please select a different one");
+        }
+        exists = getByEmail(email);
+        if (exists.size()>0) {
+            throw new Exception("This email is already registered! Please select a different one");
+        }
         User user = new User();
         user.setName(username);
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
-        user.setPassword(password);
+        String passValue = encryptService!=null ? encryptService.md5(password) : password;
+        user.setPassword(passValue);
         user.setStatus(StatusService.Status.ENABLED.name());
         LOG.info("creating new user: "+user);
 
@@ -49,8 +59,9 @@ public class UserService {
     }
 
     public User getUserByAuth(String username, String password) {
+        String passValue = encryptService!=null ? encryptService.md5(password) : password;
         User user = Ebean.find(User.class).select("id, name, email, status, firstName, lastName").where()
-                .eq("name", username).eq("password",password).eq("status", StatusService.Status.ENABLED.name())
+                .eq("name", username).eq("password",passValue).eq("status", StatusService.Status.ENABLED.name())
                 .findUnique();
         return user;
     }
@@ -61,6 +72,14 @@ public class UserService {
 
     public static void seteBeanServerService(EBeanServerService eBeanServerService) {
         UserService.eBeanServerService = eBeanServerService;
+    }
+
+    protected EncryptService getEncryptService() {
+        return encryptService;
+    }
+
+    public void setEncryptService(EncryptService encryptService) {
+        this.encryptService = encryptService;
     }
 
     public static void main(String[] args) {
