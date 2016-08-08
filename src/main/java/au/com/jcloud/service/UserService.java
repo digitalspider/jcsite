@@ -39,7 +39,12 @@ public class UserService {
     }
 
     public List<User> getByUsername(String username) {
-        List<User> users = Ebean.find(User.class).where().ilike("name", username).findList();
+        List<User> users = Ebean.find(User.class).where().eq("name", username).findList();
+        return users;
+    }
+
+    public List<User> getByEmail(String username) {
+        List<User> users = Ebean.find(User.class).where().eq("email", username).findList();
         return users;
     }
 

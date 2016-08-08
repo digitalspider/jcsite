@@ -6,28 +6,29 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import au.com.jcloud.context.JCActionBeanContext;
 import au.com.jcloud.emodel.User;
-import au.com.jcloud.jcframe.dao.BaseDAO;
-import au.com.jcloud.jcframe.util.Statics;
+import au.com.jcloud.service.EncryptService;
 import au.com.jcloud.service.UserService;
 
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
-import net.sourceforge.stripes.action.JsonResolution;
+import net.sourceforge.stripes.action.HandlesEvent;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.RestActionBean;
 import net.sourceforge.stripes.action.UrlBinding;
 
 @RestActionBean
-@UrlBinding("/login")
+@UrlBinding("/login.action")
 public class LoginActionBean implements ActionBean {
 
 	private static final Logger LOG = Logger.getLogger(LoginActionBean.class);
 
 	private UserService userService = new UserService();
-	private ActionBeanContext context;
+	private EncryptService encryptService = new EncryptService();
+	private JCActionBeanContext context;
     private String username;
     private String password;
 	private String email;
@@ -40,32 +41,44 @@ public class LoginActionBean implements ActionBean {
     @DefaultHandler
     public Resolution login() throws Exception {
 
+		LOG.info("login attempt for user="+username);
     	int pageNo = 0;
     	boolean exact = true;
     	boolean populateBean = true;
-        User user = userService.getUserByAuth(username,password);
+		String passValue = getEncryptService().md5(password);
+        User user = userService.getUserByAuth(username,passValue);
         if (user == null) {
 			throw new Exception("Invalid login for username " + username);
 		} else {
-			context.getRequest().getSession().setAttribute("user", user);
+			context.setUser(user);
         }
         return new ForwardResolution("index.jsp");
     }
 
-	@UrlBinding("/register")
+	@HandlesEvent("register")
     public Resolution register() throws Exception {
+		LOG.info("register attempt for user="+newusername);
     	User user = new User();
 		List<User> exists = userService.getByUsername(newusername);
 		if (exists.size()>0) {
 			throw new Exception("Username already exists! Please select a different one");
 		}
+		exists = userService.getByEmail(email);
+		if (exists.size()>0) {
+			throw new Exception("This email is already registered! Please select a different one");
+		}
 		user.setName(newusername);
-		user.setPassword(newpassword);
+		String passValue = getEncryptService().md5(newpassword);
+		user.setPassword(passValue);
 		user.setEmail(email);
 		user.setFirstName(firstname);
 		user.setLastName(lastname);
 		Ebean.save(user);
-    	return null;
+
+		// save the logged in user to the session
+		context.setUser(user);
+
+		return new ForwardResolution("index.jsp");
     }
     
 	@Override
@@ -75,7 +88,7 @@ public class LoginActionBean implements ActionBean {
 
 	@Override
 	public void setContext(ActionBeanContext context) {
-		this.context = context;
+		this.context = (JCActionBeanContext)context;
 	}
 
 	public String getUsername() {
@@ -108,6 +121,14 @@ public class LoginActionBean implements ActionBean {
 
 	public void setUserService(UserService userService) {
 		this.userService = userService;
+	}
+
+	protected EncryptService getEncryptService() {
+		return encryptService;
+	}
+
+	public void setEncryptService(EncryptService encryptService) {
+		this.encryptService = encryptService;
 	}
 
 	public String getEmail() {

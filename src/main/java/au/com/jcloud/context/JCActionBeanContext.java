@@ -1,9 +1,10 @@
 package au.com.jcloud.context;
 
-import au.com.jcloud.model.User;
 import net.sourceforge.stripes.action.ActionBeanContext;
 
-public class MyActionBeanContext extends ActionBeanContext {
+import au.com.jcloud.emodel.User;
+
+public class JCActionBeanContext extends ActionBeanContext {
     public void setUser(User user) {
         getRequest().getSession().setAttribute("user", user);
     }

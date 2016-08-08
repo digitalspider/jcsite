@@ -24,7 +24,7 @@
 		</init-param>
 		<init-param>
 			<param-name>ActionBeanContext.Class</param-name>
-			<param-value>au.com.jcloud.context.MyActionBeanContext</param-value>
+			<param-value>au.com.jcloud.context.JCActionBeanContext</param-value>
 		</init-param>
 		<context-param>
 			<param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>

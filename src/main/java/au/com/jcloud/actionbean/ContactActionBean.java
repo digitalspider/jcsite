@@ -8,13 +8,8 @@ import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.UrlBinding;
 
 import org.apache.log4j.Logger;
-import org.simplejavamail.email.Email;
-import org.simplejavamail.mailer.Mailer;
-import org.simplejavamail.mailer.config.ServerConfig;
-import org.simplejavamail.mailer.config.TransportStrategy;
 
-import javax.mail.Message;
-
+import au.com.jcloud.context.JCActionBeanContext;
 import au.com.jcloud.service.EmailService;
 
 /**
@@ -24,7 +19,7 @@ import au.com.jcloud.service.EmailService;
 public class ContactActionBean implements ActionBean {
     private static final Logger LOG = Logger.getLogger(ContactActionBean.class);
 
-    private ActionBeanContext context;
+    private JCActionBeanContext context;
     private String name;
     private String email;
     private String subject;
@@ -48,7 +43,7 @@ public class ContactActionBean implements ActionBean {
 
     @Override
     public void setContext(ActionBeanContext context) {
-        this.context = context;
+        this.context = (JCActionBeanContext)context;
     }
 
     public String getName() {
