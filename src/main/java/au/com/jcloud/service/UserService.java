@@ -1,9 +1,9 @@
 package au.com.jcloud.service;
 
 import com.avaje.ebean.Ebean;
-import com.avaje.ebean.EbeanServer;
-import com.avaje.ebean.ExpressionList;
+import com.avaje.ebean.Expr;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.List;
@@ -60,9 +60,12 @@ public class UserService {
 
     public User getUserByAuth(String username, String password) {
         String passValue = encryptService!=null ? encryptService.md5(password) : password;
-        User user = Ebean.find(User.class).select("id, name, email, status, firstName, lastName").where()
-                .eq("name", username).eq("password",passValue).eq("status", StatusService.Status.ENABLED.name())
-                .findUnique();
+        User user = null;
+        if (StringUtils.isNotBlank(username)) {
+            user = Ebean.find(User.class).select("id, name, email, status, firstName, lastName").where()
+                    .or(Expr.eq("name", username), Expr.eq("email", username)).eq("password", passValue).eq("status", StatusService.Status.ENABLED.name())
+                    .findUnique();
+        }
         return user;
     }
 
