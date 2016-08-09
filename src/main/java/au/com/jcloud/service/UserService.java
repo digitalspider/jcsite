@@ -20,15 +20,15 @@ public class UserService {
     private EncryptService encryptService = new EncryptService();
 
     public User createUser(String username, String firstName, String lastName, String email, String password) throws Exception {
-        List<User> exists = getByUsername(username);
-        if (exists.size()>0) {
+        User user = getByUsername(username);
+        if (user!=null) {
             throw new Exception("Username already exists! Please select a different one");
         }
-        exists = getByEmail(email);
-        if (exists.size()>0) {
+        user = getByEmail(email);
+        if (user!=null) {
             throw new Exception("This email is already registered! Please select a different one");
         }
-        User user = new User();
+        user = new User();
         user.setName(username);
         user.setFirstName(firstName);
         user.setLastName(lastName);
@@ -43,18 +43,40 @@ public class UserService {
         return user;
     }
 
+    public User updatePassword(String username, String password) throws Exception {
+        User user = getByUsername(username);
+        if (user == null) {
+            throw new Exception("Could not find user: "+username);
+        }
+        String passValue = encryptService!=null ? encryptService.md5(password) : password;
+        user.setPassword(passValue);
+        Ebean.save(user);
+        user = getByUsername(username);
+        return user;
+    }
+
     public User get(int id) {
         User user = Ebean.find(User.class, id);
         return user;
     }
 
-    public List<User> getByUsername(String username) {
-        List<User> users = Ebean.find(User.class).where().eq("name", username).findList();
+    public User getByUsername(String username) {
+        User user = Ebean.find(User.class).select("id, name, email, status, firstName, lastName").where().eq("name", username).findUnique();
+        return user;
+    }
+
+    public User getByEmail(String username) {
+        User user = Ebean.find(User.class).select("id, name, email, status, firstName, lastName").where().eq("email", username).findUnique();
+        return user;
+    }
+
+    public List<User> getListByUsername(String username) {
+        List<User> users = Ebean.find(User.class).select("id, name, email, status, firstName, lastName").where().eq("name", username).findList();
         return users;
     }
 
-    public List<User> getByEmail(String username) {
-        List<User> users = Ebean.find(User.class).where().eq("email", username).findList();
+    public List<User> getListByEmail(String username) {
+        List<User> users = Ebean.find(User.class).select("id, name, email, status, firstName, lastName").where().eq("email", username).findList();
         return users;
     }
 
