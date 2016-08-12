@@ -9,45 +9,45 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 public class BaseBean extends IdBean {
-    protected String name;
-    protected Date cdate;
-    protected Date mdate;
-    protected String status;
+	protected String name;
+	protected Date cdate;
+	protected Date mdate;
+	protected String status;
 
-    @Override
-    public String toString() {
-        return super.toString()+" name="+name+" status="+status;
-    }
+	@Override
+	public String toString() {
+		return super.toString() + " name=" + name + " status=" + status;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public Date getCdate() {
-        return cdate;
-    }
+	public Date getCdate() {
+		return cdate;
+	}
 
-    public void setCdate(Date cdate) {
-        this.cdate = cdate;
-    }
+	public void setCdate(Date cdate) {
+		this.cdate = cdate;
+	}
 
-    public Date getMdate() {
-        return mdate;
-    }
+	public Date getMdate() {
+		return mdate;
+	}
 
-    public void setMdate(Date mdate) {
-        this.mdate = mdate;
-    }
+	public void setMdate(Date mdate) {
+		this.mdate = mdate;
+	}
 
-    public String getStatus() {
-        return status;
-    }
+	public String getStatus() {
+		return status;
+	}
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	public void setStatus(String status) {
+		this.status = status;
+	}
 }

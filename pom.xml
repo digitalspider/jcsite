@@ -99,213 +99,198 @@
         </plugins>
     </build>
 
-  <dependencies>
-  	<!-- Stripes Framework -->
-	<dependency>
-	    <groupId>net.sourceforge.stripes</groupId>
-	    <artifactId>stripes</artifactId>
-	    <version>1.7.0-async-beta</version>
-	</dependency>
+	<dependencies>
+		<!-- Stripes Framework -->
+		<dependency>
+			<groupId>net.sourceforge.stripes</groupId>
+			<artifactId>stripes</artifactId>
+			<version>1.7.0-async-beta</version>
+		</dependency>
 
-    <!-- GSon library -->
-    <dependency>
-        <groupId>com.google.code.gson</groupId>
-        <artifactId>gson</artifactId>
-        <version>2.6.2</version>
-    </dependency>
-
-  	<!-- Testing -->
-    <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>4.11</version>
-        <scope>test</scope>
-    </dependency>
-    <dependency>
-        <groupId>org.mockito</groupId>
-        <artifactId>mockito-all</artifactId>
-        <version>1.10.19</version>
-        <scope>test</scope>
-    </dependency>
-
-	<!-- Logging -->
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.17</version>
-    </dependency>
-      <dependency>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
-          <version>1.7.21</version>
-      </dependency>
-
-
-    <!-- Apache Commons -->
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-      <version>3.4</version>
-    </dependency>
-
-    <!-- Apache Commons File Upload -->
-    <dependency>
-      <groupId>commons-fileupload</groupId>
-      <artifactId>commons-fileupload</artifactId>
-      <version>1.3.2</version>
-    </dependency>
-
-    <!-- JavaCloud Framework -->
-    <dependency>
-      <groupId>au.com.jcloud</groupId>
-      <artifactId>jcframe</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
-
-      <!-- JLXD API
-      <dependency>
-          <groupId>au.com.jcloud</groupId>
-          <artifactId>jlxd</artifactId>
-          <version>1.0-SNAPSHOT</version>
-      </dependency>
-       -->
-
-    <!-- JSTL -->
-    <dependency>
-      <groupId>taglibs</groupId>
-      <artifactId>standard</artifactId>
-      <version>1.1.2</version>
-    </dependency>
-
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>jstl</artifactId>
-      <version>1.1.2</version>
-    </dependency>
-
-    <!-- Payment -->
-    <dependency>
-      <groupId>com.stripe</groupId>
-      <artifactId>stripe-java</artifactId>
-      <version>2.5.0</version>
-    </dependency>
-
-    <!-- Database dependencies -->
-    <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <version>5.1.39</version>
-    </dependency>
-
-    <dependency>
-        <groupId>org.xerial</groupId>
-        <artifactId>sqlite-jdbc</artifactId>
-       <version>3.8.11.2</version>
-    </dependency>
-
-    <!-- EBean library -->
-    <dependency>
-      <groupId>org.avaje.ebeanorm</groupId>
-      <artifactId>avaje-ebeanorm</artifactId>
-      <version>8.1.1</version>
-    </dependency>
-    <!-- support for query beans -->
-    <dependency>
-      <groupId>org.avaje.ebeanorm</groupId>
-      <artifactId>avaje-ebeanorm-querybean</artifactId>
-      <version>7.15.1</version>
-    </dependency>
-    <!-- java annotation processor to generate query beans -->
-    <dependency>
-      <groupId>org.avaje.ebeanorm</groupId>
-      <artifactId>querybean-generator</artifactId>
-      <version>2.3.1</version>
-      <scope>provided</scope>
-    </dependency>
-
-	<!-- OrmLite
-	<dependency>
-		<groupId>com.j256.ormlite</groupId>
-		<artifactId>ormlite-core</artifactId>
-		<version>4.48</version>
-	</dependency>
-	-->
+		<!-- Spring Framework -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>4.3.1.RELEASE</version>
+		</dependency>
 	
-	<!-- Hibernate
-	<dependency>
-		<groupId>org.hibernate</groupId>
-		<artifactId>hibernate-core</artifactId>
-		<version>5.1.0.Final</version>
-	</dependency>
-	<dependency>
-		<groupId>org.hibernate</groupId>
-		<artifactId>hibernate-entitymanager</artifactId>
-		<version>5.1.0.Final</version>
-	</dependency>
-	-->
+		<!-- GSon library -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.6.2</version>
+		</dependency>
 
-    <!-- Other tools
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>1.16.8</version>
-    </dependency>
-    -->
+		<!-- EBean library -->
+		<dependency>
+			<groupId>org.avaje.ebeanorm</groupId>
+			<artifactId>avaje-ebeanorm</artifactId>
+			<version>8.1.1</version>
+		</dependency>
+		<dependency> <!-- support for query beans -->
+			<groupId>org.avaje.ebeanorm</groupId>
+			<artifactId>avaje-ebeanorm-querybean</artifactId>
+			<version>7.15.1</version>
+		</dependency>
+		<dependency> <!-- java annotation processor to generate query beans -->
+			<groupId>org.avaje.ebeanorm</groupId>
+			<artifactId>querybean-generator</artifactId>
+			<version>2.3.1</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<!-- Simple Java Mail -->
+		<dependency>
+			<groupId>org.simplejavamail</groupId>
+			<artifactId>simple-java-mail</artifactId>
+			<version>4.1.1</version>
+		</dependency>
+	
+		<!-- Testing -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.10.19</version>
+			<scope>test</scope>
+		</dependency>
+	
+		<!-- Logging -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.21</version>
+		</dependency>
+	
+		<!-- Apache Commons -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.4</version>
+		</dependency>
+	
+		<!-- Apache Commons File Upload -->
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.3.2</version>
+		</dependency>
+	
+		<!-- JavaCloud Framework -->
+		<dependency>
+			<groupId>au.com.jcloud</groupId>
+			<artifactId>jcframe</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
 
-    <!-- Provided Dependencies -->
-    <dependency>
-        <groupId>javax.servlet</groupId>
-        <artifactId>javax.servlet-api</artifactId>
-        <version>3.1.0</version>
-        <scope>provided</scope>
-    </dependency>
+		<!-- JLXD API
+		<dependency>
+		    <groupId>au.com.jcloud</groupId>
+		    <artifactId>jlxd</artifactId>
+		    <version>1.0-SNAPSHOT</version>
+		</dependency>
+		 -->
+	
+		<!-- JSTL -->
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+	
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+	
+		<!-- Payment -->
+		<dependency>
+			<groupId>com.stripe</groupId>
+			<artifactId>stripe-java</artifactId>
+			<version>2.5.0</version>
+		</dependency>
 
-    <dependency>
-        <groupId>javax.servlet.jsp</groupId>
-        <artifactId>jsp-api</artifactId>
-        <version>2.2</version>
-        <scope>provided</scope>
-    </dependency>
+	    <!-- Database dependencies -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.39</version>
+			<scope>provided</scope>
+			<optional>true</optional>
+		</dependency>
+	
+		<dependency>
+			<groupId>org.xerial</groupId>
+			<artifactId>sqlite-jdbc</artifactId>
+			<version>3.8.11.2</version>
+			<scope>provided</scope>
+			<optional>true</optional>
+		</dependency>
+	
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.192</version>
+			<!-- <scope>provided</scope> -->
+			<optional>true</optional>
+		</dependency>
 
-    <dependency>
-      <groupId>com.h2database</groupId>
-      <artifactId>h2</artifactId>
-      <version>1.4.192</version>
-      <!--
-      <scope>provided</scope>
-      -->
-    </dependency>
-
-
-      <!--
-	<dependency>
-		<groupId>javax.activation</groupId>
-		<artifactId>activation</artifactId>
-		<version>1.1</version>
-	</dependency>
-	<dependency>
-		<groupId>javax.mail</groupId>
-		<artifactId>mail</artifactId>
-		<version>1.4</version>
-		<optional>true</optional>
-	</dependency>
-	-->
-    <!-- https://mvnrepository.com/artifact/org.simplejavamail/simple-java-mail -->
-    <dependency>
-      <groupId>org.simplejavamail</groupId>
-      <artifactId>simple-java-mail</artifactId>
-      <version>4.1.1</version>
-    </dependency>
-
-	<!-- Spring framework
-    <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-webmvc</artifactId>
-        <version>4.2.6.RELEASE</version>
-    </dependency>
-	-->
-
-    <!--
+		<!-- OrmLite
+		<dependency>
+			<groupId>com.j256.ormlite</groupId>
+			<artifactId>ormlite-core</artifactId>
+			<version>4.48</version>
+		</dependency>
+		-->
+		
+		<!-- Hibernate
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>5.1.0.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>5.1.0.Final</version>
+		</dependency>
+		-->
+	
+	    <!-- Other tools
+	    <dependency>
+	      <groupId>org.projectlombok</groupId>
+	      <artifactId>lombok</artifactId>
+	      <version>1.16.8</version>
+	    </dependency>
+	    -->
+	
+	    <!-- Provided Dependencies -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
+		</dependency>
+	
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.2</version>
+			<scope>provided</scope>
+		</dependency>
+		
+	    <!--
        <dependency>
             <groupId>javax.activation</groupId>
             <artifactId>activation</artifactId>

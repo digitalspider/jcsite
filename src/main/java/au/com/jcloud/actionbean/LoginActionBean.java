@@ -1,9 +1,6 @@
 package au.com.jcloud.actionbean;
 
-import com.avaje.ebean.Ebean;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -12,7 +9,6 @@ import org.apache.log4j.Logger;
 import au.com.jcloud.context.JCActionBeanContext;
 import au.com.jcloud.emodel.User;
 import au.com.jcloud.service.UserService;
-
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.DefaultHandler;
@@ -22,8 +18,6 @@ import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.RestActionBean;
 import net.sourceforge.stripes.action.UrlBinding;
 
-import javax.servlet.http.HttpServletRequest;
-
 @RestActionBean
 @UrlBinding("/login.action")
 public class LoginActionBean implements ActionBean {
@@ -32,41 +26,39 @@ public class LoginActionBean implements ActionBean {
 
 	private UserService userService = new UserService();
 	private JCActionBeanContext context;
-    private String username;
-    private String password;
+	private String username;
+	private String password;
 	private String email;
 	private String firstname;
 	private String lastname;
 	private String newusername;
 	private String newpassword;
-    private User user;
-    
-    @DefaultHandler
-    public Resolution login() throws Exception {
+	private User user;
 
-		LOG.info("login attempt for user="+username);
-    	int pageNo = 0;
-    	boolean exact = true;
-    	boolean populateBean = true;
-        User user = userService.getUserByAuth(username,password);
-        if (user == null) {
+	@DefaultHandler
+	public Resolution login() throws Exception {
+
+		LOG.info("login attempt for user=" + username);
+		User user = userService.getUserByAuth(username, password);
+		if (user == null) {
 			throw new Exception("Invalid login for username " + username);
-		} else {
+		}
+		else {
 			context.setUser(user);
-        }
-        return new ForwardResolution("index.jsp");
-    }
+		}
+		return new ForwardResolution("index.jsp");
+	}
 
 	@HandlesEvent("register")
-    public Resolution register() throws Exception {
-		LOG.info("register attempt for user="+newusername);
-		userService.createUser(newusername,firstname,lastname,email,newpassword);
+	public Resolution register() throws Exception {
+		LOG.info("register attempt for user=" + newusername);
+		userService.createUser(newusername, firstname, lastname, email, newpassword);
 
 		// save the logged in user to the session
 		context.setUser(user);
 
 		return new ForwardResolution("index.jsp");
-    }
+	}
 
 	@HandlesEvent("reset")
 	public Resolution reset() throws Exception {
@@ -96,12 +88,12 @@ public class LoginActionBean implements ActionBean {
 				if (StringUtils.isBlank(token)) {
 					throw new Exception("token parameter is missing");
 				}
-				userService.updatePassword(usernameParam,password);
+				userService.updatePassword(usernameParam, password);
 			}
 		}
 		return new ForwardResolution("index.jsp");
 	}
-    
+
 	@Override
 	public ActionBeanContext getContext() {
 		return context;
@@ -109,7 +101,7 @@ public class LoginActionBean implements ActionBean {
 
 	@Override
 	public void setContext(ActionBeanContext context) {
-		this.context = (JCActionBeanContext)context;
+		this.context = (JCActionBeanContext) context;
 	}
 
 	public String getUsername() {
