@@ -26,10 +26,10 @@
 			<param-name>ActionBeanContext.Class</param-name>
 			<param-value>au.com.jcloud.context.JCActionBeanContext</param-value>
 		</init-param>
-		<context-param>
+		<init-param>
 			<param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
 			<param-value>StripesResources</param-value>
-		</context-param>
+		</init-param>
 	</filter>
 
 	<filter-mapping>
