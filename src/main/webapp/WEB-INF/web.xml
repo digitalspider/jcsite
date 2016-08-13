@@ -4,14 +4,24 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	id="JavaCloud_Site" version="2.5">
 
+	<!--
 	<display-name>Javacloud Web Application</display-name>
+	-->
 
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/spring.xml</param-value>
+	</context-param>
+
 	<filter>
-		<display-name>Stripes Filter</display-name>
 		<filter-name>StripesFilter</filter-name>
 		<filter-class>net.sourceforge.stripes.controller.StripesFilter</filter-class>
 		<init-param>
@@ -29,6 +39,10 @@
 		<init-param>
 			<param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
 			<param-value>StripesResources</param-value>
+		</init-param>
+		<init-param>
+			<param-name>Interceptor.Classes</param-name>
+			<param-value>net.sourceforge.stripes.integration.spring.SpringInterceptor</param-value>
 		</init-param>
 	</filter>
 
