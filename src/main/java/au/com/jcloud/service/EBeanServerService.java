@@ -11,6 +11,8 @@ import com.avaje.ebean.EbeanServerFactory;
 import com.avaje.ebean.config.ServerConfig;
 import com.avaje.ebean.config.dbplatform.H2Platform;
 
+import net.sourceforge.stripes.integration.spring.SpringBean;
+
 import au.com.jcloud.emodel.Server;
 import au.com.jcloud.emodel.User;
 
@@ -23,7 +25,9 @@ public class EBeanServerService {
 
 	private static ServerConfig serverConfig;
 	private static EbeanServer ebeanServer;
-	private static PropertyReaderService propertyReaderService = new PropertyReaderService();
+
+	@SpringBean
+	private PropertyReaderService propertyReaderService;
 
 	public EBeanServerService() {
 		this(false);
@@ -101,5 +105,10 @@ public class EBeanServerService {
 
 	public static ServerConfig getServerConfig() {
 		return serverConfig;
+	}
+
+
+	protected void setPropertyReaderService(PropertyReaderService propertyReaderService) {
+		this.propertyReaderService = propertyReaderService;
 	}
 }

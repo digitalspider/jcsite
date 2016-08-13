@@ -1,11 +1,6 @@
 package au.com.jcloud.actionbean;
 
-import org.apache.log4j.Logger;
-
-import au.com.jcloud.context.JCActionBeanContext;
 import au.com.jcloud.service.EmailService;
-import net.sourceforge.stripes.action.ActionBean;
-import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
@@ -15,10 +10,8 @@ import net.sourceforge.stripes.action.UrlBinding;
  * Created by david.vittor on 3/08/16.
  */
 @UrlBinding("/contact.action")
-public class ContactActionBean implements ActionBean {
-	private static final Logger LOG = Logger.getLogger(ContactActionBean.class);
+public class ContactActionBean extends JCActionBean {
 
-	private JCActionBeanContext context;
 	private String name;
 	private String email;
 	private String subject;
@@ -33,16 +26,6 @@ public class ContactActionBean implements ActionBean {
 			LOG.error(e, e);
 		}
 		return new ForwardResolution("contact.jsp");
-	}
-
-	@Override
-	public ActionBeanContext getContext() {
-		return context;
-	}
-
-	@Override
-	public void setContext(ActionBeanContext context) {
-		this.context = (JCActionBeanContext) context;
 	}
 
 	public String getName() {

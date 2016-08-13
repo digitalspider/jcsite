@@ -4,10 +4,14 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Expr;
 
+import net.sourceforge.stripes.integration.spring.SpringBean;
+
+import au.com.jcloud.emodel.Status;
 import au.com.jcloud.emodel.User;
 
 /**
@@ -16,7 +20,8 @@ import au.com.jcloud.emodel.User;
 public class UserService {
 	private static final Logger LOG = Logger.getLogger(UserService.class);
 
-	private static EBeanServerService eBeanServerService = new EBeanServerService();
+	@Autowired
+	@SpringBean
 	private EncryptService encryptService = new EncryptService();
 
 	public User createUser(String username, String firstName, String lastName, String email, String password) throws Exception {
@@ -35,7 +40,7 @@ public class UserService {
 		user.setEmail(email);
 		String passValue = encryptService != null ? encryptService.md5(password) : password;
 		user.setPassword(passValue);
-		user.setStatus(StatusService.Status.ENABLED.name());
+		user.setStatus(Status.ENABLED.name());
 		LOG.info("creating new user: " + user);
 
 		Ebean.save(user);
@@ -85,25 +90,17 @@ public class UserService {
 		User user = null;
 		if (StringUtils.isNotBlank(username)) {
 			user = Ebean.find(User.class).select("id, name, email, status, firstName, lastName").where()
-					.or(Expr.eq("name", username), Expr.eq("email", username)).eq("password", passValue).eq("status", StatusService.Status.ENABLED.name())
+					.or(Expr.eq("name", username), Expr.eq("email", username)).eq("password", passValue).eq("status", Status.ENABLED.name())
 					.findUnique();
 		}
 		return user;
-	}
-
-	public static EBeanServerService geteBeanServerService() {
-		return eBeanServerService;
-	}
-
-	public static void seteBeanServerService(EBeanServerService eBeanServerService) {
-		UserService.eBeanServerService = eBeanServerService;
 	}
 
 	protected EncryptService getEncryptService() {
 		return encryptService;
 	}
 
-	public void setEncryptService(EncryptService encryptService) {
+	protected void setEncryptService(EncryptService encryptService) {
 		this.encryptService = encryptService;
 	}
 

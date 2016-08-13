@@ -4,28 +4,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import au.com.jcloud.context.JCActionBeanContext;
 import au.com.jcloud.emodel.User;
 import au.com.jcloud.service.UserService;
-import net.sourceforge.stripes.action.ActionBean;
-import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.HandlesEvent;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.RestActionBean;
 import net.sourceforge.stripes.action.UrlBinding;
+import net.sourceforge.stripes.integration.spring.SpringBean;
 
 @RestActionBean
 @UrlBinding("/login.action")
-public class LoginActionBean implements ActionBean {
+public class LoginActionBean extends JCActionBean {
 
-	private static final Logger LOG = Logger.getLogger(LoginActionBean.class);
-
-	private UserService userService = new UserService();
-	private JCActionBeanContext context;
+	@Autowired
+	@SpringBean
+	private UserService userService;
 	private String username;
 	private String password;
 	private String email;
@@ -92,16 +89,6 @@ public class LoginActionBean implements ActionBean {
 			}
 		}
 		return new ForwardResolution("index.jsp");
-	}
-
-	@Override
-	public ActionBeanContext getContext() {
-		return context;
-	}
-
-	@Override
-	public void setContext(ActionBeanContext context) {
-		this.context = (JCActionBeanContext) context;
 	}
 
 	public String getUsername() {

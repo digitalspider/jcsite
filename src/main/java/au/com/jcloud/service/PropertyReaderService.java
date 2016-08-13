@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * Created by david on 7/08/16.
+ * Created by david.vittor on 7/08/16.
  */
 public class PropertyReaderService {
 

@@ -3,14 +3,12 @@ package au.com.jcloud.service;
 import com.avaje.ebean.Ebean;
 
 import au.com.jcloud.emodel.BaseBean;
+import au.com.jcloud.emodel.Status;
 
 /**
- * Created by david on 5/08/16.
+ * Created by david.vittor on 5/08/16.
  */
 public class StatusService {
-	public enum Status {
-		ENABLED, DISABLED
-	}
 
 	public void enable(Class<? extends BaseBean> classType, Integer id) {
 		setStatus(classType, id, Status.ENABLED);
