@@ -39,37 +39,33 @@ public class LoginActionBean extends JCActionBean {
 		return context.getSourcePageResolution();
 	}
 
+	@HandlesEvent("login")
 	public Resolution login() throws Exception {
 
 		LOG.info("login attempt for user=" + username);
-		if (context.getUser()!=null) {
-			ValidationErrors errors = new ValidationErrors();
-			errors.addGlobalError( new LocalizableError("/login.action.alreadyLoggedIn", username) );
-			getContext().setValidationErrors(errors);
+		if (validateAlreadyLoggedIn()) {
 			return getContext().getSourcePageResolution();
 		}
 		User user = userService.getUserByAuth(username, password);
 		if (user == null) {
-			ValidationErrors errors = new ValidationErrors();
-			errors.addGlobalError( new LocalizableError("/login.action.invalidAttempt", username) );
-			getContext().setValidationErrors(errors);
+			addGlobalValidationError("/login.action.invalidAttempt", username);
 			return getContext().getSourcePageResolution();
 		}
 		else {
 			context.setUser(user);
 		}
+		LOG.info("login successful for user=" + username);
 		return new ForwardResolution("index.jsp");
 	}
 
+	@HandlesEvent("register")
 	public Resolution register() throws Exception {
 		LOG.info("register attempt for user=" + newusername);
-		if (context.getUser()!=null) {
-			ValidationErrors errors = new ValidationErrors();
-			errors.addGlobalError( new LocalizableError("/login.action.alreadyLoggedIn", context.getUser().getName()));
-			getContext().setValidationErrors(errors);
+		if (validateAlreadyLoggedIn()) {
 			return getContext().getSourcePageResolution();
 		}
 		User user = userService.createUser(newusername, firstname, lastname, email, newpassword);
+		LOG.info("user created=" + user);
 
 		// save the logged in user to the session
 		context.setUser(user);
@@ -77,13 +73,11 @@ public class LoginActionBean extends JCActionBean {
 		return new ForwardResolution("index.jsp");
 	}
 
-
+	@HandlesEvent("logout")
 	public Resolution logout() throws Exception {
 		LOG.info("logout attempt for user=" + context.getUser());
 		if (context.getUser()==null) {
-			ValidationErrors errors = new ValidationErrors();
-			errors.addGlobalError( new LocalizableError("/login.action.notLoggedIn") );
-			getContext().setValidationErrors(errors);
+			addGlobalValidationError("/login.action.notLoggedIn");
 			return getContext().getSourcePageResolution();
 		}
 		// log out the user from the session
@@ -92,6 +86,7 @@ public class LoginActionBean extends JCActionBean {
 		return new ForwardResolution("login.jsp");
 	}
 
+	@HandlesEvent("reset")
 	public Resolution reset() throws Exception {
 		LOG.info("reset() called");
 		if (StringUtils.isBlank(password)) {
@@ -123,6 +118,20 @@ public class LoginActionBean extends JCActionBean {
 			}
 		}
 		return new ForwardResolution("index.jsp");
+	}
+
+	private boolean validateAlreadyLoggedIn() {
+		if (context.getUser()!=null) {
+			addGlobalValidationError( "/login.action.alreadyLoggedIn", context.getUser().getName());
+			return true;
+		}
+		return false;
+	}
+
+	private void addGlobalValidationError(String messageKey, Object... params) {
+		ValidationErrors errors = new ValidationErrors();
+		errors.addGlobalError( new LocalizableError(messageKey, params) );
+		getContext().setValidationErrors(errors);
 	}
 
 	public String getUsername() {
