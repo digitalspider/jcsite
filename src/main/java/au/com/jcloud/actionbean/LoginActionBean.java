@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import au.com.jcloud.emodel.User;
 import au.com.jcloud.service.UserService;
@@ -12,7 +11,6 @@ import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.HandlesEvent;
 import net.sourceforge.stripes.action.Resolution;
-import net.sourceforge.stripes.action.RestActionBean;
 import net.sourceforge.stripes.action.UrlBinding;
 import net.sourceforge.stripes.integration.spring.SpringBean;
 import net.sourceforge.stripes.validation.EmailTypeConverter;
@@ -20,11 +18,12 @@ import net.sourceforge.stripes.validation.LocalizableError;
 import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidationErrors;
 
-@RestActionBean
+/**
+ * Created by david.vittor on 3/08/16.
+ */
 @UrlBinding("/login.action")
 public class LoginActionBean extends JCActionBean {
 
-	@Autowired
 	@SpringBean
 	private UserService userService;
 	@Validate(required=true, minlength = 2, on="{login, register}") private String username;
@@ -45,14 +44,14 @@ public class LoginActionBean extends JCActionBean {
 		User user = userService.getUserByAuth(username, password);
 		if (user == null) {
 			ValidationErrors errors = new ValidationErrors();
-			errors.add( "name", new LocalizableError("login.action.invalidAttempt", username) );
+			errors.add( "name", new LocalizableError("/login.action.invalidAttempt", username) );
 			getContext().setValidationErrors(errors);
 			return getContext().getSourcePageResolution();
 		}
 		else {
 			context.setUser(user);
 		}
-		return new ForwardResolution("public.jsp");
+		return new ForwardResolution("index.jsp");
 	}
 
 	public Resolution register() throws Exception {
@@ -62,7 +61,7 @@ public class LoginActionBean extends JCActionBean {
 		// save the logged in user to the session
 		context.setUser(user);
 
-		return new ForwardResolution("public.jsp");
+		return new ForwardResolution("index.jsp");
 	}
 
 	public Resolution reset() throws Exception {
@@ -95,7 +94,7 @@ public class LoginActionBean extends JCActionBean {
 				userService.updatePassword(usernameParam, password);
 			}
 		}
-		return new ForwardResolution("public.jsp");
+		return new ForwardResolution("index.jsp");
 	}
 
 	public String getUsername() {

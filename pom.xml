@@ -104,13 +104,18 @@
 		<dependency>
 			<groupId>net.sourceforge.stripes</groupId>
 			<artifactId>stripes</artifactId>
-			<version>1.7.0-async-beta</version>
+			<version>1.5.8</version>
 		</dependency>
 
 		<!-- Spring Framework -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
+			<version>4.3.1.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
 			<version>4.3.1.RELEASE</version>
 		</dependency>
 	
@@ -242,8 +247,10 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<version>1.4.192</version>
-			<!-- <scope>provided</scope> -->
+			<!--
+			<scope>provided</scope>
 			<optional>true</optional>
+			-->
 		</dependency>
 
 		<!-- OrmLite

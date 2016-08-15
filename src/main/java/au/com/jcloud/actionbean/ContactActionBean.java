@@ -10,8 +10,6 @@ import net.sourceforge.stripes.integration.spring.SpringBean;
 import net.sourceforge.stripes.validation.EmailTypeConverter;
 import net.sourceforge.stripes.validation.Validate;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -21,7 +19,6 @@ import java.util.concurrent.Executors;
 @UrlBinding("/contact.action")
 public class ContactActionBean extends JCActionBean {
 
-	@Autowired
 	@SpringBean
 	private EmailService emailService;
 

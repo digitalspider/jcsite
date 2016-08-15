@@ -9,18 +9,18 @@
 <html>
     <head>
         <title>JCloud ${pageTitle}</title>
-        <jsp:include page="<%=request.getContextPath() %>/jsp/include/htmlhead.jsp"/>
+        <jsp:include page="/jsp/include/htmlhead.jsp"/>
     </head>
 
     <body>
 		<s:layout-component name="header">
-            <jsp:include page="<%=request.getContextPath() %>/jsp/include/header.jsp"/>
+            <jsp:include page="/jsp/include/header.jsp"/>
         </s:layout-component>
 
         <s:layout-component name="contents"/>
 
         <s:layout-component name="footer">
-            <jsp:include page="<%=request.getContextPath() %>/jsp/include/footer.jsp"/>
+            <jsp:include page="/jsp/include/footer.jsp"/>
         </s:layout-component>
     </body>
 </html>

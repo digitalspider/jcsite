@@ -1,22 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!DOCTYPE html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
+<%@ taglib prefix="d" uri="http://stripes.sourceforge.net/stripes-dynattr.tld" %>
 
-<html>
-    <head>
-        <title>jcloud</title>
-        <jsp:include page="jsp/include/htmlhead.jsp"/>
-    </head>
-
-    <body>
-       
-        <jsp:include page="jsp/include/header.jsp"/>
-
-        <!--
-        <div class="tm-home-img-container">
-            <img src="img/tm-home-img.jpg" alt="Image" class="hidden-lg-up img-fluid">
-        </div>
-        -->
+<s:layout-render name="/jsp/layout/public.jsp" pageTitle="Home">
+    <s:layout-component name="contents">
 
         <section class="tm-section">
             <div class="container-fluid">
@@ -199,7 +187,6 @@
 
             </div>
         </section>
-        
-        <jsp:include page="jsp/include/footer.jsp"/>
-    </body>
-</html>
+
+    </s:layout-component>
+</s:layout-render>

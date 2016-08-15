@@ -1,24 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
 <%@ taglib prefix="d" uri="http://stripes.sourceforge.net/stripes-dynattr.tld" %>
-<!DOCTYPE html>
 
-<html>
-<head>
-    <head>
-        <title>jcloud Contact Page</title>
-        <jsp:include page="jsp/include/htmlhead.jsp"/>
-    </head>
-
-    <body>
-
-        <jsp:include page="jsp/include/header.jsp"/>
-
-        <!--
-        <div class="tm-contact-img-container">
-        </div>
-        -->
+<s:layout-render name="/jsp/layout/public.jsp" pageTitle="Contact us">
+    <s:layout-component name="contents">
 
         <section class="tm-section">
             <div class="container-fluid">
@@ -177,9 +163,11 @@
 
             </div>
         </section>
-        
 
-        <jsp:include page="jsp/include/footer.jsp"/>
+    </s:layout-component>
+    <s:layout-component name="footer">
+
+        <jsp:include page="/jsp/include/footer.jsp"/>
 
         <script>     
        
@@ -226,5 +214,5 @@
 
         </script>             
 
-</body>
-</html>
+    </s:layout-component>
+</s:layout-render>

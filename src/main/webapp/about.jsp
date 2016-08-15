@@ -3,7 +3,7 @@
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
 <%@ taglib prefix="d" uri="http://stripes.sourceforge.net/stripes-dynattr.tld" %>
 
-<s:layout-render name="<%=request.getContextPath() %>/jsp/layout/public.jsp" pageTitle="About">
+<s:layout-render name="/jsp/layout/public.jsp" pageTitle="About">
     <s:layout-component name="contents">
 
         <section class="tm-section">
@@ -217,6 +217,6 @@
 
             </div>
         </section>
-        
+
     </s:layout-component>
 </s:layout-render>

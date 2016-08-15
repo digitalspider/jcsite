@@ -1,26 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
 <%@ taglib prefix="d" uri="http://stripes.sourceforge.net/stripes-dynattr.tld" %>
 
-<!DOCTYPE html>
-
-<html>
-    <head>
-        <title>jcloud Login</title>
-        <jsp:include page="jsp/include/htmlhead.jsp"/>
-    </head>
-
-    <body>
-        <jsp:include page="jsp/include/header.jsp"/>
+<s:layout-render name="/jsp/layout/public.jsp" pageTitle="Login">
+    <s:layout-component name="contents">
 
         <section class="tm-section">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
 
-                        <s:form id="loginForm" method="post" action="/login.action"  class="tm-login-form">
-                        	<s:errors action="/login.action"/>
+                        <s:form id="loginForm" method="post" action="/login.action" class="tm-login-form">
+                        	<s:errors/>
                             <div class="h4">Login</div>
                             <div class="form-group">
                                 <input type="text" id="username" name="username" class="form-control" placeholder="Username"  required/>
@@ -36,7 +28,6 @@
 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                         <s:form id="registerForm" method="post" action="/login.action" class="tm-login-form">
-                        	<s:errors action="/register.action"/>
                             <div class="h4">Register</div>
                             <div class="form-group">
                                 <input type="text" id="firstname" name="firstname" class="form-control" placeholder="First Name"  required/>
@@ -67,6 +58,9 @@
             </div>
         </section>
 
+    </s:layout-component>
+    <s:layout-component name="footer">
+
         <!-- load JS files -->
         <script src="js/jquery-1.11.3.min.js"></script>             <!-- jQuery (https://jquery.com/download/) -->
         <script src="https://www.atlasestateagents.co.uk/javascript/tether.min.js"></script> <!-- Tether for Bootstrap, http://stackoverflow.com/questions/34567939/how-to-fix-the-error-error-bootstrap-tooltips-require-tether-http-github-h -->
@@ -88,5 +82,6 @@
            // $('#loginForm').submit(encodeAndSubmit);
            // $('#registerForm').submit(encodeAndSubmit);
         </script>
-</body>
-</html>
+
+    </s:layout-component>
+</s:layout-render>

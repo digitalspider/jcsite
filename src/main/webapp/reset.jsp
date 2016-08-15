@@ -1,18 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
 <%@ taglib prefix="d" uri="http://stripes.sourceforge.net/stripes-dynattr.tld" %>
 
-<!DOCTYPE html>
-
-<html>
-    <head>
-        <title>jcloud Login</title>
-        <jsp:include page="jsp/include/htmlhead.jsp"/>
-    </head>
-
-    <body>
-        <jsp:include page="jsp/include/header.jsp"/>
+<s:layout-render name="/jsp/layout/public.jsp" pageTitle="Reset">
+    <s:layout-component name="contents">
 
         <section class="tm-section">
             <div class="container-fluid">
@@ -32,6 +24,9 @@
             </div>
         </section>
 
+    </s:layout-component>
+    <s:layout-component name="footer">
+
         <!-- load JS files -->
         <script src="js/jquery-1.11.3.min.js"></script>             <!-- jQuery (https://jquery.com/download/) -->
         <script src="https://www.atlasestateagents.co.uk/javascript/tether.min.js"></script> <!-- Tether for Bootstrap, http://stackoverflow.com/questions/34567939/how-to-fix-the-error-error-bootstrap-tooltips-require-tether-http-github-h -->
@@ -49,5 +44,6 @@
             }
            // $('#resetForm').submit(encodeAndSubmit);
         </script>
-</body>
-</html>
+
+    </s:layout-component>
+</s:layout-render>
