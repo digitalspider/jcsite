@@ -35,20 +35,25 @@
 
 
                             <s:form action="/contact.action" method="post" class="tm-contact-form">
+                            	<s:errors/>
                                 <div class="form-group">
                                     <input type="name" id="name" name="name" class="form-control" placeholder="Name" required="true"/>
+                                    <s:errors field="name"/>
                                 </div>
                                 <div class="form-group">
                                     <input type="email" id="email" name="email" class="form-control" placeholder="Email" required="true"/>
+                                    <s:errors field="email"/>
                                 </div>
                                 <div class="form-group">
                                     <input type="text" id="subject" name="subject" class="form-control" placeholder="Subject" required="true"/>
+                                    <s:errors field="subject"/>
                                 </div>
                                 <div class="form-group">
                                     <textarea id="message" name="message" class="form-control" rows="6" placeholder="Message" required="true"></textarea>
+                                    <s:errors field="message"/>
                                 </div>
                             
-                                <s:submit name="contactus" class="tm-btn">Submit</s:submit>
+                                <s:submit name="contact" class="tm-btn">Submit</s:submit>
                             </s:form>
                         </section>
                         

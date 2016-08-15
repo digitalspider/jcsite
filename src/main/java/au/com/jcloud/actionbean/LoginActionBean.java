@@ -15,6 +15,10 @@ import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.RestActionBean;
 import net.sourceforge.stripes.action.UrlBinding;
 import net.sourceforge.stripes.integration.spring.SpringBean;
+import net.sourceforge.stripes.validation.EmailTypeConverter;
+import net.sourceforge.stripes.validation.LocalizableError;
+import net.sourceforge.stripes.validation.Validate;
+import net.sourceforge.stripes.validation.ValidationErrors;
 
 @RestActionBean
 @UrlBinding("/login.action")
@@ -23,41 +27,44 @@ public class LoginActionBean extends JCActionBean {
 	@Autowired
 	@SpringBean
 	private UserService userService;
-	private String username;
-	private String password;
-	private String email;
-	private String firstname;
-	private String lastname;
-	private String newusername;
-	private String newpassword;
+	@Validate(required=true, minlength = 2, on="{login, register}") private String username;
+	@Validate(required=true, minlength = 2, on="{login, register}") private String password;
+	@Validate(required=true, converter = EmailTypeConverter.class, on="register") private String email;
+	@Validate(required=true, minlength = 2, on="register") private String firstname;
+	@Validate(required=true, minlength = 2, on="register") private String lastname;
 	private User user;
 
 	@DefaultHandler
+	public Resolution onLoad() {
+		return context.getSourcePageResolution();
+	}
+
 	public Resolution login() throws Exception {
 
 		LOG.info("login attempt for user=" + username);
 		User user = userService.getUserByAuth(username, password);
 		if (user == null) {
-			throw new Exception("Invalid login for username " + username);
+			ValidationErrors errors = new ValidationErrors();
+			errors.add( "name", new LocalizableError("login.action.invalidAttempt", username) );
+			getContext().setValidationErrors(errors);
+			return getContext().getSourcePageResolution();
 		}
 		else {
 			context.setUser(user);
 		}
-		return new ForwardResolution("index.jsp");
+		return new ForwardResolution("public.jsp");
 	}
 
-	@HandlesEvent("register")
 	public Resolution register() throws Exception {
-		LOG.info("register attempt for user=" + newusername);
-		userService.createUser(newusername, firstname, lastname, email, newpassword);
+		LOG.info("register attempt for user=" + username);
+		userService.createUser(username, firstname, lastname, email, password);
 
 		// save the logged in user to the session
 		context.setUser(user);
 
-		return new ForwardResolution("index.jsp");
+		return new ForwardResolution("public.jsp");
 	}
 
-	@HandlesEvent("reset")
 	public Resolution reset() throws Exception {
 		LOG.info("reset() called");
 		if (StringUtils.isBlank(password)) {
@@ -88,7 +95,7 @@ public class LoginActionBean extends JCActionBean {
 				userService.updatePassword(usernameParam, password);
 			}
 		}
-		return new ForwardResolution("index.jsp");
+		return new ForwardResolution("public.jsp");
 	}
 
 	public String getUsername() {
@@ -147,6 +154,7 @@ public class LoginActionBean extends JCActionBean {
 		this.lastname = lastname;
 	}
 
+	/*
 	public String getNewusername() {
 		return newusername;
 	}
@@ -162,4 +170,5 @@ public class LoginActionBean extends JCActionBean {
 	public void setNewpassword(String newpassword) {
 		this.newpassword = newpassword;
 	}
+	*/
 }
