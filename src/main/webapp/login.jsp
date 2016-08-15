@@ -12,7 +12,7 @@
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
 
                         <s:form id="loginForm" method="post" action="/login.action" class="tm-login-form">
-                        	<s:errors/>
+                        	<s:errors globalErrorsOnly="true"/>
                             <div class="h4">Login</div>
                             <div class="form-group">
                                 <input type="text" id="username" name="username" class="form-control" placeholder="Username"  required/>
@@ -28,6 +28,7 @@
 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                         <s:form id="registerForm" method="post" action="/login.action" class="tm-login-form">
+                        	<s:errors globalErrorsOnly="true"/>
                             <div class="h4">Register</div>
                             <div class="form-group">
                                 <input type="text" id="firstname" name="firstname" class="form-control" placeholder="First Name"  required/>
@@ -42,12 +43,12 @@
                                 <s:errors field="email"/>
                             </div>
                             <div class="form-group">
-                                <input type="username" id="username" name="username" class="form-control" placeholder="Username"  required/>
-                                <s:errors field="username"/>
+                                <input type="text" id="newusername" name="newusername" class="form-control" placeholder="Username"  required/>
+                                <s:errors field="newusername"/>
                             </div>
                             <div class="form-group">
-                                <input type="password" id="password" name="password" class="form-control" placeholder="Password"  required/>
-                                <s:errors field="password"/>
+                                <input type="password" id="newusername" name="newusername" class="form-control" placeholder="Password"  required/>
+                                <s:errors field="newusername"/>
                             </div>
                             <s:submit id="submit" name="register" value="Register" class="tm-btn text-uppercase"/>
                         </s:form>

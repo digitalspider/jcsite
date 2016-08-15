@@ -26,12 +26,13 @@ public class LoginActionBean extends JCActionBean {
 
 	@SpringBean
 	private UserService userService;
-	@Validate(required=true, minlength = 2, on="{login, register}") private String username;
-	@Validate(required=true, minlength = 2, on="{login, register}") private String password;
+	@Validate(required=true, minlength = 2, on="login") private String username;
+	@Validate(required=true, minlength = 2, on="login") private String password;
 	@Validate(required=true, converter = EmailTypeConverter.class, on="register") private String email;
 	@Validate(required=true, minlength = 2, on="register") private String firstname;
 	@Validate(required=true, minlength = 2, on="register") private String lastname;
-	private User user;
+	@Validate(required=true, minlength = 2, on="register") private String newusername;
+	@Validate(required=true, minlength = 2, on="register") private String newpassword;
 
 	@DefaultHandler
 	public Resolution onLoad() {
@@ -41,10 +42,16 @@ public class LoginActionBean extends JCActionBean {
 	public Resolution login() throws Exception {
 
 		LOG.info("login attempt for user=" + username);
+		if (context.getUser()!=null) {
+			ValidationErrors errors = new ValidationErrors();
+			errors.addGlobalError( new LocalizableError("/login.action.alreadyLoggedIn", username) );
+			getContext().setValidationErrors(errors);
+			return getContext().getSourcePageResolution();
+		}
 		User user = userService.getUserByAuth(username, password);
 		if (user == null) {
 			ValidationErrors errors = new ValidationErrors();
-			errors.add( "name", new LocalizableError("/login.action.invalidAttempt", username) );
+			errors.addGlobalError( new LocalizableError("/login.action.invalidAttempt", username) );
 			getContext().setValidationErrors(errors);
 			return getContext().getSourcePageResolution();
 		}
@@ -55,13 +62,34 @@ public class LoginActionBean extends JCActionBean {
 	}
 
 	public Resolution register() throws Exception {
-		LOG.info("register attempt for user=" + username);
-		userService.createUser(username, firstname, lastname, email, password);
+		LOG.info("register attempt for user=" + newusername);
+		if (context.getUser()!=null) {
+			ValidationErrors errors = new ValidationErrors();
+			errors.addGlobalError( new LocalizableError("/login.action.alreadyLoggedIn", context.getUser().getName()));
+			getContext().setValidationErrors(errors);
+			return getContext().getSourcePageResolution();
+		}
+		User user = userService.createUser(newusername, firstname, lastname, email, newpassword);
 
 		// save the logged in user to the session
 		context.setUser(user);
 
 		return new ForwardResolution("index.jsp");
+	}
+
+
+	public Resolution logout() throws Exception {
+		LOG.info("logout attempt for user=" + context.getUser());
+		if (context.getUser()==null) {
+			ValidationErrors errors = new ValidationErrors();
+			errors.addGlobalError( new LocalizableError("/login.action.notLoggedIn") );
+			getContext().setValidationErrors(errors);
+			return getContext().getSourcePageResolution();
+		}
+		// log out the user from the session
+		context.setUser(null);
+
+		return new ForwardResolution("login.jsp");
 	}
 
 	public Resolution reset() throws Exception {
@@ -113,14 +141,6 @@ public class LoginActionBean extends JCActionBean {
 		this.password = password;
 	}
 
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
 	public UserService getUserService() {
 		return userService;
 	}
@@ -153,7 +173,6 @@ public class LoginActionBean extends JCActionBean {
 		this.lastname = lastname;
 	}
 
-	/*
 	public String getNewusername() {
 		return newusername;
 	}
@@ -169,5 +188,4 @@ public class LoginActionBean extends JCActionBean {
 	public void setNewpassword(String newpassword) {
 		this.newpassword = newpassword;
 	}
-	*/
 }
