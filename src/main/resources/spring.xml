@@ -2,12 +2,12 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
+	<bean name="encryptService" class="au.com.jcloud.service.EncryptService"/>
+	<bean name="propertyReaderService" class="au.com.jcloud.service.PropertyReaderService"/>
 	<bean name="userService" class="au.com.jcloud.service.UserService">
 		<property name="encryptService" ref="encryptService"/>
 	</bean>
 	<bean name="emailService" class="au.com.jcloud.service.EmailService">
 		<property name="propertyReaderService" ref="propertyReaderService"/>
 	</bean>
-	<bean name="encryptService" class="au.com.jcloud.service.EncryptService"/>
-	<bean name="propertyReaderService" class="au.com.jcloud.service.PropertyReaderService"/>
 </beans>

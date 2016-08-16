@@ -90,7 +90,11 @@ public class EmailService {
 		mailer.sendMail(emailMessage);
 	}
 
-	protected void setPropertyReaderService(PropertyReaderService propertyReaderService) {
+	public void setPropertyReaderService(PropertyReaderService propertyReaderService) {
 		this.propertyReaderService = propertyReaderService;
+	}
+
+	public PropertyReaderService getPropertyReaderService() {
+		return propertyReaderService;
 	}
 }

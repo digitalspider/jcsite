@@ -93,11 +93,11 @@ public class UserService {
 		return user;
 	}
 
-	protected EncryptService getEncryptService() {
+	public EncryptService getEncryptService() {
 		return encryptService;
 	}
 
-	protected void setEncryptService(EncryptService encryptService) {
+	public void setEncryptService(EncryptService encryptService) {
 		this.encryptService = encryptService;
 	}
 
