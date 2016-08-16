@@ -1,7 +1,5 @@
 package au.com.jcloud.emodel;
 
-import com.avaje.ebean.Model;
-
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
@@ -10,20 +8,20 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 public class IdBean {
-    @Id
-    protected Long id;
+	@Id
+	protected Long id;
 
-    @Override
-    public String toString() {
-        return getClass().getSimpleName()+" ["+id+"]:";
-    }
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + " [" + id + "]:";
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 }

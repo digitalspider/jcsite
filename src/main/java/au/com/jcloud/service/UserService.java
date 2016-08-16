@@ -4,15 +4,13 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Expr;
 
-import net.sourceforge.stripes.integration.spring.SpringBean;
-
 import au.com.jcloud.emodel.Status;
 import au.com.jcloud.emodel.User;
+import net.sourceforge.stripes.integration.spring.SpringBean;
 
 /**
  * Created by david on 5/08/16.
@@ -20,9 +18,8 @@ import au.com.jcloud.emodel.User;
 public class UserService {
 	private static final Logger LOG = Logger.getLogger(UserService.class);
 
-	@Autowired
 	@SpringBean
-	private EncryptService encryptService = new EncryptService();
+	private EncryptService encryptService;
 
 	public User createUser(String username, String firstName, String lastName, String email, String password) throws Exception {
 		User user = getByUsername(username);

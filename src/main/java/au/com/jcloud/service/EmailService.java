@@ -1,7 +1,5 @@
 package au.com.jcloud.service;
 
-import net.sourceforge.stripes.integration.spring.SpringBean;
-
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -11,7 +9,8 @@ import org.simplejavamail.email.Email;
 import org.simplejavamail.mailer.Mailer;
 import org.simplejavamail.mailer.config.ServerConfig;
 import org.simplejavamail.mailer.config.TransportStrategy;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import net.sourceforge.stripes.integration.spring.SpringBean;
 
 /**
  * Created by david.vittor on 4/08/16.
@@ -29,10 +28,8 @@ public class EmailService {
 	private static Properties properties = new Properties();
 	private static Mailer mailer;
 
-	@Autowired
 	@SpringBean
-	private PropertyReaderService propertyReaderService = new PropertyReaderService();
-
+	private PropertyReaderService propertyReaderService;
 
 	public EmailService() throws Exception {
 		if (properties.isEmpty() || mailer == null) {

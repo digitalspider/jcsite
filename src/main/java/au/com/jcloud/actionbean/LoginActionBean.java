@@ -26,13 +26,20 @@ public class LoginActionBean extends JCActionBean {
 
 	@SpringBean
 	private UserService userService;
-	@Validate(required=true, minlength = 2, on="login") private String username;
-	@Validate(required=true, minlength = 2, on="login") private String password;
-	@Validate(required=true, converter = EmailTypeConverter.class, on="register") private String email;
-	@Validate(required=true, minlength = 2, on="register") private String firstname;
-	@Validate(required=true, minlength = 2, on="register") private String lastname;
-	@Validate(required=true, minlength = 2, on="register") private String newusername;
-	@Validate(required=true, minlength = 2, on="register") private String newpassword;
+	@Validate(required = true, minlength = 2, maxlength = 64, on = "login")
+	private String username;
+	@Validate(required = true, minlength = 2, maxlength = 64, on = "login")
+	private String password;
+	@Validate(required = true, minlength = 2, maxlength = 64, on = "register", converter = EmailTypeConverter.class)
+	private String email;
+	@Validate(required = true, minlength = 2, maxlength = 32, on = "register")
+	private String firstname;
+	@Validate(required = true, minlength = 2, maxlength = 32, on = "register")
+	private String lastname;
+	@Validate(required = true, minlength = 2, maxlength = 64, on = "register")
+	private String newusername;
+	@Validate(required = true, minlength = 2, maxlength = 64, on = "register")
+	private String newpassword;
 
 	@DefaultHandler
 	public Resolution onLoad() {
@@ -76,7 +83,7 @@ public class LoginActionBean extends JCActionBean {
 	@HandlesEvent("logout")
 	public Resolution logout() throws Exception {
 		LOG.info("logout attempt for user=" + context.getUser());
-		if (context.getUser()==null) {
+		if (context.getUser() == null) {
 			addGlobalValidationError("/login.action.notLoggedIn");
 			return getContext().getSourcePageResolution();
 		}
@@ -121,8 +128,8 @@ public class LoginActionBean extends JCActionBean {
 	}
 
 	private boolean validateAlreadyLoggedIn() {
-		if (context.getUser()!=null) {
-			addGlobalValidationError( "/login.action.alreadyLoggedIn", context.getUser().getName());
+		if (context.getUser() != null) {
+			addGlobalValidationError("/login.action.alreadyLoggedIn", context.getUser().getName());
 			return true;
 		}
 		return false;
@@ -130,7 +137,7 @@ public class LoginActionBean extends JCActionBean {
 
 	private void addGlobalValidationError(String messageKey, Object... params) {
 		ValidationErrors errors = new ValidationErrors();
-		errors.addGlobalError( new LocalizableError(messageKey, params) );
+		errors.addGlobalError(new LocalizableError(messageKey, params));
 		getContext().setValidationErrors(errors);
 	}
 
