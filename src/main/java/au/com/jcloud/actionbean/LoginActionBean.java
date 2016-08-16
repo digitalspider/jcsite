@@ -34,7 +34,7 @@ public class LoginActionBean extends JCActionBean {
 	private String username;
 	@Validate(required = true, minlength = 2, maxlength = 64, on = "login")
 	private String password;
-	@Validate(required = true, minlength = 2, maxlength = 64, on = "register", converter = EmailTypeConverter.class)
+	@Validate(required = true, minlength = 2, maxlength = 64, on = "register")
 	private String email;
 	@Validate(required = true, minlength = 2, maxlength = 32, on = "register")
 	private String firstname;
@@ -46,37 +46,8 @@ public class LoginActionBean extends JCActionBean {
 	private String newpassword;
 
 	@Before(stages = LifecycleStage.BindingAndValidation)
-	public void load() {
-		User user = context.getUser();
-		if (user != null) {
-			username = user.getName();
-			firstname = user.getFirstName();
-			lastname = user.getLastName();
-			email = user.getEmail();
-		}
-		else {
-			HttpServletRequest request = context.getRequest();
-			String usernameParam = (String) request.getAttribute("username");
-			if (StringUtils.isNotBlank(usernameParam)) {
-				username = usernameParam;
-			}
-			String newusernameParam = (String) request.getAttribute("newusername");
-			if (StringUtils.isNotBlank(newusernameParam)) {
-				newusername = newusernameParam;
-			}
-			String firstnameParam = (String) request.getAttribute("firstname");
-			if (StringUtils.isNotBlank(firstnameParam)) {
-				firstname = firstnameParam;
-			}
-			String lastnameParam = (String) request.getAttribute("lastname");
-			if (StringUtils.isNotBlank(lastnameParam)) {
-				lastname = lastnameParam;
-			}
-			String emailParam = (String) request.getAttribute("email");
-			if (StringUtils.isNotBlank(emailParam)) {
-				email = emailParam;
-			}
-		}
+	public void presubmit() {
+		LOG.info("presubmit()");
 	}
 
 	@DefaultHandler
@@ -102,6 +73,14 @@ public class LoginActionBean extends JCActionBean {
 	public Resolution register() throws Exception {
 		LOG.info("register attempt for user=" + newusername);
 		if (validateAlreadyLoggedIn()) {
+			return getContext().getSourcePageResolution();
+		}
+		if (userService.getByUsername(newusername)!=null) {
+			addGlobalValidationError("/login.action.newusername.alreadyExists");
+			return getContext().getSourcePageResolution();
+		}
+		if (userService.getByEmail(email)!=null) {
+			addGlobalValidationError("/login.action.email.alreadyExists");
 			return getContext().getSourcePageResolution();
 		}
 		User user = userService.createUser(newusername, firstname, lastname, email, newpassword);

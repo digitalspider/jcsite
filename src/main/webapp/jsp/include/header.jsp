@@ -1,4 +1,7 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
+<%@ taglib prefix="d" uri="http://stripes.sourceforge.net/stripes-dynattr.tld" %>
 
 <div class="tm-header">
     <div class="container-fluid">
@@ -30,7 +33,7 @@
                             		<a href="login.jsp" class="nav-link">Login</a>
                             	</c:when>
                             	<c:otherwise>
-                            		<s:form id="logoutForm" method="post" action="/login.action">
+                            		<s:form id="logoutForm" method="post" action="/login.action" class="tm-login-form">
                             			<s:submit id="submit" name="logout" value="Logout" class="tm-btn text-uppercase" />
                             		</s:form>
                             	</c:otherwise>
