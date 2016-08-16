@@ -20,9 +20,10 @@
                             </div>
                             <div class="form-group">
                             	<s:errors field="password"/>
-                                <input type="password" id="password" name="password" class="form-control" placeholder="Password"  required/>
+                                <input type="password" id="password" name="password" class="form-control" placeholder="Password" />
                             </div>
                             <s:submit id="login" name="login" value="login" class="tm-btn text-uppercase" />
+                            <s:submit id="forgot" name="forgot" value="forgot my password" class="tm-btn text-uppercase" />
                         </s:form>
                     </div>
 

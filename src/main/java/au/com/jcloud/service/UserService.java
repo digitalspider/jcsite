@@ -62,6 +62,15 @@ public class UserService {
 		return user;
 	}
 
+	public User getByUsernameOrEmail(String usernameOrEmail) {
+		User user = getByUsername(usernameOrEmail);
+		if (user != null) {
+			return user;
+		}
+		user = getByEmail(usernameOrEmail);
+		return user;
+	}
+
 	public User getByUsername(String username) {
 		User user = Ebean.find(User.class).select("id, name, email, status, firstName, lastName").where().eq("name", username).findUnique();
 		return user;

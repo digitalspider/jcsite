@@ -13,6 +13,7 @@ import net.sourceforge.stripes.action.Before;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.HandlesEvent;
+import net.sourceforge.stripes.action.RedirectResolution;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.UrlBinding;
 import net.sourceforge.stripes.controller.LifecycleStage;
@@ -30,7 +31,7 @@ public class LoginActionBean extends JCActionBean {
 
 	@SpringBean
 	private UserService userService;
-	@Validate(required = true, minlength = 2, maxlength = 64, on = "login")
+	@Validate(required = true, minlength = 2, maxlength = 64, on = "{login, forgot}")
 	private String username;
 	@Validate(required = true, minlength = 2, maxlength = 64, on = "login")
 	private String password;
@@ -66,7 +67,7 @@ public class LoginActionBean extends JCActionBean {
 			context.setUser(user);
 		}
 		LOG.info("login successful for user=" + username);
-		return new ForwardResolution("index.jsp");
+		return new RedirectResolution("/index.jsp");
 	}
 
 	@HandlesEvent("register")
@@ -89,7 +90,7 @@ public class LoginActionBean extends JCActionBean {
 		// save the logged in user to the session
 		context.setUser(user);
 
-		return new ForwardResolution("index.jsp");
+		return new RedirectResolution("/index.jsp");
 	}
 
 	@HandlesEvent("logout")
@@ -102,7 +103,21 @@ public class LoginActionBean extends JCActionBean {
 		// log out the user from the session
 		context.setUser(null);
 
-		return new ForwardResolution("login.jsp");
+		return new RedirectResolution("/login.jsp");
+	}
+
+	@HandlesEvent("forgot")
+	public Resolution forgot() throws Exception {
+		LOG.info("forgot for user=" + username);
+		if (validateAlreadyLoggedIn()) {
+			return getContext().getSourcePageResolution();
+		}
+		User user = userService.getByUsernameOrEmail(username);
+		if (user == null) {
+			addGlobalValidationError("/login.action.username.invalid");
+			return getContext().getSourcePageResolution();
+		}
+		return new RedirectResolution("/reset.jsp?user="+user.getName()+"&token=123");
 	}
 
 	@HandlesEvent("reset")
@@ -136,7 +151,7 @@ public class LoginActionBean extends JCActionBean {
 				userService.updatePassword(usernameParam, password);
 			}
 		}
-		return new ForwardResolution("index.jsp");
+		return new RedirectResolution("/index.jsp");
 	}
 
 	private boolean validateAlreadyLoggedIn() {
