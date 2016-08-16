@@ -47,7 +47,7 @@ public class ContactActionBean extends JCActionBean {
 	private void sendEmail() {
 		try {
 			if (emailService != null) {
-				emailService.sendEmail(name, email, subject, message);
+				emailService.sendFromEmail(name, email, subject, message);
 			}
 		} catch (Exception e) {
 			LOG.error(e, e);
