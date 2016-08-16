@@ -3,15 +3,19 @@ package au.com.jcloud.actionbean;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 
 import au.com.jcloud.emodel.User;
 import au.com.jcloud.service.UserService;
+import net.sourceforge.stripes.action.Before;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.HandlesEvent;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.UrlBinding;
+import net.sourceforge.stripes.controller.LifecycleStage;
 import net.sourceforge.stripes.integration.spring.SpringBean;
 import net.sourceforge.stripes.validation.EmailTypeConverter;
 import net.sourceforge.stripes.validation.LocalizableError;
@@ -41,12 +45,41 @@ public class LoginActionBean extends JCActionBean {
 	@Validate(required = true, minlength = 2, maxlength = 64, on = "register")
 	private String newpassword;
 
-	@DefaultHandler
-	public Resolution onLoad() {
-		return context.getSourcePageResolution();
+	@Before(stages = LifecycleStage.BindingAndValidation)
+	public void load() {
+		User user = context.getUser();
+		if (user != null) {
+			username = user.getName();
+			firstname = user.getFirstName();
+			lastname = user.getLastName();
+			email = user.getEmail();
+		}
+		else {
+			HttpServletRequest request = context.getRequest();
+			String usernameParam = (String) request.getAttribute("username");
+			if (StringUtils.isNotBlank(usernameParam)) {
+				username = usernameParam;
+			}
+			String newusernameParam = (String) request.getAttribute("newusername");
+			if (StringUtils.isNotBlank(newusernameParam)) {
+				newusername = newusernameParam;
+			}
+			String firstnameParam = (String) request.getAttribute("firstname");
+			if (StringUtils.isNotBlank(firstnameParam)) {
+				firstname = firstnameParam;
+			}
+			String lastnameParam = (String) request.getAttribute("lastname");
+			if (StringUtils.isNotBlank(lastnameParam)) {
+				lastname = lastnameParam;
+			}
+			String emailParam = (String) request.getAttribute("email");
+			if (StringUtils.isNotBlank(emailParam)) {
+				email = emailParam;
+			}
+		}
 	}
 
-	@HandlesEvent("login")
+	@DefaultHandler
 	public Resolution login() throws Exception {
 
 		LOG.info("login attempt for user=" + username);
