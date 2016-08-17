@@ -5,6 +5,7 @@ CALL mvn -DskipTests package
 set TOMCATDIR=\apps\tomcat\apache-tomcat-8.0.35
 
 del \apps\tomcat\apache-tomcat-8.0.35\webapps\website.war
+rmdir /S/Q \apps\tomcat\apache-tomcat-8.0.35\webapps\website
 PING 1.1.1.1 -n 2 -w 60000 >NUL
 copy /Y target\website.war %TOMCATDIR%\webapps\website.war
 
