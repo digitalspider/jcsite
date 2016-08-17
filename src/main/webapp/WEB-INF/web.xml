@@ -37,8 +37,8 @@
 			<param-value>StripesResources</param-value>
 		</init-param>
 		<init-param>
-			<param-name>Interceptor.Classes</param-name>
-			<param-value>net.sourceforge.stripes.integration.spring.SpringInterceptor</param-value>
+			<param-name>Extension.Packages</param-name>
+			<param-value>net.sourceforge.stripes.integration.spring</param-value>
 		</init-param>
 	</filter>
 
