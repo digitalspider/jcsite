@@ -16,7 +16,7 @@
                             <div class="h4">Login</div>
                             <div class="form-group">
                             	<s:errors field="username"/>
-                                <input type="text" id="username" name="username" class="form-control" placeholder="Username" required="true"/>
+                                <input type="text" id="username" name="username" class="form-control" placeholder="Username" required="true" value="${actionBean.username}"/>
                             </div>
                             <div class="form-group">
                             	<s:errors field="password"/>
@@ -33,19 +33,19 @@
                             <div class="h4">Register</div>
                             <div class="form-group">
                                 <s:errors field="firstname"/>
-                                <input type="text" id="firstname" name="firstname" class="form-control" placeholder="First Name" required="true"/>
+                                <input type="text" id="firstname" name="firstname" class="form-control" placeholder="First Name" required="true" value="${actionBean.firstname}"/>
                             </div>
                             <div class="form-group">
                             	<s:errors field="lastname"/>
-                                <input type="text" id="lastname" name="lastname" class="form-control" placeholder="Last Name" required="true"/>
+                                <input type="text" id="lastname" name="lastname" class="form-control" placeholder="Last Name" required="true" value="${actionBean.lastname}"/>
                             </div>
                             <div class="form-group">
                             	<s:errors field="email"/>
-                                <input type="email" id="email" name="email" class="form-control" placeholder="Email" required="true"/>
+                                <input type="email" id="email" name="email" class="form-control" placeholder="Email" required="true" value="${actionBean.email}"/>
                             </div>
                             <div class="form-group">
                             	<s:errors field="newusername"/>
-                                <input type="text" id="newusername" name="newusername" class="form-control" placeholder="Username"  required/>
+                                <input type="text" id="newusername" name="newusername" class="form-control" placeholder="Username" required="true" value="${actionBean.newusername}"/>
                             </div>
                             <div class="form-group">
                             	<s:errors field="newpassword"/>
