@@ -16,7 +16,7 @@ import net.sourceforge.stripes.integration.spring.SpringBean;
 /**
  * Created by david.vittor on 4/08/16.
  */
-public class EmailService {
+public class EmailService extends BaseService {
 
 	public static final String EMAIL_PROPERTIES = "email.properties";
 	public static final String PROP_EMAIL_HOST = "email.host";
@@ -27,8 +27,6 @@ public class EmailService {
 	public static final String PROP_DEFAULT_FROM_EMAIL = "default.from.email";
 	public static final String PROP_DEFAULT_TO_USERNAME = "default.to.username";
 	public static final String PROP_DEFAULT_TO_EMAIL = "default.to.email";
-
-	private static Logger LOG = Logger.getLogger(EmailService.class);
 
 	private static Properties properties = new Properties();
 	private static Mailer mailer;
@@ -102,7 +100,7 @@ public class EmailService {
 		emailMessage.setFromAddress(fromName, fromEmail);
 		emailMessage.setReplyToAddress(fromName, fromEmail);
 		emailMessage.setSubject(subject);
-		emailMessage.setText(message);
+		emailMessage.setTextHTML(message);
 
 		mailer.sendMail(emailMessage);
 		LOG.info("email has been sent to: "+toEmail+" from: "+fromEmail);

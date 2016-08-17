@@ -9,7 +9,7 @@ import java.util.Properties;
 /**
  * Created by david.vittor on 7/08/16.
  */
-public class PropertyReaderService {
+public class PropertyReaderService extends BaseService {
 
 	public Properties loadProperties(String filename) throws IOException {
 		return loadProperties(filename, true);

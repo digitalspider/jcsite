@@ -8,7 +8,7 @@ import au.com.jcloud.emodel.Status;
 /**
  * Created by david.vittor on 5/08/16.
  */
-public class StatusService {
+public class StatusService extends BaseService {
 
 	public void enable(Class<? extends BaseBean> classType, Integer id) {
 		setStatus(classType, id, Status.ENABLED);

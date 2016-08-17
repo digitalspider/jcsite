@@ -26,7 +26,11 @@
 		</init-param>
 		<init-param>
 			<param-name>Extension.Packages</param-name>
-			<param-value>net.sourceforge.stripes.extensions, au.com.jcloud.context</param-value>
+			<param-value>
+				net.sourceforge.stripes.integration.spring,
+				net.sourceforge.stripes.extensions,
+				au.com.jcloud.context
+			</param-value>
 		</init-param>
 		<init-param>
 			<param-name>ActionBeanContext.Class</param-name>
@@ -35,10 +39,6 @@
 		<init-param>
 			<param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
 			<param-value>StripesResources</param-value>
-		</init-param>
-		<init-param>
-			<param-name>Extension.Packages</param-name>
-			<param-value>net.sourceforge.stripes.integration.spring</param-value>
 		</init-param>
 	</filter>
 

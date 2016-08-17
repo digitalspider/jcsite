@@ -14,6 +14,10 @@ public class User extends BaseBean {
     protected String firstName;
     protected String lastName;
 
+    public String getFullName() {
+        return firstName+" "+lastName;
+    }
+
     @Override
     public String toString() {
         return super.toString()+" email="+email+" firstName="+firstName+" lastName="+lastName;

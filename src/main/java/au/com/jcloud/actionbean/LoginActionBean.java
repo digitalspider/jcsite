@@ -8,10 +8,13 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 
 import au.com.jcloud.emodel.User;
+import au.com.jcloud.service.EmailService;
+import au.com.jcloud.service.TokenService;
 import au.com.jcloud.service.UserService;
+import au.com.jcloud.util.HttpUtil;
+
 import net.sourceforge.stripes.action.Before;
 import net.sourceforge.stripes.action.DefaultHandler;
-import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.HandlesEvent;
 import net.sourceforge.stripes.action.RedirectResolution;
 import net.sourceforge.stripes.action.Resolution;
@@ -31,11 +34,15 @@ public class LoginActionBean extends JCActionBean {
 
 	@SpringBean
 	private UserService userService;
+	@SpringBean
+	private EmailService emailService;
+	@SpringBean
+	private TokenService tokenService;
 	@Validate(required = true, minlength = 2, maxlength = 64, on = "{login, forgot}")
 	private String username;
-	@Validate(required = true, minlength = 2, maxlength = 64, on = "login")
+	@Validate(required = true, minlength = 8, maxlength = 64, on = "{login, reset}")
 	private String password;
-	@Validate(required = true, minlength = 2, maxlength = 64, on = "register")
+	@Validate(required = true, minlength = 2, maxlength = 64, on = "register", converter = EmailTypeConverter.class)
 	private String email;
 	@Validate(required = true, minlength = 2, maxlength = 32, on = "register")
 	private String firstname;
@@ -43,8 +50,15 @@ public class LoginActionBean extends JCActionBean {
 	private String lastname;
 	@Validate(required = true, minlength = 2, maxlength = 64, on = "register")
 	private String newusername;
-	@Validate(required = true, minlength = 2, maxlength = 64, on = "register")
+	@Validate(required = true, minlength = 8, maxlength = 64, on = "register")
 	private String newpassword;
+
+	public static final String PARAM_USERNAME = "username";
+	public static final String PARAM_TOKEN = "token";
+
+	public static final String PAGE_LOGIN = "/login.jsp";
+	public static final String PAGE_INDEX = "/index.jsp";
+	public static final String PAGE_RESET = "/reset.jsp";
 
 	@Before(stages = LifecycleStage.BindingAndValidation)
 	public void presubmit() {
@@ -67,7 +81,7 @@ public class LoginActionBean extends JCActionBean {
 			context.setUser(user);
 		}
 		LOG.info("login successful for user=" + username);
-		return new RedirectResolution("/index.jsp");
+		return new RedirectResolution(PAGE_INDEX);
 	}
 
 	@HandlesEvent("register")
@@ -90,7 +104,7 @@ public class LoginActionBean extends JCActionBean {
 		// save the logged in user to the session
 		context.setUser(user);
 
-		return new RedirectResolution("/index.jsp");
+		return new RedirectResolution(PAGE_INDEX);
 	}
 
 	@HandlesEvent("logout")
@@ -103,7 +117,14 @@ public class LoginActionBean extends JCActionBean {
 		// log out the user from the session
 		context.setUser(null);
 
-		return new RedirectResolution("/login.jsp");
+		return new RedirectResolution(PAGE_LOGIN);
+	}
+
+	public static boolean isResetReady(HttpServletRequest request) {
+		String username = request.getParameter("username");
+		String token = request.getParameter("token");
+		boolean resetReady = StringUtils.isNotBlank(username) && StringUtils.isNotBlank(token);
+		return resetReady;
 	}
 
 	@HandlesEvent("forgot")
@@ -117,16 +138,23 @@ public class LoginActionBean extends JCActionBean {
 			addGlobalValidationError("/login.action.username.invalid");
 			return getContext().getSourcePageResolution();
 		}
-		return new RedirectResolution("/reset.jsp?user="+user.getName()+"&token=123");
+		String basePath = HttpUtil.getContextUrl(getContext().getRequest());
+		LOG.info("basePath="+basePath);
+		String url = basePath+PAGE_RESET+"?"+PARAM_USERNAME+"="+user.getName()+"&"+PARAM_TOKEN+"="+tokenService.generateAndRecordToken(user.getName());
+		LOG.info("url="+url);
+		String message = "Hi " + user.getFirstName()+",<br/><br/>"+
+				"You have 30 minutes to use the below link to reset your password<br/>" +
+				"<a href=\""+url+"\">"+url+"</a><br/><br/>"+
+				"Yours sincerely,<br/>"+
+				"The JCloud team<br/>";
+		emailService.sendToEmail(user.getFullName(), user.getEmail(),"JCloud Password Reset", message);
+		return getContext().getSourcePageResolution();
 	}
 
 	@HandlesEvent("reset")
 	public Resolution reset() throws Exception {
 		LOG.info("reset() called");
-		if (StringUtils.isBlank(password)) {
-			throw new Exception("password is required");
-		}
-		String referrer = context.getRequest().getHeader("referer");
+		String referrer = getContext().getRequest().getHeader("referer");
 		LOG.info("referrer=" + referrer);
 		if (StringUtils.isNotBlank(referrer) && referrer.contains("?")) {
 			String queryString = referrer.split("\\?")[1];
@@ -138,20 +166,28 @@ public class LoginActionBean extends JCActionBean {
 					String[] queryParamParts = queryParam.split("=");
 					queryParamMap.put(queryParamParts[0], queryParamParts[1]);
 				}
-				String usernameParam = queryParamMap.get("user");
+				String usernameParam = queryParamMap.get(PARAM_USERNAME);
 				LOG.info("usernameParam=" + usernameParam);
 				if (StringUtils.isBlank(usernameParam)) {
-					throw new Exception("user parameter is missing");
+					addGlobalValidationError("/login.action.reset.userMissing", usernameParam);
+					return getContext().getSourcePageResolution();
 				}
-				String token = queryParamMap.get("token");
+				String token = queryParamMap.get(PARAM_TOKEN);
 				LOG.info("token=" + token);
 				if (StringUtils.isBlank(token)) {
-					throw new Exception("token parameter is missing");
+					addGlobalValidationError("/login.action.reset.tokenMissing", usernameParam);
+					return getContext().getSourcePageResolution();
 				}
-				userService.updatePassword(usernameParam, password);
+				if (!tokenService.validateToken(usernameParam,token)) {
+					addGlobalValidationError("/login.action.reset.invalidToken", usernameParam);
+					return getContext().getSourcePageResolution();
+				}
+				User user = userService.updatePassword(usernameParam, password);
+				context.setUser(user);
+				tokenService.clearToken(usernameParam);
 			}
 		}
-		return new RedirectResolution("/index.jsp");
+		return new RedirectResolution(PAGE_INDEX);
 	}
 
 	private boolean validateAlreadyLoggedIn() {
@@ -190,6 +226,22 @@ public class LoginActionBean extends JCActionBean {
 
 	public void setUserService(UserService userService) {
 		this.userService = userService;
+	}
+
+	public EmailService getEmailService() {
+		return emailService;
+	}
+
+	public void setEmailService(EmailService emailService) {
+		this.emailService = emailService;
+	}
+
+	public TokenService getTokenService() {
+		return tokenService;
+	}
+
+	public void setTokenService(TokenService tokenService) {
+		this.tokenService = tokenService;
 	}
 
 	public String getEmail() {

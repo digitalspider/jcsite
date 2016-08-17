@@ -8,9 +8,7 @@ import org.apache.log4j.Logger;
 /**
  * Created by david.vittor on 8/08/16.
  */
-public class EncryptService {
-
-	public static final Logger LOG = Logger.getLogger(EncryptService.class);
+public class EncryptService extends BaseService {
 
 	public String md5(String input) {
 		try {

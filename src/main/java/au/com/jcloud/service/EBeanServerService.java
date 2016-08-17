@@ -19,7 +19,7 @@ import au.com.jcloud.emodel.User;
 /**
  * Created by david on 5/08/16.
  */
-public class EBeanServerService {
+public class EBeanServerService extends BaseService {
 	public static final String EBEAN_PROPERTIES = "ebean.properties";
 	public static final String EBEAN_PROPERTIES_TEST = "test-ebean.properties";
 

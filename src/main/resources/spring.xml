@@ -2,6 +2,7 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
+	<bean name="tokenService" class="au.com.jcloud.service.TokenService"/>
 	<bean name="encryptService" class="au.com.jcloud.service.EncryptService"/>
 	<bean name="propertyReaderService" class="au.com.jcloud.service.PropertyReaderService"/>
 	<bean name="userService" class="au.com.jcloud.service.UserService">

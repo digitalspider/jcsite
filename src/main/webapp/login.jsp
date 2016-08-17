@@ -16,14 +16,15 @@
                             <div class="h4">Login</div>
                             <div class="form-group">
                             	<s:errors field="username"/>
-                                <input type="text" id="username" name="username" class="form-control" placeholder="Username"  required/>
+                                <input type="text" id="username" name="username" class="form-control" placeholder="Username" required="true"/>
                             </div>
                             <div class="form-group">
                             	<s:errors field="password"/>
-                                <input type="password" id="password" name="password" class="form-control" placeholder="Password" />
+                                <input type="password" id="password" name="password" class="form-control" placeholder="Password" required="true"/>
                             </div>
                             <s:submit id="login" name="login" value="login" class="tm-btn text-uppercase" />
-                            <s:submit id="forgot" name="forgot" value="forgot my password" class="tm-btn text-uppercase" />
+                            <br/>
+                            <s:link href="/reset.jsp">Forgot your password</s:link>
                         </s:form>
                     </div>
 
@@ -32,23 +33,23 @@
                             <div class="h4">Register</div>
                             <div class="form-group">
                                 <s:errors field="firstname"/>
-                                <input type="text" id="firstname" name="firstname" class="form-control" placeholder="First Name"  required/>
+                                <input type="text" id="firstname" name="firstname" class="form-control" placeholder="First Name" required="true"/>
                             </div>
                             <div class="form-group">
                             	<s:errors field="lastname"/>
-                                <input type="text" id="lastname" name="lastname" class="form-control" placeholder="Last Name"  required/>
+                                <input type="text" id="lastname" name="lastname" class="form-control" placeholder="Last Name" required="true"/>
                             </div>
                             <div class="form-group">
                             	<s:errors field="email"/>
-                                <input type="email" id="email" name="email" class="form-control" placeholder="Email"  required/>
+                                <input type="email" id="email" name="email" class="form-control" placeholder="Email" required="true"/>
                             </div>
                             <div class="form-group">
                             	<s:errors field="newusername"/>
                                 <input type="text" id="newusername" name="newusername" class="form-control" placeholder="Username"  required/>
                             </div>
                             <div class="form-group">
-                            	<s:errors field="newusername"/>
-                                <input type="password" id="newpassword" name="newpassword" class="form-control" placeholder="Password"  required/>
+                            	<s:errors field="newpassword"/>
+                                <input type="password" id="newpassword" name="newpassword" class="form-control" placeholder="Password" required="true"/>
                             </div>
                             <s:submit id="register" name="register" value="register" class="tm-btn text-uppercase"/>
                         </s:form>

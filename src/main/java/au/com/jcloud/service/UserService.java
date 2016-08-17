@@ -15,8 +15,7 @@ import net.sourceforge.stripes.integration.spring.SpringBean;
 /**
  * Created by david on 5/08/16.
  */
-public class UserService {
-	private static final Logger LOG = Logger.getLogger(UserService.class);
+public class UserService extends BaseService {
 
 	@SpringBean
 	private EncryptService encryptService;
@@ -113,16 +112,16 @@ public class UserService {
 	public static void main(String[] args) {
 		try {
 			UserService us = new UserService();
-			LOG.info("us=" + us);
+			System.out.println("us=" + us);
 			User user = us.createUser("test", "first", "last", "email", "pass");
 //            user.setStatus(StatusService.Status.DISABLED.name());
 //            Ebean.save(user);
-			LOG.info("user=" + user);
-			LOG.info("test=" + us.getByUsername("test"));
-			LOG.info("te%=" + us.getByUsername("te%"));
-			LOG.info("auth=" + us.getUserByAuth("test", "pass"));
+			System.out.println("user=" + user);
+			System.out.println("test=" + us.getByUsername("test"));
+			System.out.println("te%=" + us.getByUsername("te%"));
+			System.out.println("auth=" + us.getUserByAuth("test", "pass"));
 		} catch (Exception e) {
-			LOG.error(e, e);
+			e.printStackTrace();
 		}
 	}
 }

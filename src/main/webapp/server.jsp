@@ -28,7 +28,7 @@
                             <p class="domain" id="domain">
                                 <span>Domain/Hostname/ServerName:<span>
                                 <input type="text" name="domain" placeholder="server" />
-                                <span>.javacloud.com.au<span>
+                                <span>.jcloud.com.au<span>
                             </p>
                         </div>
                         

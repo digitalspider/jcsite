@@ -2,6 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
 <%@ taglib prefix="d" uri="http://stripes.sourceforge.net/stripes-dynattr.tld" %>
+<%@ page import="au.com.jcloud.actionbean.LoginActionBean" %>
+
+<% boolean resetReady = LoginActionBean.isResetReady(request); %>
 
 <s:layout-render name="/jsp/layout/public.jsp" pageTitle="Reset">
     <s:layout-component name="contents">
@@ -10,14 +13,22 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-
-                        <s:form id="resetForm" method="post" action="/login.action"  class="tm-login-form">
-                            <div class="h4">Password</div>
-                            <div class="form-group">
-                                <input type="password" id="password" name="password" class="form-control" placeholder="Password"  required/>
-                            </div>
-                            <s:submit id="submit" name="reset" value="Reset" class="tm-btn text-uppercase" />
-                        </s:form>
+						<s:form id="resetForm" method="post" action="/login.action"  class="tm-login-form">
+							<s:errors/>
+							<% if (resetReady) { %>
+								<div class="h4">New Password</div>
+								<div class="form-group">
+									<input type="password" id="password" name="password" class="form-control" placeholder="Password" required="true"/>
+								</div>
+								<s:submit id="submit" name="reset" value="Reset" class="tm-btn text-uppercase" />
+							<% } else { %>
+								<div class="h4">Username or Email</div>
+								<div class="form-group">
+									<input type="username" id="username" name="username" class="form-control" placeholder="Username or Email" required="true"/>
+								</div>
+								<s:submit id="forgot" name="forgot" value="Email me" class="tm-btn text-uppercase" />
+							<% } %>
+						</s:form>
                     </div>
                 </div> <!-- row -->
 
