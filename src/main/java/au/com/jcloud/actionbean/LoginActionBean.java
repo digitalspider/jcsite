@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 
 import au.com.jcloud.emodel.User;
+import au.com.jcloud.jcframe.servlet.FrontControllerServlet;
+import au.com.jcloud.jcframe.servlet.UserRoleFilter;
 import au.com.jcloud.service.EmailService;
 import au.com.jcloud.service.TokenService;
 import au.com.jcloud.service.UserService;
@@ -115,8 +117,9 @@ public class LoginActionBean extends JCActionBean {
 			return getContext().getSourcePageResolution();
 		}
 		// log out the user from the session
-		context.setUser(null);
-
+		context.getRequest().getSession().removeAttribute(UserRoleFilter.SESSION_ATTRIBUTE_USER);
+		context.getRequest().getSession().invalidate();
+        
 		return new RedirectResolution(PAGE_LOGIN);
 	}
 

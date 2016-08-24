@@ -1,9 +1,9 @@
 package au.com.jcloud.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Expr;
@@ -16,10 +16,25 @@ import net.sourceforge.stripes.integration.spring.SpringBean;
  * Created by david on 5/08/16.
  */
 public class UserService extends BaseService {
+	
+	public static final String PROPERTIES_FILE_JC = "jc.properties";
+	public static final String PROP_SECURITY_REALM = "security.realm";
 
 	@SpringBean
 	private EncryptService encryptService;
+	@SpringBean
+	private PropertyReaderService propertyReaderService;
+	
+	private static String realm;
 
+	public String getRealm() throws IOException {
+		if (StringUtils.isNotBlank(realm)) {
+			return realm;
+		}
+		realm = propertyReaderService.loadProperties(PROPERTIES_FILE_JC).getProperty(PROP_SECURITY_REALM);
+		return realm;
+	}
+	
 	public User createUser(String username, String firstName, String lastName, String email, String password) throws Exception {
 		User user = getByUsername(username);
 		if (user != null) {
@@ -34,7 +49,7 @@ public class UserService extends BaseService {
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
 		user.setEmail(email);
-		String passValue = encryptService != null ? encryptService.md5(password) : password;
+		String passValue = getPassword(username, password);
 		user.setPassword(passValue);
 		user.setStatus(Status.ENABLED.name());
 		LOG.info("creating new user: " + user);
@@ -44,12 +59,17 @@ public class UserService extends BaseService {
 		return user;
 	}
 
+	private String getPassword(String username, String password) throws IOException {
+		String realmValue = username+":"+getRealm()+":"+password;
+		return encryptService != null ? encryptService.md5(realmValue) : password;
+	}
+
 	public User updatePassword(String username, String password) throws Exception {
 		User user = getByUsername(username);
 		if (user == null) {
 			throw new Exception("Could not find user: " + username);
 		}
-		String passValue = encryptService != null ? encryptService.md5(password) : password;
+		String passValue = getPassword(username, password);
 		user.setPassword(passValue);
 		Ebean.save(user);
 		user = getByUsername(username);
@@ -90,8 +110,8 @@ public class UserService extends BaseService {
 		return users;
 	}
 
-	public User getUserByAuth(String username, String password) {
-		String passValue = encryptService != null ? encryptService.md5(password) : password;
+	public User getUserByAuth(String username, String password) throws IOException {
+		String passValue = getPassword(username, password);
 		User user = null;
 		if (StringUtils.isNotBlank(username)) {
 			user = Ebean.find(User.class).select("id, name, email, status, firstName, lastName").where()
