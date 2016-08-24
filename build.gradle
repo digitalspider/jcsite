@@ -40,13 +40,8 @@ dependencies {
     compile group: 'javax.annotation', name: 'jsr250-api', version: '1.0'
     testCompile group: 'junit', name: 'junit', version:'4.11'
     testCompile group: 'org.mockito', name: 'mockito-all', version:'1.10.19'
-    compile group: 'org.avaje.ebeanorm', name: 'querybean-generator', version: '2.3.1'
-    compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
-    compile group: 'javax.servlet.jsp', name: 'jsp-api', version: '2.2'
-    compile group: 'com.h2database', name: 'h2', version: '1.4.192'
-//    compileOnly 'org.avaje.ebeanorm:querybean-generator:2.3.1'
-//    compileOnly 'javax.servlet:javax.servlet-api:3.1.0'
-//    compileOnly 'javax.servlet.jsp:jsp-api:2.2'
-//    compileOnly 'com.h2database:h2:1.4.192'
-
+    compileOnly 'org.avaje.ebeanorm:querybean-generator:2.3.1'
+    compileOnly 'javax.servlet:javax.servlet-api:3.1.0'
+    compileOnly 'javax.servlet.jsp:jsp-api:2.2'
+    compileOnly 'com.h2database:h2:1.4.192'
 }
