@@ -9,6 +9,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
+import au.com.jcloud.emodel.User;
+
 /**
  * An extension for the HTTPServletRequest that overrides the getUserPrincipal() and isUserInRole().
  *  We supply these implementations here, where they are not normally populated unless we are going through
@@ -21,11 +23,11 @@ import javax.servlet.http.HttpServletRequestWrapper;
 public class UserRoleRequestWrapper extends HttpServletRequestWrapper {
 
 
-    String user;
+    User user;
     List<String> roles = null;
     HttpServletRequest realRequest;
 
-    public UserRoleRequestWrapper(String user, List<String> roles, HttpServletRequest request) {
+    public UserRoleRequestWrapper(User user, List<String> roles, HttpServletRequest request) {
         super(request);
         this.user = user;
         this.roles = roles;
@@ -50,7 +52,7 @@ public class UserRoleRequestWrapper extends HttpServletRequestWrapper {
         return new Principal() {
             @Override
             public String getName() {
-                return user;
+                return user.getName();
             }
         };
     }

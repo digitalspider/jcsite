@@ -27,7 +27,7 @@
                             <a href="contact.jsp" class="nav-link">Contact</a>
                         </li>
                         <li class="nav-item">
-                        	<c:set var="user" scope="session" value='<%= request.getSession().getAttribute("user")%>'/>
+                        	<c:set var="user" scope="session" value='<%= request.getUserPrincipal()%>'/>
                         	<c:choose>
                         		<c:when test="${user == null}">
                             		<a href="login.jsp" class="nav-link">Login</a>

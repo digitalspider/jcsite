@@ -2,6 +2,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 
+<%
+if (request.getUserPrincipal()==null) {
+	response.sendRedirect("/website/login.jsp");
+}
+%>
+
 <html>
     <head>
         <title>jcloud Server</title>
