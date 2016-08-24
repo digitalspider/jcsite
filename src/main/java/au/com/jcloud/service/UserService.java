@@ -139,6 +139,8 @@ public class UserService extends BaseService {
 
 	public static void main(String[] args) {
 		try {
+			EBeanServerService.createEbeanServer();
+//			EBeanServerService service = new EBeanServerService(true);
 			UserService us = new UserService();
 			System.out.println("us=" + us);
 			User user = us.createUser("test", "first", "last", "email", "pass");
