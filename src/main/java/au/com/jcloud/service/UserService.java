@@ -129,6 +129,14 @@ public class UserService extends BaseService {
 		this.encryptService = encryptService;
 	}
 
+	public PropertyReaderService getPropertyReaderService() {
+		return propertyReaderService;
+	}
+
+	public void setPropertyReaderService(PropertyReaderService propertyReaderService) {
+		this.propertyReaderService = propertyReaderService;
+	}
+
 	public static void main(String[] args) {
 		try {
 			UserService us = new UserService();

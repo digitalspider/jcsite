@@ -7,6 +7,7 @@
 	<bean name="propertyReaderService" class="au.com.jcloud.service.PropertyReaderService"/>
 	<bean name="userService" class="au.com.jcloud.service.UserService">
 		<property name="encryptService" ref="encryptService"/>
+		<property name="propertyReaderService" ref="propertyReaderService"/>
 	</bean>
 	<bean name="emailService" class="au.com.jcloud.service.EmailService">
 		<property name="propertyReaderService" ref="propertyReaderService"/>

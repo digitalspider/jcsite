@@ -8,6 +8,8 @@ import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 
 import net.sourceforge.stripes.action.ActionBean;
+import net.sourceforge.stripes.action.RedirectResolution;
+import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.config.DontAutoLoad;
 import net.sourceforge.stripes.util.Log;
 
@@ -27,7 +29,7 @@ import net.sourceforge.stripes.util.Log;
  */
 @DontAutoLoad
 public class J2EESecurityManager
-		implements SecurityManager
+		implements SecurityManager, SecurityHandler
 {
 	/**
 	 * Logger for this class.
@@ -166,5 +168,10 @@ public class J2EESecurityManager
 	protected Boolean hasRole(ActionBean bean, Method handler, String role)
 	{
 		return bean.getContext().getRequest().isUserInRole(role);
+	}
+
+	@Override
+	public Resolution handleAccessDenied(ActionBean bean, Method handler) {
+		return new RedirectResolution("/login.jsp");
 	}
 }
