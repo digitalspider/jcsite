@@ -42,8 +42,7 @@ public class UserRoleFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse response,
                          FilterChain next) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) req;
-        HttpServletResponse r = (HttpServletResponse)response;
-        r.sendRedirect("/login.jsp");
+
         User user = (User)request.getSession().getAttribute(SESSION_ATTRIBUTE_USER);
 
         @SuppressWarnings("unchecked")

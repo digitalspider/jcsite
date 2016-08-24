@@ -11,21 +11,21 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
 
-                        <s:form id="loginForm" method="post" action="/login.action" class="tm-login-form">
-                        	<s:errors globalErrorsOnly="true"/>
+                        <form id="loginForm" method="post" action="j_security_check" class="tm-login-form">
+                        	<% if (request.getQueryString()!=null && request.getQueryString().contains("failed=1")) { %>
+                        		<div class="alert alert-danger">Invalid login</div>
+                        	<% } %>
                             <div class="h4">Login</div>
                             <div class="form-group">
-                            	<s:errors field="username"/>
-                                <input type="text" id="username" name="username" class="form-control" placeholder="Username" required="true" value="${actionBean.username}"/>
+                                <input type="text" id="username" name="j_username" class="form-control" placeholder="Username" required="true" value="${actionBean.username}"/>
                             </div>
                             <div class="form-group">
-                            	<s:errors field="password"/>
-                                <input type="password" id="password" name="password" class="form-control" placeholder="Password" required="true"/>
+                                <input type="password" id="password" name="j_password" class="form-control" placeholder="Password" required="true"/>
                             </div>
-                            <s:submit id="login" name="login" value="login" class="tm-btn text-uppercase" />
-                            <br/>
-                            <s:link href="/reset.jsp">Forgot your password</s:link>
-                        </s:form>
+                            <input type="submit" id="login" name="login" value="login" class="tm-btn text-uppercase" />
+                        </form>
+						<br/>
+						<s:link href="/reset.jsp">Forgot your password</s:link>
                     </div>
 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">

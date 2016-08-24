@@ -69,4 +69,27 @@
 		<servlet-name>StripesDispatcher</servlet-name>
 		<url-pattern>*.action</url-pattern>
 	</servlet-mapping>
+
+	<login-config>
+		<auth-method>FORM</auth-method>
+		<form-login-config>
+			<form-login-page>/login.jsp</form-login-page>
+			<form-error-page>/login.jsp?failed=1</form-error-page>
+		</form-login-config>
+	</login-config>
+
+	<security-role>
+		<role-name>user</role-name>
+	</security-role>
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>secure pages</web-resource-name>
+			<url-pattern>/secure/*</url-pattern>
+			<url-pattern>/server.jsp</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>user</role-name>
+		</auth-constraint>
+	</security-constraint>
 </web-app>

@@ -3,6 +3,7 @@ package au.com.jcloud.actionbean;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
@@ -119,6 +120,17 @@ public class LoginActionBean extends JCActionBean {
 		// log out the user from the session
 		context.getRequest().getSession().removeAttribute(UserRoleFilter.SESSION_ATTRIBUTE_USER);
 		context.getRequest().getSession().invalidate();
+		Cookie[] cookies = context.getRequest().getCookies();
+		if(cookies != null) {
+			for (Cookie cookie: cookies) {
+				String cookieName = cookie.getName();
+				if (cookieName.equals("JSESSIONID")) {
+					cookie.setMaxAge(0);
+					cookie.setValue(null);
+					context.getResponse().addCookie(cookie);
+				}
+			}
+		}
         
 		return new RedirectResolution(PAGE_LOGIN);
 	}
