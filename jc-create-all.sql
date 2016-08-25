@@ -33,3 +33,19 @@ create table user (
   constraint pk_user primary key (id)
 );
 
+create table role (
+  id                            bigint auto_increment not null,
+  name                          varchar(255),
+  constraint pk_role primary key (id)
+);
+
+create table userrole (
+  user                          varchar(255),
+  role                          varchar(255),
+  constraint pk_userrole primary key (user,role)
+);
+
+insert into role (name) VALUES ('admin');
+insert into role (name) VALUES ('manager');
+insert into role (name) VALUES ('user');
+
