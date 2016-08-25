@@ -29,6 +29,7 @@
 			<param-value>
 				net.sourceforge.stripes.integration.spring,
 				net.sourceforge.stripes.extensions,
+				org.stripesstuff.plugin.security,
 				au.com.jcloud.security,
 				au.com.jcloud.context
 			</param-value>
@@ -43,7 +44,7 @@
 		</init-param>
 		<init-param>
 			<param-name>SecurityManager.Class</param-name>
-			<param-value>au.com.jcloud.security.J2EESecurityManager</param-value>
+			<param-value>org.stripesstuff.plugin.security.J2EESecurityManager</param-value>
 		</init-param>
 	</filter>
 
@@ -86,7 +87,6 @@
 		<web-resource-collection>
 			<web-resource-name>secure pages</web-resource-name>
 			<url-pattern>/secure/*</url-pattern>
-			<url-pattern>/server.jsp</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
 			<role-name>user</role-name>

@@ -1,4 +1,4 @@
-package au.com.jcloud.security;
+package org.stripesstuff.plugin.security;
 
 import java.lang.reflect.Method;
 
@@ -57,7 +57,7 @@ public class SecurityInterceptor
 	/**
 	 * The configured security manager.
 	 */
-	private SecurityManager securityManager;
+	private static SecurityManager securityManager;
 
 
 	/**
@@ -120,6 +120,7 @@ public class SecurityInterceptor
 		{
 			// Add the security manager to the request.
 			// This is used (for example) by the security tag.
+			LOG.info("Adding SecurityManager to page request: " + securityManager.toString());
 			executionContext.getActionBeanContext().getRequest().setAttribute(SecurityInterceptor.SECURITY_MANAGER,
 					securityManager);
 
@@ -278,5 +279,9 @@ public class SecurityInterceptor
 			resolution = new ErrorResolution(HttpServletResponse.SC_UNAUTHORIZED);
 		}
 		return resolution;
+	}
+
+	public static SecurityManager getSecurityManager() {
+		return securityManager;
 	}
 }

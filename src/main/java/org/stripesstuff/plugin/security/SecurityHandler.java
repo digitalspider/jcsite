@@ -1,4 +1,4 @@
-package au.com.jcloud.security;
+package org.stripesstuff.plugin.security;
 
 import java.lang.reflect.Method;
 

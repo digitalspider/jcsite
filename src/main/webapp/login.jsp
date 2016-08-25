@@ -11,7 +11,7 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
 
-                        <s:form id="loginForm" method="post" action="/login.action" class="tm-login-form">
+                        <s:form id="loginForm" method="post" action="/login.action" class="tm-login-form" focus="username">
                         	<s:errors globalErrorsOnly="true"/>
                             <div class="h4">Login</div>
                             <div class="form-group">

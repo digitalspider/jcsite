@@ -1,4 +1,4 @@
-package au.com.jcloud.security;
+package org.stripesstuff.plugin.security;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
@@ -152,6 +152,7 @@ public class J2EESecurityManager
 	 */
 	protected Boolean isUserAuthenticated(ActionBean bean, Method handler)
 	{
+		LOG.info("context="+bean.getContext());
 		return bean.getContext().getRequest().getUserPrincipal() != null;
 	}
 

@@ -1,4 +1,4 @@
-package au.com.jcloud.security;
+package org.stripesstuff.plugin.security;
 
 import java.lang.reflect.Method;
 import javax.servlet.jsp.JspException;
@@ -136,7 +136,12 @@ public class AllowedTag
 
 		SecurityManager securityManager = (SecurityManager)pageContext.getAttribute(
 				SecurityInterceptor.SECURITY_MANAGER, PageContext.REQUEST_SCOPE);
+		if (securityManager==null) {
+			securityManager = SecurityInterceptor.getSecurityManager();
+		}
+
 		boolean haveSecurityManager = securityManager != null;
+
 		boolean eventAllowed;
 		if (haveSecurityManager)
 		{
