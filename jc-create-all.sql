@@ -1,3 +1,10 @@
+use jcloud;
+
+drop table if exists server;
+drop table if exists user;
+drop table if exists role;
+drop table if exists userrole;
+
 create table server (
   id                            bigint auto_increment not null,
   name                          varchar(63),
