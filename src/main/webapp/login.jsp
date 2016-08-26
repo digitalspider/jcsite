@@ -9,21 +9,19 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
 
-                        <s:form id="loginForm" method="post" action="/login.action" class="tm-login-form" focus="username">
-                        	<s:errors globalErrorsOnly="true"/>
+						<s:errors globalErrorsOnly="true"/>
+                        <form id="loginForm" method="post" action="j_security_check" class="tm-login-form" focus="username">
                             <div class="h4">Login</div>
                             <div class="form-group">
-                            	<s:errors field="username"/>
-                                <input type="text" id="username" name="username" class="form-control" placeholder="Username" required="true" value="${actionBean.username}"/>
+                                <input type="text" id="username" name="j_username" class="form-control" placeholder="Username" required="true" value="${actionBean.username}"/>
                             </div>
                             <div class="form-group">
-                            	<s:errors field="password"/>
-                                <input type="password" id="password" name="password" class="form-control" placeholder="Password" required="true"/>
+                                <input type="password" id="password" name="j_password" class="form-control" placeholder="Password" required="true"/>
                             </div>
-                            <s:submit id="login" name="login" value="login" class="tm-btn text-uppercase" />
+                            <input type="submit" id="login" name="login" value="login" class="tm-btn text-uppercase" />
                             <br/>
                             <s:link href="/reset.jsp">Forgot your password</s:link>
-                        </s:form>
+                        </form>
                     </div>
 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
@@ -62,11 +60,11 @@
     <s:layout-component name="footer">
 
         <!-- load JS files -->
-        <script src="js/jquery-1.11.3.min.js"></script>             <!-- jQuery (https://jquery.com/download/) -->
+        <script src="${ctx}/js/jquery-1.11.3.min.js"></script>             <!-- jQuery (https://jquery.com/download/) -->
         <script src="https://www.atlasestateagents.co.uk/javascript/tether.min.js"></script> <!-- Tether for Bootstrap, http://stackoverflow.com/questions/34567939/how-to-fix-the-error-error-bootstrap-tooltips-require-tether-http-github-h -->
-        <script src="js/bootstrap.min.js"></script>                 <!-- Bootstrap (http://v4-alpha.getbootstrap.com/) -->
+        <script src="${ctx}/js/bootstrap.min.js"></script>                 <!-- Bootstrap (http://v4-alpha.getbootstrap.com/) -->
 
-        <script src="js/md5.js"></script> <%-- http://www.myersdaily.org/joseph/javascript/md5-text.html --%>
+        <script src="${ctx}/js/md5.js"></script> <%-- http://www.myersdaily.org/joseph/javascript/md5-text.html --%>
         <script type="text/javascript">
             function encodeAndSubmit(event) {
                 event.preventDefault();

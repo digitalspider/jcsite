@@ -1,12 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
-<%@ taglib prefix="d" uri="http://stripes.sourceforge.net/stripes-dynattr.tld" %>
+<%@ include file="/jsp/include/taglibs.jsp"%>
 
 <div class="tm-header">
     <div class="container-fluid">
         <div class="tm-header-inner">
-            <a href="index.jsp" class="navbar-brand tm-site-name">JCloud</a>
+            <a href="${ctx}/index.jsp" class="navbar-brand tm-site-name">JCloud</a>
 
             <!-- navbar -->
             <nav class="navbar tm-main-nav">
@@ -18,24 +16,22 @@
                 <div class="collapse navbar-toggleable-sm" id="tmNavbar">
                     <ul class="nav navbar-nav">
                         <li class="nav-item">
-                            <a href="about.jsp" class="nav-link">Services</a>
+                            <a href="${ctx}/about.jsp" class="nav-link">Services</a>
                         </li>
                         <li class="nav-item">
                             <a href="http://blog.jcloud.com.au" class="nav-link">Blog</a>
                         </li>
                         <li class="nav-item">
-                            <a href="contact.jsp" class="nav-link">Contact</a>
+                            <a href="${ctx}/contact.jsp" class="nav-link">Contact</a>
                         </li>
                         <li class="nav-item">
-                        	<c:set var="user" scope="session" value='<%= request.getUserPrincipal()%>'/>
+                        	<c:set var="user" scope="session" value='<%= request.getRemoteUser()%>'/>
                         	<c:choose>
                         		<c:when test="${user == null}">
-                            		<a href="login.jsp" class="nav-link">Login</a>
+                            		<a href="${ctx}/secure/index.jsp" class="nav-link">Login</a>
                             	</c:when>
                             	<c:otherwise>
-                            		<s:form id="logoutForm" method="post" action="/login.action" class="tm-login-form">
-                            			<s:submit id="submit" name="logout" value="Logout" class="tm-btn text-uppercase" />
-                            		</s:form>
+                            		<a href="${ctx}/logout" class="nav-link">Logout</a>
                             	</c:otherwise>
                             </c:choose>
                         </li>

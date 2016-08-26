@@ -48,7 +48,8 @@ public class UserRoleFilter implements Filter {
         @SuppressWarnings("unchecked")
 		List<String> roles = (List<String>)request.getSession().getAttribute(SESSION_ATTRIBUTE_ROLES);
 
-        next.doFilter(new UserRoleRequestWrapper(user, roles, request), response);
+        next.doFilter(request, response);
+        //next.doFilter(new UserRoleRequestWrapper(user, roles, request), response);
     }
 
     public void destroy() {

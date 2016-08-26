@@ -6,21 +6,21 @@
 <html>
     <head>
         <title>jcloud Server</title>
-        <jsp:include page="jsp/include/htmlhead.jsp"/>
+        <jsp:include page="/jsp/include/htmlhead.jsp"/>
     </head>
 
     <body>
-        <jsp:include page="jsp/include/header.jsp"/>
+        <jsp:include page="/jsp/include/header.jsp"/>
 
         <!--
         <div class="tm-blog-img-container">
         </div>
         -->
-<jsp:useBean id="serverActionBean" scope="page" class="au.com.jcloud.actionbean.ServerActionBean"/>
 
-<ss:allowed bean="serverActionBean">
-<h1>Test</h1>
-</ss:allowed>
+<%
+String username = request.getRemoteUser();
+%>
+<span>Hello <%= username %>. This is a secure resource</span>
 
 <s:form action="/server.action" method="post" class="tm-contact-form">
 	<s:errors/>
@@ -352,9 +352,9 @@
         </footer>
 
         <!-- load JS files -->
-        <script src="js/jquery-1.11.3.min.js"></script>             <!-- jQuery (https://jquery.com/download/) -->
+        <script src="${ctx}/js/jquery-1.11.3.min.js"></script>             <!-- jQuery (https://jquery.com/download/) -->
         <script src="https://www.atlasestateagents.co.uk/javascript/tether.min.js"></script> <!-- Tether for Bootstrap, http://stackoverflow.com/questions/34567939/how-to-fix-the-error-error-bootstrap-tooltips-require-tether-http-github-h --> 
-        <script src="js/bootstrap.min.js"></script>                 <!-- Bootstrap (http://v4-alpha.getbootstrap.com/) -->
+        <script src="${ctx}/js/bootstrap.min.js"></script>                 <!-- Bootstrap (http://v4-alpha.getbootstrap.com/) -->
        
 
 

@@ -85,7 +85,7 @@
 
 	<security-constraint>
 		<web-resource-collection>
-			<web-resource-name>secure pages</web-resource-name>
+			<web-resource-name>security</web-resource-name>
 			<url-pattern>/secure/*</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
