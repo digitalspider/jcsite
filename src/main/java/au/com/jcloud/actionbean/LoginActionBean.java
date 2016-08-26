@@ -110,31 +110,6 @@ public class LoginActionBean extends JCActionBean {
 		return new RedirectResolution(PAGE_INDEX);
 	}
 
-	@HandlesEvent("logout")
-	public Resolution logout() throws Exception {
-		LOG.info("logout attempt for user=" + context.getUser());
-		if (context.getUser() == null) {
-			addGlobalValidationError("/login.action.notLoggedIn");
-			return getContext().getSourcePageResolution();
-		}
-		// log out the user from the session
-		context.getRequest().getSession().removeAttribute(UserRoleFilter.SESSION_ATTRIBUTE_USER);
-		context.getRequest().getSession().invalidate();
-		Cookie[] cookies = context.getRequest().getCookies();
-		if(cookies != null) {
-			for (Cookie cookie: cookies) {
-				String cookieName = cookie.getName();
-				if (cookieName.equals("JSESSIONID")) {
-					cookie.setMaxAge(0);
-					cookie.setValue(null);
-					context.getResponse().addCookie(cookie);
-				}
-			}
-		}
-        
-		return new RedirectResolution(PAGE_LOGIN);
-	}
-
 	public static boolean isResetReady(HttpServletRequest request) {
 		String username = request.getParameter("username");
 		String token = request.getParameter("token");
