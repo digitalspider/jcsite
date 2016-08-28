@@ -14,6 +14,7 @@ import au.com.jcloud.jcframe.servlet.UserRoleFilter;
 import au.com.jcloud.service.EmailService;
 import au.com.jcloud.service.TokenService;
 import au.com.jcloud.service.UserService;
+import au.com.jcloud.util.Constants;
 import au.com.jcloud.util.HttpUtil;
 
 import net.sourceforge.stripes.action.Before;
@@ -59,10 +60,6 @@ public class LoginActionBean extends JCActionBean {
 	public static final String PARAM_USERNAME = "username";
 	public static final String PARAM_TOKEN = "token";
 
-	public static final String PAGE_LOGIN = "/login.jsp";
-	public static final String PAGE_INDEX = "/index.jsp";
-	public static final String PAGE_RESET = "/reset.jsp";
-
 	@Before(stages = LifecycleStage.BindingAndValidation)
 	public void presubmit() {
 		LOG.info("presubmit()");
@@ -70,7 +67,6 @@ public class LoginActionBean extends JCActionBean {
 
 	@DefaultHandler
 	public Resolution login() throws Exception {
-
 		LOG.info("login attempt for user=" + username);
 		if (validateAlreadyLoggedIn()) {
 			return getContext().getSourcePageResolution();
@@ -84,7 +80,23 @@ public class LoginActionBean extends JCActionBean {
 			context.setUser(user);
 		}
 		LOG.info("login successful for user=" + username);
-		return new RedirectResolution(PAGE_INDEX);
+		String redirect = Constants.PAGE_SECURE;
+		String referrer = getContext().getRequest().getHeader("referer");
+		String path = HttpUtil.getContextUrl(getContext().getRequest());
+		if (path!=null) {
+			path+=Constants.PATH_SECURE;
+		}
+		LOG.debug("referrer=" + referrer);
+		LOG.debug("path=" + path);
+		if (StringUtils.isNotBlank(referrer) && StringUtils.isNotBlank(path) && referrer.startsWith(path)) {
+			String queryString = referrer.substring(path.length());
+			LOG.debug("queryString=" + queryString);
+
+			if (queryString != null && queryString.startsWith("?r=")) {
+				redirect = queryString.substring(3);
+			}
+		}
+		return new RedirectResolution(redirect);
 	}
 
 	@HandlesEvent("register")
@@ -107,7 +119,7 @@ public class LoginActionBean extends JCActionBean {
 		// save the logged in user to the session
 		context.setUser(user);
 
-		return new RedirectResolution(PAGE_INDEX);
+		return new RedirectResolution(Constants.PAGE_SECURE);
 	}
 
 	public static boolean isResetReady(HttpServletRequest request) {
@@ -130,7 +142,7 @@ public class LoginActionBean extends JCActionBean {
 		}
 		String basePath = HttpUtil.getContextUrl(getContext().getRequest());
 		LOG.info("basePath="+basePath);
-		String url = basePath+PAGE_RESET+"?"+PARAM_USERNAME+"="+user.getName()+"&"+PARAM_TOKEN+"="+tokenService.generateAndRecordToken(user.getName());
+		String url = basePath+Constants.PAGE_RESET+"?"+PARAM_USERNAME+"="+user.getName()+"&"+PARAM_TOKEN+"="+tokenService.generateAndRecordToken(user.getName());
 		LOG.info("url="+url);
 		String message = "Hi " + user.getFirstName()+",<br/><br/>"+
 				"You have 30 minutes to use the below link to reset your password<br/>" +
@@ -177,7 +189,7 @@ public class LoginActionBean extends JCActionBean {
 				tokenService.clearToken(usernameParam);
 			}
 		}
-		return new RedirectResolution(PAGE_INDEX);
+		return new RedirectResolution(Constants.PAGE_INDEX);
 	}
 
 	private boolean validateAlreadyLoggedIn() {

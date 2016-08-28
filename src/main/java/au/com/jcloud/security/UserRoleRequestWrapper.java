@@ -56,4 +56,13 @@ public class UserRoleRequestWrapper extends HttpServletRequestWrapper {
 			}
 		};
 	}
+
+	@Override
+	public String getRemoteUser() {
+		if (user==null) {
+			return super.getRemoteUser();
+		} else {
+			return user.getName();
+		}
+	}
 }

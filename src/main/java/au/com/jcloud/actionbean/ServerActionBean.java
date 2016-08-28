@@ -1,6 +1,8 @@
 package au.com.jcloud.actionbean;
 
 import net.sourceforge.stripes.action.DefaultHandler;
+import net.sourceforge.stripes.action.DontBind;
+import net.sourceforge.stripes.action.DontValidate;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.UrlBinding;
@@ -29,9 +31,11 @@ public class ServerActionBean extends JCActionBean {
 	@Validate(required=true, minlength = 2) private String message;
 
 	@PermitAll
+	@DontValidate
+	@DontBind
 	@DefaultHandler
 	public Resolution action() {
-		return new ForwardResolution("server.jsp");
+		return new ForwardResolution("/secure/server.jsp");
 	}
 
 	public String getName() {

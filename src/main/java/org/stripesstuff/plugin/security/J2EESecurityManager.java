@@ -6,11 +6,13 @@ import java.lang.reflect.Method;
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.servlet.http.HttpServletRequest;
 
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.RedirectResolution;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.config.DontAutoLoad;
+import net.sourceforge.stripes.util.HttpUtil;
 import net.sourceforge.stripes.util.Log;
 
 
@@ -173,6 +175,11 @@ public class J2EESecurityManager
 
 	@Override
 	public Resolution handleAccessDenied(ActionBean bean, Method handler) {
-		return new RedirectResolution("/login.jsp");
+		HttpServletRequest request = bean.getContext().getRequest();
+		String url = HttpUtil.getRequestedPath(request);
+		if (request.getQueryString() != null)
+			url = url + '?' + request.getQueryString();
+		LOG.debug("Intercepting request: ", url);
+		return new RedirectResolution("/login.jsp?r="+url);
 	}
 }
