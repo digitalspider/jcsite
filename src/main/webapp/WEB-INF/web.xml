@@ -29,6 +29,7 @@
 			<param-value>
 				net.sourceforge.stripes.integration.spring,
 				net.sourceforge.stripes.extensions,
+				org.stripesstuff.plugin.security,
 				au.com.jcloud.security,
 				au.com.jcloud.context
 			</param-value>
@@ -40,6 +41,10 @@
 		<init-param>
 			<param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
 			<param-value>StripesResources</param-value>
+		</init-param>
+		<init-param>
+			<param-name>SecurityManager.Class</param-name>
+			<param-value>org.stripesstuff.plugin.security.J2EESecurityManager</param-value>
 		</init-param>
 	</filter>
 
