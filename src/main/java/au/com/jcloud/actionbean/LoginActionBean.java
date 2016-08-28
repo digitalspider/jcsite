@@ -19,6 +19,8 @@ import au.com.jcloud.util.HttpUtil;
 
 import net.sourceforge.stripes.action.Before;
 import net.sourceforge.stripes.action.DefaultHandler;
+import net.sourceforge.stripes.action.DontBind;
+import net.sourceforge.stripes.action.DontValidate;
 import net.sourceforge.stripes.action.HandlesEvent;
 import net.sourceforge.stripes.action.RedirectResolution;
 import net.sourceforge.stripes.action.Resolution;
@@ -65,7 +67,14 @@ public class LoginActionBean extends JCActionBean {
 		LOG.info("presubmit()");
 	}
 
+	@DontValidate
+	@DontBind
 	@DefaultHandler
+	public Resolution onload() throws Exception {
+		return new RedirectResolution(Constants.PAGE_LOGIN);
+	}
+
+	@HandlesEvent("login")
 	public Resolution login() throws Exception {
 		LOG.info("login attempt for user=" + username);
 		if (validateAlreadyLoggedIn()) {
