@@ -67,31 +67,24 @@ public class LoginActionBean extends JCActionBean {
 		LOG.info("presubmit()");
 	}
 
-	@DontValidate
-	@DontBind
-	@DefaultHandler
-	public Resolution onload() throws Exception {
-		return new RedirectResolution(Constants.PAGE_LOGIN);
-	}
-
 	@HandlesEvent("login")
 	public Resolution login() throws Exception {
 		LOG.info("login attempt for user=" + username);
 		if (validateAlreadyLoggedIn()) {
-			return getContext().getSourcePageResolution();
+			return getSourcePageResolution();
 		}
 		User user = userService.getUserByAuth(username, password);
 		if (user == null) {
 			addGlobalValidationError("/login.action.invalidAttempt", username);
-			return getContext().getSourcePageResolution();
+			return getSourcePageResolution();
 		}
 		else {
 			context.setUser(user);
 		}
 		LOG.info("login successful for user=" + username);
 		String redirect = Constants.PAGE_SECURE;
-		String referrer = getContext().getRequest().getHeader("referer");
-		String path = HttpUtil.getContextUrl(getContext().getRequest());
+		String referrer = getReferrer();
+		String path = getConextPath();
 		if (path!=null) {
 			path+=Constants.PATH_SECURE;
 		}
@@ -149,7 +142,7 @@ public class LoginActionBean extends JCActionBean {
 			addGlobalValidationError("/login.action.username.invalid");
 			return getContext().getSourcePageResolution();
 		}
-		String basePath = HttpUtil.getContextUrl(getContext().getRequest());
+		String basePath = getConextPath();
 		LOG.info("basePath="+basePath);
 		String url = basePath+Constants.PAGE_RESET+"?"+PARAM_USERNAME+"="+user.getName()+"&"+PARAM_TOKEN+"="+tokenService.generateAndRecordToken(user.getName());
 		LOG.info("url="+url);
@@ -165,7 +158,7 @@ public class LoginActionBean extends JCActionBean {
 	@HandlesEvent("reset")
 	public Resolution reset() throws Exception {
 		LOG.info("reset() called");
-		String referrer = getContext().getRequest().getHeader("referer");
+		String referrer = getReferrer();
 		LOG.info("referrer=" + referrer);
 		if (StringUtils.isNotBlank(referrer) && referrer.contains("?")) {
 			String queryString = referrer.split("\\?")[1];
@@ -207,12 +200,6 @@ public class LoginActionBean extends JCActionBean {
 			return true;
 		}
 		return false;
-	}
-
-	private void addGlobalValidationError(String messageKey, Object... params) {
-		ValidationErrors errors = new ValidationErrors();
-		errors.addGlobalError(new LocalizableError(messageKey, params));
-		getContext().setValidationErrors(errors);
 	}
 
 	public String getUsername() {

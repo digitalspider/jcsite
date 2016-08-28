@@ -34,6 +34,7 @@ public class ServerActionBean extends JCActionBean {
 	@DontValidate
 	@DontBind
 	@DefaultHandler
+	@Override
 	public Resolution action() {
 		return new ForwardResolution("/secure/server.jsp");
 	}

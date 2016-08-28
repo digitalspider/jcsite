@@ -28,7 +28,7 @@ public class ContactActionBean extends JCActionBean {
 	@Validate(required=true, minlength = 2) private String subject;
 	@Validate(required=true, minlength = 2) private String message;
 
-	@DefaultHandler
+	@HandlesEvent("contact")
 	public Resolution contact() {
 		if (executorService!=null) {
 			// submit to executor service thread

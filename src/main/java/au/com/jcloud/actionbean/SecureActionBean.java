@@ -25,6 +25,7 @@ public class SecureActionBean extends JCActionBean {
 	@DontValidate
 	@DontBind
 	@DefaultHandler
+	@Override
 	public Resolution action() {
 		return new ForwardResolution("/secure/index.jsp");
 	}
