@@ -17,9 +17,6 @@ import net.sourceforge.stripes.integration.spring.SpringBean;
  */
 public class UserService extends BaseService {
 	
-	public static final String PROPERTIES_FILE_JC = "jc.properties";
-	public static final String PROP_SECURITY_REALM = "security.realm";
-
 	@SpringBean
 	private EncryptService encryptService;
 	@SpringBean
@@ -27,14 +24,6 @@ public class UserService extends BaseService {
 	
 	private static String realm;
 
-	public String getRealm() throws IOException {
-		if (StringUtils.isNotBlank(realm)) {
-			return realm;
-		}
-		realm = propertyReaderService.loadProperties(PROPERTIES_FILE_JC).getProperty(PROP_SECURITY_REALM);
-		return realm;
-	}
-	
 	public User createUser(String username, String firstName, String lastName, String email, String password) throws Exception {
 		User user = getByUsername(username);
 		if (user != null) {
@@ -60,8 +49,8 @@ public class UserService extends BaseService {
 	}
 
 	private String getPassword(String username, String password) throws IOException {
-		String realmValue = username+":"+getRealm()+":"+password;
-		return encryptService != null ? encryptService.md5(realmValue) : password;
+		String uservalue = username+":"+password;
+		return encryptService != null ? encryptService.md5(uservalue) : password;
 	}
 
 	public User updatePassword(String username, String password) throws Exception {

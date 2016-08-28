@@ -31,6 +31,7 @@
                             		<a href="${ctx}/login.jsp" class="nav-link">Login</a>
                             	</c:when>
                             	<c:otherwise>
+                            		<a href="${ctx}/secure.action" class="nav-link">${user}</a>
                             		<a href="${ctx}/logout" class="nav-link">Logout</a>
                             	</c:otherwise>
                             </c:choose>
