@@ -21,8 +21,20 @@ public class BaseBean extends IdBean {
 		return super.toString() + " name=" + name + " status=" + status;
 	}
 
+	@Override
+	public void save() {
+		createdAt();
+		super.save();
+	}
+
+	@Override
+	public void update() {
+		updatedAt();
+		super.update();
+	}
+
 	@PrePersist
-	void cdate() {
+	void createdAt() {
 		this.cdate = this.mdate = new Date();
 	}
 
