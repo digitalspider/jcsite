@@ -75,7 +75,7 @@ public class LoginActionBean extends JCActionBean {
 		}
 		User user = userService.getUserByAuth(username, password);
 		if (user == null) {
-			addGlobalValidationError("/login.action.invalidAttempt", username);
+			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN+".invalidAttempt", username);
 			return getSourcePageResolution();
 		}
 		else {
@@ -108,11 +108,11 @@ public class LoginActionBean extends JCActionBean {
 			return getContext().getSourcePageResolution();
 		}
 		if (userService.getByUsername(newusername)!=null) {
-			addGlobalValidationError("/login.action.newusername.alreadyExists");
+			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN+".newusername.alreadyExists");
 			return getContext().getSourcePageResolution();
 		}
 		if (userService.getByEmail(email)!=null) {
-			addGlobalValidationError("/login.action.email.alreadyExists");
+			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN+".email.alreadyExists");
 			return getContext().getSourcePageResolution();
 		}
 		User user = userService.createUser(newusername, firstname, lastname, email, newpassword);
@@ -139,7 +139,7 @@ public class LoginActionBean extends JCActionBean {
 		}
 		User user = userService.getByUsernameOrEmail(username);
 		if (user == null) {
-			addGlobalValidationError("/login.action.username.invalid");
+			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN+".username.invalid");
 			return getContext().getSourcePageResolution();
 		}
 		String basePath = getConextPath();
@@ -173,17 +173,17 @@ public class LoginActionBean extends JCActionBean {
 				String usernameParam = queryParamMap.get(PARAM_USERNAME);
 				LOG.info("usernameParam=" + usernameParam);
 				if (StringUtils.isBlank(usernameParam)) {
-					addGlobalValidationError("/login.action.reset.userMissing", usernameParam);
+					addGlobalValidationError(Constants.ACTION_SECURE_LOGIN+".reset.userMissing", usernameParam);
 					return getContext().getSourcePageResolution();
 				}
 				String token = queryParamMap.get(PARAM_TOKEN);
 				LOG.info("token=" + token);
 				if (StringUtils.isBlank(token)) {
-					addGlobalValidationError("/login.action.reset.tokenMissing", usernameParam);
+					addGlobalValidationError(Constants.ACTION_SECURE_LOGIN+".reset.tokenMissing", usernameParam);
 					return getContext().getSourcePageResolution();
 				}
 				if (!tokenService.validateToken(usernameParam,token)) {
-					addGlobalValidationError("/login.action.reset.invalidToken", usernameParam);
+					addGlobalValidationError(Constants.ACTION_SECURE_LOGIN+".reset.invalidToken", usernameParam);
 					return getContext().getSourcePageResolution();
 				}
 				User user = userService.updatePassword(usernameParam, password);
@@ -196,7 +196,7 @@ public class LoginActionBean extends JCActionBean {
 
 	private boolean validateAlreadyLoggedIn() {
 		if (context.getUser() != null) {
-			addGlobalValidationError("/login.action.alreadyLoggedIn", context.getUser().getName());
+			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN+".alreadyLoggedIn", context.getUser().getName());
 			return true;
 		}
 		return false;

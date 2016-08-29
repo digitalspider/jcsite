@@ -1,8 +1,10 @@
 package au.com.jcloud.emodel;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
 /**
  * Created by david on 5/08/16.
@@ -17,6 +19,16 @@ public class BaseBean extends IdBean {
 	@Override
 	public String toString() {
 		return super.toString() + " name=" + name + " status=" + status;
+	}
+
+	@PrePersist
+	void cdate() {
+		this.cdate = this.mdate = new Date();
+	}
+
+	@PreUpdate
+	void updatedAt() {
+		this.mdate = new Date();
 	}
 
 	public String getName() {

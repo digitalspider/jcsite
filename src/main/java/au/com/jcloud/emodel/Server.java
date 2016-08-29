@@ -1,6 +1,9 @@
 package au.com.jcloud.emodel;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -21,7 +24,10 @@ public class Server extends BaseBean {
     protected String hddPeak;
     protected String hddCurrent;
     protected String sshkey;
-    protected int parentServerId;
+    protected long parentServerId;
+    @ManyToOne(optional=false,cascade= CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    protected User user;
 
     @Override
     public String toString() {
@@ -124,11 +130,19 @@ public class Server extends BaseBean {
         this.sshkey = sshkey;
     }
 
-    public int getParentServerId() {
+    public long getParentServerId() {
         return parentServerId;
     }
 
-    public void setParentServerId(int parentServerId) {
+    public void setParentServerId(long parentServerId) {
         this.parentServerId = parentServerId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -1,6 +1,13 @@
 package au.com.jcloud.emodel;
 
+import java.io.Serializable;
+
+import javax.persistence.Embeddable;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -9,8 +16,20 @@ import javax.persistence.Table;
 @Entity
 @Table(name="userrole")
 public class UserRole {
-	private User user;
+	@EmbeddedId
+	private UserRolePK userRolePK;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id", insertable = false, updatable = false)
+	public User user;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "role_id", insertable = false, updatable = false)
 	private Role role;
+
+	@Override
+	public String toString() {
+		return super.toString()+" user=" + user + ", role=" + role;
+	}
 
 	public User getUser() {
 		return user;

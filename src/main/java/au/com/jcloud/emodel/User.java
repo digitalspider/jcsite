@@ -1,6 +1,10 @@
 package au.com.jcloud.emodel;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -13,6 +17,9 @@ public class User extends BaseBean {
     protected String password;
     protected String firstName;
     protected String lastName;
+
+    @OneToMany(mappedBy = "user", cascade= CascadeType.PERSIST)
+    protected List<Server> serverList;
 
     public String getFullName() {
         return firstName+" "+lastName;
