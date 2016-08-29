@@ -53,12 +53,12 @@ public class UserRoleFilter implements Filter {
 		if (user!=null) {
 			next.doFilter(new UserRoleRequestWrapper(user, roles, request), response);
 		} else {
-			// Secure all "/secure/*" pages
+			// Secure all "/jsp/secure/*" pages
 			String servletPath = request.getServletPath();
-			LOG.debug("servletPath="+servletPath);
+			LOG.info("servletPath="+servletPath);
 			String contextPath = request.getContextPath();
 			LOG.debug("contextPath="+contextPath);
-			if (servletPath.startsWith(Constants.PATH_SECURE)) {
+			if (servletPath.startsWith(Constants.PATH_SECURE_JSP)) {
 				response.sendRedirect(contextPath+ Constants.PAGE_LOGIN);
 			} else {
 				next.doFilter(request, response);

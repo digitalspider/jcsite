@@ -16,12 +16,13 @@ import java.util.concurrent.Executors;
 import javax.annotation.security.PermitAll;
 
 import au.com.jcloud.service.EmailService;
+import au.com.jcloud.util.Constants;
 
 /**
  * Created by david.vittor on 3/08/16.
  */
 @PermitAll
-@UrlBinding("/server.action")
+@UrlBinding("/secure/server.action")
 public class ServerActionBean extends JCActionBean {
 
 	private ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -36,7 +37,7 @@ public class ServerActionBean extends JCActionBean {
 	@DefaultHandler
 	@Override
 	public Resolution action() {
-		return new ForwardResolution("/secure/server.jsp");
+		return new ForwardResolution(Constants.PAGE_SERVER);
 	}
 
 	public String getName() {

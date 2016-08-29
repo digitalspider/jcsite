@@ -14,11 +14,13 @@ import java.util.concurrent.Executors;
 
 import javax.annotation.security.PermitAll;
 
+import au.com.jcloud.util.Constants;
+
 /**
  * Created by david on 29/08/16.
  */
 
-@UrlBinding("/secure.action")
+@UrlBinding("/secure/index.action")
 public class SecureActionBean extends JCActionBean {
 
 	@PermitAll
@@ -27,7 +29,7 @@ public class SecureActionBean extends JCActionBean {
 	@DefaultHandler
 	@Override
 	public Resolution action() {
-		return new ForwardResolution("/secure/index.jsp");
+		return new ForwardResolution(Constants.PAGE_SECURE);
 	}
 }
 

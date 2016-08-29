@@ -16,11 +16,15 @@ public class Constants {
     public static final String SESSION_ATTRIBUTE_USER = "jcuser";
     public static final String SESSION_ATTRIBUTE_ROLES = "jcroles";
     public static final String PATH_SECURE = "/secure";
+    public static final String PATH_SECURE_JSP = "/jsp/secure";
 
     public static final String PAGE_LOGIN = "/login.jsp";
     public static final String PAGE_INDEX = "/index.jsp";
     public static final String PAGE_RESET = "/reset.jsp";
-    public static final String PAGE_SECURE = "/secure.action";
+    public static final String PAGE_SECURE = PATH_SECURE_JSP+"/index.jsp";
+    public static final String PAGE_SERVER = PATH_SECURE_JSP+"/server.jsp";
+    public static final String ACTION_SECURE = PATH_SECURE+"/index.action";
+    public static final String ACTION_SERVER = PATH_SECURE+"/server.action";
 
     public static final User systemUser;
 
