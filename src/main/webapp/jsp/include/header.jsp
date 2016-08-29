@@ -28,10 +28,10 @@
                         	<c:set var="user" scope="session" value='<%= request.getRemoteUser()%>'/>
                         	<c:choose>
                         		<c:when test="${user == null}">
-                            		<a href="${ctx}/login.jsp" class="nav-link">Login</a>
+                            		<a href="${ctx}/secure/login" class="nav-link">Login</a>
                             	</c:when>
                             	<c:otherwise>
-                            		<a href="${ctx}/secure.action" class="nav-link">My Account</a>
+                            		<a href="${ctx}/secure/index" class="nav-link">My Account</a>
                             	</li>
                             	<li class="nav-item">
                             		<a href="${ctx}/logout" class="nav-link">Logout</a>

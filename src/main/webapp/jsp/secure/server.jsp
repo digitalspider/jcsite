@@ -22,7 +22,7 @@ String username = request.getRemoteUser();
 %>
 <span>Hello <%= username %>. This is a secure resource</span>
 
-<s:form action="/server.action" method="post" class="tm-contact-form">
+<s:form action="/secure/server" method="post" class="tm-contact-form">
 	<s:errors/>
 	<div class="form-group">
 		<input type="name" id="name" name="name" class="form-control" placeholder="Name" required="true"/>

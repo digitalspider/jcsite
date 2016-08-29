@@ -35,7 +35,7 @@ import net.sourceforge.stripes.validation.ValidationErrors;
 /**
  * Created by david.vittor on 3/08/16.
  */
-@UrlBinding("/login.action")
+@UrlBinding(Constants.ACTION_SECURE_LOGIN)
 public class LoginActionBean extends JCActionBean {
 
 	@SpringBean
@@ -64,7 +64,7 @@ public class LoginActionBean extends JCActionBean {
 
 	@Before(stages = LifecycleStage.BindingAndValidation)
 	public void presubmit() {
-		LOG.info("presubmit()");
+		LOG.debug("presubmit()");
 	}
 
 	@HandlesEvent("login")
@@ -86,7 +86,7 @@ public class LoginActionBean extends JCActionBean {
 		String referrer = getReferrer();
 		String path = getConextPath();
 		if (path!=null) {
-			path+=Constants.PATH_SECURE;
+			path+=Constants.PAGE_LOGIN;
 		}
 		LOG.debug("referrer=" + referrer);
 		LOG.debug("path=" + path);
@@ -94,8 +94,8 @@ public class LoginActionBean extends JCActionBean {
 			String queryString = referrer.substring(path.length());
 			LOG.debug("queryString=" + queryString);
 
-			if (queryString != null && queryString.startsWith("?r=")) {
-				redirect = queryString.substring(3);
+			if (queryString != null && queryString.startsWith(Constants.URL_PARAM_LOGIN_REDIRECT)) {
+				redirect = queryString.substring(Constants.URL_PARAM_LOGIN_REDIRECT.length());
 			}
 		}
 		return new RedirectResolution(redirect);

@@ -20,7 +20,7 @@ import au.com.jcloud.util.Constants;
  * Created by david on 29/08/16.
  */
 
-@UrlBinding("/secure/index.action")
+@UrlBinding(Constants.ACTION_SECURE_INDEX)
 public class SecureActionBean extends JCActionBean {
 
 	@PermitAll

@@ -23,8 +23,10 @@ public class Constants {
     public static final String PAGE_RESET = "/reset.jsp";
     public static final String PAGE_SECURE = PATH_SECURE_JSP+"/index.jsp";
     public static final String PAGE_SERVER = PATH_SECURE_JSP+"/server.jsp";
-    public static final String ACTION_SECURE = PATH_SECURE+"/index.action";
-    public static final String ACTION_SERVER = PATH_SECURE+"/server.action";
+    public static final String ACTION_SECURE_INDEX = PATH_SECURE+"/index";
+    public static final String ACTION_SECURE_SERVER = PATH_SECURE+"/server";
+    public static final String ACTION_SECURE_LOGIN = PATH_SECURE+"/login";
+    public static final String URL_PARAM_LOGIN_REDIRECT="?r=";
 
     public static final User systemUser;
 

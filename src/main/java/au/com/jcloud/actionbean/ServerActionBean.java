@@ -22,7 +22,7 @@ import au.com.jcloud.util.Constants;
  * Created by david.vittor on 3/08/16.
  */
 @PermitAll
-@UrlBinding("/secure/server.action")
+@UrlBinding(Constants.ACTION_SECURE_SERVER)
 public class ServerActionBean extends JCActionBean {
 
 	private ExecutorService executorService = Executors.newSingleThreadExecutor();

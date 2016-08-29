@@ -10,7 +10,7 @@ String username = request.getRemoteUser();
 %>
 <span>Hello <%= username %>. This is a secure resource</span>
 
-<a href="${ctx}/secure/server.action" class="nav-link">Servers</a>
+<a href="${ctx}/secure/server" class="nav-link">Servers</a>
 
     </s:layout-component>
 </s:layout-render>

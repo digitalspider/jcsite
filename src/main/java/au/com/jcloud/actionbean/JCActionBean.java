@@ -10,6 +10,7 @@ import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.validation.LocalizableError;
 import net.sourceforge.stripes.validation.ValidationErrors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +32,12 @@ public class JCActionBean implements ActionBean {
 	@DontBind
 	@DefaultHandler
 	public Resolution action() throws Exception {
-		return new RedirectResolution(Constants.PAGE_LOGIN);
+		String url = Constants.PAGE_LOGIN;
+		String queryString = getQueryString();
+		if (StringUtils.isNotBlank(queryString)) {
+			url += "?"+queryString;
+		}
+		return new RedirectResolution(url);
 	}
 
 	protected HttpServletRequest getRequest() {
@@ -49,6 +55,11 @@ public class JCActionBean implements ActionBean {
 	protected String getReferrer() {
 		String referrer = getContext().getRequest().getHeader("referer");
 		return referrer;
+	}
+
+	protected String getQueryString() {
+		String queryString = getContext().getRequest().getQueryString();
+		return queryString;
 	}
 
 	protected void addGlobalValidationError(String messageKey, Object... params) {

@@ -15,6 +15,8 @@ import net.sourceforge.stripes.config.DontAutoLoad;
 import net.sourceforge.stripes.util.HttpUtil;
 import net.sourceforge.stripes.util.Log;
 
+import au.com.jcloud.util.Constants;
+
 
 /**
  * https://github.com/StripesFramework/stripes-stuff
@@ -177,9 +179,10 @@ public class J2EESecurityManager
 	public Resolution handleAccessDenied(ActionBean bean, Method handler) {
 		HttpServletRequest request = bean.getContext().getRequest();
 		String url = HttpUtil.getRequestedPath(request);
-		if (request.getQueryString() != null)
+		if (request.getQueryString() != null) {
 			url = url + '?' + request.getQueryString();
+		}
 		LOG.debug("Intercepting request: ", url);
-		return new RedirectResolution("/login.jsp?r="+url);
+		return new RedirectResolution(Constants.ACTION_SECURE_LOGIN+Constants.URL_PARAM_LOGIN_REDIRECT+url);
 	}
 }

@@ -11,7 +11,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-						<s:form id="resetForm" method="post" action="/login.action"  class="tm-login-form">
+						<s:form id="resetForm" method="post" action="/secure/login"  class="tm-login-form">
 							<s:errors/>
 							<% if (resetReady) { %>
 								<div class="h4">New Password</div>

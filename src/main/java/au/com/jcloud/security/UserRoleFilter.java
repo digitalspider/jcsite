@@ -55,7 +55,7 @@ public class UserRoleFilter implements Filter {
 		} else {
 			// Secure all "/jsp/secure/*" pages
 			String servletPath = request.getServletPath();
-			LOG.info("servletPath="+servletPath);
+			LOG.debug("servletPath="+servletPath);
 			String contextPath = request.getContextPath();
 			LOG.debug("contextPath="+contextPath);
 			if (servletPath.startsWith(Constants.PATH_SECURE_JSP)) {
