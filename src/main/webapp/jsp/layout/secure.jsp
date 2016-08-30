@@ -32,6 +32,8 @@
         <s:layout-component name="footer">
             <jsp:include page="/jsp/include/footer.jsp"/>
         </s:layout-component>
+        <s:layout-component name="customjs">
+        </s:layout-component>
     </body>
 </html>
 </s:layout-definition>

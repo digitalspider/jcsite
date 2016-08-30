@@ -33,12 +33,17 @@ import au.com.jcloud.util.Constants;
 public class LinkActionBean extends JCActionBean {
 
 	public Resolution get() {
-		double result = 5;
-		return new JsonResolution( Double.toString( result ) );
+		return new JsonResolution( getLinkData() );
 	}
 
-	public Resolution post() {
-		double result = 5;
-		return new JsonResolution( Double.toString( result ) );
+	public Resolution post() throws Exception {
+		return new JsonResolution( getLinkData() );
+	}
+
+	protected Map<String,String> getLinkData() {
+		Map<String, String> data = new HashMap<>();
+		data.put("david","http://david.com");
+		data.put("google","http://google.com");
+		return data;
 	}
 }

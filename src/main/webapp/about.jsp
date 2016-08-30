@@ -2,8 +2,11 @@
 <%@ include file="/jsp/include/taglibs.jsp"%>
 
 <s:layout-render name="/jsp/layout/public.jsp" pageTitle="About">
-    <s:layout-component name="contents">
+	<s:layout-component name="customjs">
+		<script src="${ctx}/js/links.js"></script>
+	</s:layout-component>
 
+    <s:layout-component name="contents">
         <section class="tm-section">
             <div class="container-fluid">
                 <div class="row tm-2-rows-sm-swap">
@@ -12,7 +15,7 @@
                         <h3 class="tm-gold-text">Sidebar Links</h3>
                         
                         <nav>
-                            <ul class="nav">
+                            <ul class="nav" id="links">
                                 <li><a href="#" class="tm-text-link">Lorem ipsum dolor sit</a></li>
                                 <li><a href="#" class="tm-text-link">Tincidunt non faucibus placerat</a></li>
                                 <li><a href="#" class="tm-text-link">Vestibulum tempor ac lectus</a></li>

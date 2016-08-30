@@ -2,8 +2,11 @@
 <%@ include file="/jsp/include/taglibs.jsp"%>
 
 <s:layout-render name="/jsp/layout/public.jsp" pageTitle="Home">
-    <s:layout-component name="contents">
+	<s:layout-component name="customjs">
+		<script src="${ctx}/js/links.js"></script>
+	</s:layout-component>
 
+    <s:layout-component name="contents">
         <section class="tm-section">
             <div class="container-fluid">
                 <div class="row">
@@ -128,7 +131,7 @@
                                             Useful Links
                                         </h3>
                                         <nav>
-                                            <ul class="nav">
+                                            <ul class="nav" id="links">
                                                 <li><a href="http://www.java.com" class="tm-text-link">Oracle Java</a></li>
                                                 <li><a href="http://www.se-radio.net" class="tm-text-link">SE Radio</a></li>
                                                 <li><a href="http://www.mkyong.com/" class="tm-text-link">Mykong</a></li>
