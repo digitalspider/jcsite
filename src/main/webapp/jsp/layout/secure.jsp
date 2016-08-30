@@ -1,15 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
-<%@ taglib prefix="d" uri="http://stripes.sourceforge.net/stripes-dynattr.tld" %>
+<%@ include file="/jsp/include/taglibs.jsp"%>
 
 <!DOCTYPE html>
+
+<c:set var="username" value="<%= request.getRemoteUser() %>"/>
 
 <s:layout-definition>
 <html>
     <head>
         <title>JCloud ${pageTitle}</title>
-        <jsp:include page="/jsp/include/htmlhead.jsp"/>
+        <s:layout-component name="htmlhead">
+        	<jsp:include page="/jsp/include/htmlhead.jsp"/>
+        </s:layout-component>
     </head>
 
     <body>
@@ -17,6 +19,14 @@
             <jsp:include page="/jsp/include/header.jsp"/>
         </s:layout-component>
 
+		<p>Welcome ${username}</p>
+
+		<ul>
+			<li><a href="${ctx}/secure/account" class="nav-link">Account Settings</a></li>
+			<li><a href="${ctx}/secure/server" class="nav-link">Servers</a></li>
+			<li><a href="${ctx}/secure/invoice" class="nav-link">Invoices</a></li>
+			<li><a href="${ctx}/secure/support" class="nav-link">Support</a></li>
+		</ul>
         <s:layout-component name="contents"/>
 
         <s:layout-component name="footer">

@@ -3,19 +3,12 @@
 
 <!DOCTYPE html>
 
-<s:layout-render name="/jsp/layout/public.jsp" pageTitle="Login">
+<s:layout-render name="/jsp/layout/secure.jsp" pageTitle="Login">
     <s:layout-component name="contents">
 <%
 String username = request.getRemoteUser();
 %>
 <span>Hello <%= username %>. This is a secure resource</span>
-
-<ul>
-	<li><a href="${ctx}/secure/account" class="nav-link">Account Settings</a></li>
-	<li><a href="${ctx}/secure/server" class="nav-link">Servers</a></li>
-	<li><a href="${ctx}/secure/invoice" class="nav-link">Invoices</a></li>
-	<li><a href="${ctx}/secure/request" class="nav-link">Requests</a></li>
-</ul>
 	
     </s:layout-component>
 </s:layout-render>

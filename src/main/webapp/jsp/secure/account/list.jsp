@@ -1,19 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ include file="/jsp/include/taglibs.jsp"%>
 
-<s:layout-render name="/jsp/layout/public.jsp" pageTitle="Server">
+<s:layout-render name="/jsp/layout/secure.jsp" pageTitle="Account">
     <s:layout-component name="contents">
 
 <%
 String username = request.getRemoteUser();
 %>
 <span>Hello <%= username %>. This is a secure resource</span>
-
-<ul>
-	<li><a href="${ctx}/secure/index" class="nav-link">Account Settings</a></li>
-	<li><a href="${ctx}/secure/server" class="nav-link">Servers</a></li>
-	<li><a href="${ctx}/secure/invoice" class="nav-link">Invoices</a></li>
-</ul>
 
         <section class="tm-section">
             <div class="container-fluid">
