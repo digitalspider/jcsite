@@ -1,9 +1,9 @@
 package au.com.jcloud.emodel;
 
-import com.avaje.ebean.Model;
-
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+
+import com.avaje.ebean.Model;
 
 /**
  * Created by david.vittor on 5/08/16.

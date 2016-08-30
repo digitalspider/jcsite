@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import au.com.jcloud.util.Constants;
+
 /**
  * Created by david.vittor on 7/08/16.
  */
@@ -21,19 +23,16 @@ public class PropertyReaderService extends BaseService {
 		InputStream in = classLoader.getResourceAsStream(filename);
 		if (in != null) {
 			properties.load(in);
-		}
-		else {
+		} else {
 			File f = new File(filename);
 			if (f.exists()) {
 				properties.load(new FileReader(f));
-			}
-			else {
-				f = new File("src/test/resources/" + filename);
+			} else {
+				f = new File(Constants.PATH_RESOURCES_TEST + filename);
 				if (f.exists()) {
 					properties.load(new FileReader(f));
-				}
-				else {
-					f = new File("src/main/resources/" + filename);
+				} else {
+					f = new File(Constants.PATH_RESOURCES_MAIN + filename);
 					if (f.exists()) {
 						properties.load(new FileReader(f));
 					}

@@ -1,6 +1,0 @@
-<Context>
-	<Realm className="org.apache.catalina.realm.JAASRealm"
-	       appName="JCloudLogin"
-	       userClassNames="au.com.jcloud.security.UserPrincipal"
-	       roleClassNames="au.com.jcloud.security.RolePrincipal" />
-</Context>

@@ -1,5 +1,14 @@
 package au.com.jcloud.actionbean;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+
+import au.com.jcloud.context.JCActionBeanContext;
+import au.com.jcloud.util.Constants;
+import au.com.jcloud.util.HttpUtil;
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.DefaultHandler;
@@ -10,18 +19,8 @@ import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.validation.LocalizableError;
 import net.sourceforge.stripes.validation.ValidationErrors;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import au.com.jcloud.context.JCActionBeanContext;
-import au.com.jcloud.util.Constants;
-import au.com.jcloud.util.HttpUtil;
-
 /**
- * Created by david on 14/08/16.
+ * Created by david.vittor on 14/08/16.
  */
 public class JCActionBean implements ActionBean {
 	protected final Logger LOG = Logger.getLogger(getClass());
@@ -35,7 +34,7 @@ public class JCActionBean implements ActionBean {
 		String url = Constants.PAGE_LOGIN;
 		String queryString = getQueryString();
 		if (StringUtils.isNotBlank(queryString)) {
-			url += "?"+queryString;
+			url += "?" + queryString;
 		}
 		return new RedirectResolution(url);
 	}
@@ -70,7 +69,7 @@ public class JCActionBean implements ActionBean {
 
 	protected String getConextPath() {
 		String contextPath = HttpUtil.getContextUrl(getRequest());
-		LOG.info("contextPath="+contextPath);
+		LOG.info("contextPath=" + contextPath);
 		return contextPath;
 	}
 

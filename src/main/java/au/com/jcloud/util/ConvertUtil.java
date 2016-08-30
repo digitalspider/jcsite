@@ -16,7 +16,7 @@ public class ConvertUtil {
 	public static long bytesToLong(byte[] bytes) {
 		ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
 		buffer.put(bytes);
-		buffer.flip();//need flip
+		buffer.flip(); // need flip
 		return buffer.getLong();
 	}
 }

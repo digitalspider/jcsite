@@ -25,7 +25,7 @@
             <tbody>
                 <c:forEach items="${beans}" var="bean">
                     <tr>
-                        <td><a href="${baseUrl}/show/<c:out value='${bean.id}'/>"><c:out value="${bean.id}"/></td>
+                        <td><a href="${baseUrl}/show/<c:out value='${bean.id}'/>"><c:out value="${bean.id}"/></a></td>
                         <td><c:out value="${bean.firstName}" escapeXml="false"/></td>
                         <td><c:out value="${bean.lastName}" escapeXml="false"/></td>
                         <td><c:out value="${bean.course}" escapeXml="false"/></td>

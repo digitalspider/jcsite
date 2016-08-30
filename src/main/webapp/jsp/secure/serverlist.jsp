@@ -1,25 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ include file="/jsp/include/taglibs.jsp"%>
-<!DOCTYPE html>
+
+<s:layout-render name="/jsp/layout/public.jsp" pageTitle="Server">
+    <s:layout-component name="contents">
 
 <%
 String username = request.getRemoteUser();
 %>
 <span>Hello <%= username %>. This is a secure resource</span>
 
-<html>
-    <head>
-        <title>jcloud Server</title>
-        <jsp:include page="jsp/include/htmlhead.jsp"/>
-    </head>
-
-    <body>
-        <jsp:include page="jsp/include/header.jsp"/>
-
-        <!--
-        <div class="tm-blog-img-container">
-        </div>
-        -->
+<ul>
+	<li><a href="${ctx}/secure/index" class="nav-link">Account Settings</a></li>
+	<li><a href="${ctx}/secure/server" class="nav-link">Servers</a></li>
+	<li><a href="${ctx}/secure/invoice" class="nav-link">Invoices</a></li>
+</ul>
 
         <section class="tm-section">
             <div class="container-fluid">
@@ -153,6 +147,5 @@ String username = request.getRemoteUser();
             </div>
         </section>
         
-        <jsp:include page="jsp/include/footer.jsp"/>
-    </body>
-</html>
+    </s:layout-component>
+</s:layout-render>

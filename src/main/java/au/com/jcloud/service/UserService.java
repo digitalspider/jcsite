@@ -16,15 +16,14 @@ import net.sourceforge.stripes.integration.spring.SpringBean;
  * Created by david on 5/08/16.
  */
 public class UserService extends BaseService {
-	
+
 	@SpringBean
 	private EncryptService encryptService;
 	@SpringBean
 	private PropertyReaderService propertyReaderService;
-	
-	private static String realm;
 
-	public User createUser(String username, String firstName, String lastName, String email, String password) throws Exception {
+	public User createUser(String username, String firstName, String lastName, String email, String password)
+			throws Exception {
 		User user = getByUsername(username);
 		if (user != null) {
 			throw new Exception("Username already exists! Please select a different one");
@@ -49,7 +48,7 @@ public class UserService extends BaseService {
 	}
 
 	private String getPassword(String username, String password) throws IOException {
-		String uservalue = username+":"+password;
+		String uservalue = username + ":" + password;
 		return encryptService != null ? encryptService.md5(uservalue) : password;
 	}
 
@@ -80,22 +79,26 @@ public class UserService extends BaseService {
 	}
 
 	public User getByUsername(String username) {
-		User user = Ebean.find(User.class).select("id, name, email, status, firstName, lastName").where().eq("name", username).findUnique();
+		User user = Ebean.find(User.class).select("id, name, email, status, firstName, lastName").where()
+				.eq("name", username).findUnique();
 		return user;
 	}
 
 	public User getByEmail(String username) {
-		User user = Ebean.find(User.class).select("id, name, email, status, firstName, lastName").where().eq("email", username).findUnique();
+		User user = Ebean.find(User.class).select("id, name, email, status, firstName, lastName").where()
+				.eq("email", username).findUnique();
 		return user;
 	}
 
 	public List<User> getListByUsername(String username) {
-		List<User> users = Ebean.find(User.class).select("id, name, email, status, firstName, lastName").where().eq("name", username).findList();
+		List<User> users = Ebean.find(User.class).select("id, name, email, status, firstName, lastName").where()
+				.eq("name", username).findList();
 		return users;
 	}
 
 	public List<User> getListByEmail(String username) {
-		List<User> users = Ebean.find(User.class).select("id, name, email, status, firstName, lastName").where().eq("email", username).findList();
+		List<User> users = Ebean.find(User.class).select("id, name, email, status, firstName, lastName").where()
+				.eq("email", username).findList();
 		return users;
 	}
 
@@ -104,8 +107,8 @@ public class UserService extends BaseService {
 		User user = null;
 		if (StringUtils.isNotBlank(username)) {
 			user = Ebean.find(User.class).select("id, name, email, status, firstName, lastName").where()
-					.or(Expr.eq("name", username), Expr.eq("email", username)).eq("password", passValue).eq("status", Status.ENABLED.name())
-					.findUnique();
+					.or(Expr.eq("name", username), Expr.eq("email", username)).eq("password", passValue)
+					.eq("status", Status.ENABLED.name()).findUnique();
 		}
 		return user;
 	}
@@ -129,12 +132,12 @@ public class UserService extends BaseService {
 	public static void main(String[] args) {
 		try {
 			EBeanServerService.createEbeanServer();
-//			EBeanServerService service = new EBeanServerService(true);
+			// EBeanServerService service = new EBeanServerService(true);
 			UserService us = new UserService();
 			System.out.println("us=" + us);
 			User user = us.createUser("test", "first", "last", "email", "pass");
-//            user.setStatus(StatusService.Status.DISABLED.name());
-//            Ebean.save(user);
+			// user.setStatus(StatusService.Status.DISABLED.name());
+			// Ebean.save(user);
 			System.out.println("user=" + user);
 			System.out.println("test=" + us.getByUsername("test"));
 			System.out.println("te%=" + us.getByUsername("te%"));

@@ -1,8 +1,5 @@
 package au.com.jcloud.emodel;
 
-import java.io.Serializable;
-
-import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,10 +8,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
- * Created by david on 24/08/16.
+ * Created by david.vittor on 24/08/16.
  */
 @Entity
-@Table(name="userrole")
+@Table(name = "userrole")
 public class UserRole {
 	@EmbeddedId
 	private UserRolePK userRolePK;
@@ -28,7 +25,7 @@ public class UserRole {
 
 	@Override
 	public String toString() {
-		return super.toString()+" user=" + user + ", role=" + role;
+		return super.toString() + " user=" + user + ", role=" + role;
 	}
 
 	public User getUser() {

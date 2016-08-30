@@ -1,14 +1,14 @@
 package au.com.jcloud.emodel;
 
-import com.avaje.ebean.annotation.CreatedTimestamp;
-import com.avaje.ebean.annotation.UpdatedTimestamp;
-
 import java.util.Date;
 
 import javax.persistence.MappedSuperclass;
 
+import com.avaje.ebean.annotation.CreatedTimestamp;
+import com.avaje.ebean.annotation.UpdatedTimestamp;
+
 /**
- * Created by david on 5/08/16.
+ * Created by david.vittor on 5/08/16.
  */
 @MappedSuperclass
 public class BaseBean extends IdBean {

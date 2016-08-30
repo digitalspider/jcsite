@@ -7,41 +7,49 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 
 public class SubstringTag extends TagSupport {
-    private String input;
-    private int start;
-    private int end;
+	private static final long serialVersionUID = -3294457785314057974L;
 
-    @Override
-    public int doStartTag() throws JspException {
+	private String input;
+	private int start;
+	private int end;
 
-        try {
-            //Get the writer object for output.
-            JspWriter out = pageContext.getOut();
+	@Override
+	public int doStartTag() throws JspException {
 
-            //Perform substr operation on string.
-            out.println(input.substring(start, end));
+		try {
+			// Get the writer object for output.
+			JspWriter out = pageContext.getOut();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return SKIP_BODY;
-    }
-    public String getInput() {
-        return input;
-    }
-    public void setInput(String input) {
-        this.input = input;
-    }
-    public int getStart() {
-        return start;
-    }
-    public void setStart(int start) {
-        this.start = start;
-    }
-    public int getEnd() {
-        return end;
-    }
-    public void setEnd(int end) {
-        this.end = end;
-    }
+			// Perform substr operation on string.
+			out.println(input.substring(start, end));
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return SKIP_BODY;
+	}
+
+	public String getInput() {
+		return input;
+	}
+
+	public void setInput(String input) {
+		this.input = input;
+	}
+
+	public int getStart() {
+		return start;
+	}
+
+	public void setStart(int start) {
+		this.start = start;
+	}
+
+	public int getEnd() {
+		return end;
+	}
+
+	public void setEnd(int end) {
+		this.end = end;
+	}
 }

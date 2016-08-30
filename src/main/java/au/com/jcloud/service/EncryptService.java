@@ -3,8 +3,6 @@ package au.com.jcloud.service;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import org.apache.log4j.Logger;
-
 /**
  * Created by david.vittor on 8/08/16.
  */

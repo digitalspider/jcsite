@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 /**
- * Created by david on 18/08/16.
+ * Created by david.vittor on 18/08/16.
  */
 public class BaseService implements ApplicationContextAware {
 
@@ -20,7 +20,7 @@ public class BaseService implements ApplicationContextAware {
 	}
 
 	public <T> T getBean(String name) {
-		if (context!=null) {
+		if (context != null) {
 			return (T) context.getBean(name);
 		}
 		return null;

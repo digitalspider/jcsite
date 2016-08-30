@@ -3,24 +3,16 @@ package au.com.jcloud.actionbean;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 
 import au.com.jcloud.emodel.User;
-import au.com.jcloud.jcframe.servlet.FrontControllerServlet;
-import au.com.jcloud.jcframe.servlet.UserRoleFilter;
 import au.com.jcloud.service.EmailService;
 import au.com.jcloud.service.TokenService;
 import au.com.jcloud.service.UserService;
 import au.com.jcloud.util.Constants;
-import au.com.jcloud.util.HttpUtil;
-
 import net.sourceforge.stripes.action.Before;
-import net.sourceforge.stripes.action.DefaultHandler;
-import net.sourceforge.stripes.action.DontBind;
-import net.sourceforge.stripes.action.DontValidate;
 import net.sourceforge.stripes.action.HandlesEvent;
 import net.sourceforge.stripes.action.RedirectResolution;
 import net.sourceforge.stripes.action.Resolution;
@@ -28,9 +20,7 @@ import net.sourceforge.stripes.action.UrlBinding;
 import net.sourceforge.stripes.controller.LifecycleStage;
 import net.sourceforge.stripes.integration.spring.SpringBean;
 import net.sourceforge.stripes.validation.EmailTypeConverter;
-import net.sourceforge.stripes.validation.LocalizableError;
 import net.sourceforge.stripes.validation.Validate;
-import net.sourceforge.stripes.validation.ValidationErrors;
 
 /**
  * Created by david.vittor on 3/08/16.
@@ -75,18 +65,17 @@ public class LoginActionBean extends JCActionBean {
 		}
 		User user = userService.getUserByAuth(username, password);
 		if (user == null) {
-			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN+".invalidAttempt", username);
+			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN + ".invalidAttempt", username);
 			return getSourcePageResolution();
-		}
-		else {
+		} else {
 			context.setUser(user);
 		}
 		LOG.info("login successful for user=" + username);
 		String redirect = Constants.PAGE_SECURE;
 		String referrer = getReferrer();
 		String path = getConextPath();
-		if (path!=null) {
-			path+=Constants.PAGE_LOGIN;
+		if (path != null) {
+			path += Constants.PAGE_LOGIN;
 		}
 		LOG.debug("referrer=" + referrer);
 		LOG.debug("path=" + path);
@@ -107,12 +96,12 @@ public class LoginActionBean extends JCActionBean {
 		if (validateAlreadyLoggedIn()) {
 			return getContext().getSourcePageResolution();
 		}
-		if (userService.getByUsername(newusername)!=null) {
-			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN+".newusername.alreadyExists");
+		if (userService.getByUsername(newusername) != null) {
+			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN + ".newusername.alreadyExists");
 			return getContext().getSourcePageResolution();
 		}
-		if (userService.getByEmail(email)!=null) {
-			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN+".email.alreadyExists");
+		if (userService.getByEmail(email) != null) {
+			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN + ".email.alreadyExists");
 			return getContext().getSourcePageResolution();
 		}
 		User user = userService.createUser(newusername, firstname, lastname, email, newpassword);
@@ -139,19 +128,18 @@ public class LoginActionBean extends JCActionBean {
 		}
 		User user = userService.getByUsernameOrEmail(username);
 		if (user == null) {
-			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN+".username.invalid");
+			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN + ".username.invalid");
 			return getContext().getSourcePageResolution();
 		}
 		String basePath = getConextPath();
-		LOG.info("basePath="+basePath);
-		String url = basePath+Constants.PAGE_RESET+"?"+PARAM_USERNAME+"="+user.getName()+"&"+PARAM_TOKEN+"="+tokenService.generateAndRecordToken(user.getName());
-		LOG.info("url="+url);
-		String message = "Hi " + user.getFirstName()+",<br/><br/>"+
-				"You have 30 minutes to use the below link to reset your password<br/>" +
-				"<a href=\""+url+"\">"+url+"</a><br/><br/>"+
-				"Yours sincerely,<br/>"+
-				"The JCloud team<br/>";
-		emailService.sendToEmail(user.getFullName(), user.getEmail(),"JCloud Password Reset", message);
+		LOG.info("basePath=" + basePath);
+		String url = basePath + Constants.PAGE_RESET + "?" + PARAM_USERNAME + "=" + user.getName() + "&" + PARAM_TOKEN
+				+ "=" + tokenService.generateAndRecordToken(user.getName());
+		LOG.info("url=" + url);
+		String message = "Hi " + user.getFirstName() + ",<br/><br/>"
+				+ "You have 30 minutes to use the below link to reset your password<br/>" + "<a href=\"" + url + "\">"
+				+ url + "</a><br/><br/>" + "Yours sincerely,<br/>" + "The JCloud team<br/>";
+		emailService.sendToEmail(user.getFullName(), user.getEmail(), "JCloud Password Reset", message);
 		return getContext().getSourcePageResolution();
 	}
 
@@ -173,17 +161,17 @@ public class LoginActionBean extends JCActionBean {
 				String usernameParam = queryParamMap.get(PARAM_USERNAME);
 				LOG.info("usernameParam=" + usernameParam);
 				if (StringUtils.isBlank(usernameParam)) {
-					addGlobalValidationError(Constants.ACTION_SECURE_LOGIN+".reset.userMissing", usernameParam);
+					addGlobalValidationError(Constants.ACTION_SECURE_LOGIN + ".reset.userMissing", usernameParam);
 					return getContext().getSourcePageResolution();
 				}
 				String token = queryParamMap.get(PARAM_TOKEN);
 				LOG.info("token=" + token);
 				if (StringUtils.isBlank(token)) {
-					addGlobalValidationError(Constants.ACTION_SECURE_LOGIN+".reset.tokenMissing", usernameParam);
+					addGlobalValidationError(Constants.ACTION_SECURE_LOGIN + ".reset.tokenMissing", usernameParam);
 					return getContext().getSourcePageResolution();
 				}
-				if (!tokenService.validateToken(usernameParam,token)) {
-					addGlobalValidationError(Constants.ACTION_SECURE_LOGIN+".reset.invalidToken", usernameParam);
+				if (!tokenService.validateToken(usernameParam, token)) {
+					addGlobalValidationError(Constants.ACTION_SECURE_LOGIN + ".reset.invalidToken", usernameParam);
 					return getContext().getSourcePageResolution();
 				}
 				User user = userService.updatePassword(usernameParam, password);
@@ -196,7 +184,7 @@ public class LoginActionBean extends JCActionBean {
 
 	private boolean validateAlreadyLoggedIn() {
 		if (context.getUser() != null) {
-			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN+".alreadyLoggedIn", context.getUser().getName());
+			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN + ".alreadyLoggedIn", context.getUser().getName());
 			return true;
 		}
 		return false;

@@ -11,13 +11,12 @@ import com.avaje.ebean.EbeanServerFactory;
 import com.avaje.ebean.config.ServerConfig;
 import com.avaje.ebean.config.dbplatform.H2Platform;
 
-import net.sourceforge.stripes.integration.spring.SpringBean;
-
 import au.com.jcloud.emodel.Server;
 import au.com.jcloud.emodel.User;
+import net.sourceforge.stripes.integration.spring.SpringBean;
 
 /**
- * Created by david on 5/08/16.
+ * Created by david.vittor on 5/08/16.
  */
 public class EBeanServerService extends BaseService {
 	public static final String EBEAN_PROPERTIES = "ebean.properties";
@@ -33,11 +32,10 @@ public class EBeanServerService extends BaseService {
 		this(false);
 	}
 
-	public EBeanServerService(boolean test) {
-		if (test) {
+	public EBeanServerService(boolean isTest) {
+		if (isTest) {
 			init(EBEAN_PROPERTIES_TEST);
-		}
-		else {
+		} else {
 			init(EBEAN_PROPERTIES);
 		}
 	}
@@ -57,7 +55,7 @@ public class EBeanServerService extends BaseService {
 				ebeanServer = EbeanServerFactory.create(serverConfig);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("ERROR initialising properties file: " + propertiesFile + " " + e.getMessage(), e);
 		}
 	}
 
@@ -87,8 +85,8 @@ public class EBeanServerService extends BaseService {
 		c.setDataSourceConfig(tsetDb);
 		c.setClasses(beanClasses);
 
-		//c.setDatabaseBooleanTrue("1");
-		//c.setDatabaseBooleanFalse("0");
+		// c.setDatabaseBooleanTrue("1");
+		// c.setDatabaseBooleanFalse("0");
 		c.setDatabaseBooleanTrue("T");
 		c.setDatabaseBooleanFalse("F");
 
@@ -106,7 +104,6 @@ public class EBeanServerService extends BaseService {
 	public static ServerConfig getServerConfig() {
 		return serverConfig;
 	}
-
 
 	protected void setPropertyReaderService(PropertyReaderService propertyReaderService) {
 		this.propertyReaderService = propertyReaderService;

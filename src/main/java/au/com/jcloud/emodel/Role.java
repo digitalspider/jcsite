@@ -7,13 +7,13 @@ import javax.persistence.Table;
  * Created by david on 24/08/16.
  */
 @Entity
-@Table(name="role")
+@Table(name = "role")
 public class Role extends IdBean {
 	private String name;
 
 	@Override
 	public String toString() {
-		return super.toString()+" name="+name;
+		return super.toString() + " name=" + name;
 	}
 
 	public String getName() {

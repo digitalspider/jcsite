@@ -8,14 +8,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import au.com.jcloud.util.Constants;
+
 /**
  * Created by david.vittor on 27/08/16.
  */
-@WebServlet(name = "logoutServlet", urlPatterns = {"/logout"})
+@WebServlet(name = "logoutServlet", urlPatterns = { "/logout" })
 public class LogoutServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -26,7 +29,7 @@ public class LogoutServlet extends HttpServlet {
 		// Redirect the user to the secure web page.
 		// Since the user is now logged out the
 		// authentication form will be shown
-		response.sendRedirect(request.getContextPath() + "/index.jsp");
+		response.sendRedirect(request.getContextPath() + Constants.PAGE_LOGIN);
 
 	}
 

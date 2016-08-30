@@ -1,23 +1,17 @@
 package au.com.jcloud.actionbean;
 
+import javax.annotation.security.PermitAll;
+
+import au.com.jcloud.util.Constants;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.DontBind;
 import net.sourceforge.stripes.action.DontValidate;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.UrlBinding;
-import net.sourceforge.stripes.validation.EmailTypeConverter;
-import net.sourceforge.stripes.validation.Validate;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import javax.annotation.security.PermitAll;
-
-import au.com.jcloud.util.Constants;
 
 /**
- * Created by david on 29/08/16.
+ * Created by david.vittor on 29/08/16.
  */
 
 @UrlBinding(Constants.ACTION_SECURE_INDEX)
@@ -32,4 +26,3 @@ public class SecureActionBean extends JCActionBean {
 		return new ForwardResolution(Constants.PAGE_SECURE);
 	}
 }
-

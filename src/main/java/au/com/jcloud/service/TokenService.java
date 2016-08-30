@@ -1,10 +1,10 @@
 package au.com.jcloud.service;
 
-import org.apache.commons.collections4.map.PassiveExpiringMap;
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.Base64;
 import java.util.Map;
+
+import org.apache.commons.collections4.map.PassiveExpiringMap;
+import org.apache.commons.lang3.StringUtils;
 
 import au.com.jcloud.util.ConvertUtil;
 
@@ -12,11 +12,12 @@ import au.com.jcloud.util.ConvertUtil;
  * Created by david.vittor on 17/08/16.
  */
 public class TokenService extends BaseService {
-	private static final Map<String,String> tokenMap = new PassiveExpiringMap<String,String>(30*60*1000); // counts expire every 30min
+	// counts expire every 30min
+	private static final Map<String, String> tokenMap = new PassiveExpiringMap<String, String>(30 * 60 * 1000);
 
 	public String generateAndRecordToken(String username) {
 		String token = generateTimeBasedToken();
-		tokenMap.put(username,token);
+		tokenMap.put(username, token);
 		return token;
 	}
 
@@ -24,7 +25,7 @@ public class TokenService extends BaseService {
 		long time = System.currentTimeMillis();
 		Base64.Encoder enc = Base64.getEncoder();
 		String token = enc.encodeToString(ConvertUtil.longToBytes(time));
-		return token.substring(0, token.length()-1); // remove = at the end
+		return token.substring(0, token.length() - 1); // remove = at the end
 	}
 
 	public void clearToken(String username) {
@@ -49,6 +50,6 @@ public class TokenService extends BaseService {
 
 	public static void main(String[] args) {
 		TokenService tokenService = new TokenService();
-		System.out.println("token="+tokenService.generateTimeBasedToken());
+		System.out.println("token=" + tokenService.generateTimeBasedToken());
 	}
 }
