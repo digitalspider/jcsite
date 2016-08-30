@@ -2,8 +2,10 @@ package au.com.jcloud.actionbean;
 
 import net.sourceforge.stripes.action.Before;
 import net.sourceforge.stripes.action.HandlesEvent;
+import net.sourceforge.stripes.action.JsonResolution;
 import net.sourceforge.stripes.action.RedirectResolution;
 import net.sourceforge.stripes.action.Resolution;
+import net.sourceforge.stripes.action.RestActionBean;
 import net.sourceforge.stripes.action.UrlBinding;
 import net.sourceforge.stripes.controller.LifecycleStage;
 import net.sourceforge.stripes.integration.spring.SpringBean;
@@ -26,14 +28,17 @@ import au.com.jcloud.util.Constants;
 /**
  * Created by david.vittor on 3/08/16.
  */
-// Requires Stripes 1.7.0
-//@RestActionBean
+@RestActionBean
 @UrlBinding(Constants.ACTION_PUBLIC_LINK)
 public class LinkActionBean extends JCActionBean {
 
+	public Resolution get() {
+		double result = 5;
+		return new JsonResolution( Double.toString( result ) );
+	}
+
 	public Resolution post() {
 		double result = 5;
-		return null;
-		//return new JsonResolution( Double.toString( result ) );
+		return new JsonResolution( Double.toString( result ) );
 	}
 }

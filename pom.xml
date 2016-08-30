@@ -27,6 +27,7 @@
         <java.version>1.8</java.version>
 	    <spring.version>4.3.1.RELEASE</spring.version>
 	    <ebean.version>8.1.1</ebean.version>
+	    <jackson.xml.version>2.0.1</jackson.xml.version>
         <ebeanorm-enhancement.plugin.args>debug=1</ebeanorm-enhancement.plugin.args>
     </properties>
 	
@@ -106,7 +107,7 @@
 		<dependency>
 			<groupId>net.sourceforge.stripes</groupId>
 			<artifactId>stripes</artifactId>
-			<version>1.6.0</version>
+			<version>1.7.0-async-beta</version>
 		</dependency>
 
 		<!-- Spring Framework -->
@@ -126,6 +127,23 @@
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>2.6.2</version>
+		</dependency>
+
+		<!-- Jackson XML -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>${jackson.xml.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.xml.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${jackson.xml.version}</version>
 		</dependency>
 
 		<!-- EBean library -->

@@ -18,26 +18,26 @@
                             </p>
 
 
-                            <s:form action="/public/contact" method="post" class="tm-contact-form">
-                            	<s:errors/>
+                            <s:form id="contactForm" method="post" action="/public/contact" class="tm-contact-form">
+                            	<s:errors globalErrorsOnly="true"/>
                                 <div class="form-group">
+                                	<s:errors field="name"/>
                                     <input type="name" id="name" name="name" class="form-control" placeholder="Name" required="true"/>
-                                    <s:errors field="name"/>
                                 </div>
                                 <div class="form-group">
+                                	<s:errors field="email"/>
                                     <input type="email" id="email" name="email" class="form-control" placeholder="Email" required="true"/>
-                                    <s:errors field="email"/>
                                 </div>
                                 <div class="form-group">
+                                	<s:errors field="subject"/>
                                     <input type="text" id="subject" name="subject" class="form-control" placeholder="Subject" required="true"/>
-                                    <s:errors field="subject"/>
                                 </div>
                                 <div class="form-group">
+                                	<s:errors field="message"/>
                                     <textarea id="message" name="message" class="form-control" rows="6" placeholder="Message" required="true"></textarea>
-                                    <s:errors field="message"/>
                                 </div>
                             
-                                <s:submit name="contact" class="tm-btn">Submit</s:submit>
+                                <s:submit id="contact" name="contact" value="contact" class="tm-btn">Submit</s:submit>
                             </s:form>
                         </section>
                         

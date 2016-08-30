@@ -4,12 +4,6 @@
 <s:layout-render name="/jsp/layout/secure.jsp" pageTitle="Invoice">
     <s:layout-component name="contents">
 
-<%
-String username = request.getRemoteUser();
-%>
-<span>Hello <%= username %>. This is a secure resource</span>
-
-
 <s:form action="/secure/server" method="post" class="tm-contact-form">
 	<s:errors/>
 	<div class="form-group">

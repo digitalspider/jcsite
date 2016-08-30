@@ -8,8 +8,8 @@ import net.sourceforge.stripes.validation.Validate;
  *
  * @author Rick Grashel
  */
-//@RestActionBean
-@UrlBinding( "/calculate" )
+@RestActionBean
+@UrlBinding( "/calculate.action" )
 public class CalculatorRestActionBean implements ActionBean {
 
 	@Validate(required=true) private double numberOne;
@@ -21,8 +21,8 @@ public class CalculatorRestActionBean implements ActionBean {
 	 */
 	public Resolution post() {
 		double result = numberOne + numberTwo;
-		return null;
-//		return new JsonResolution( Double.toString( result ) );
+//		return null;
+		return new JsonResolution( Double.toString( result ) );
 	}
 
 	public void setNumberOne( double numberOne ) { this.numberOne = numberOne; }

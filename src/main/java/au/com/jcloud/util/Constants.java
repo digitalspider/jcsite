@@ -29,6 +29,7 @@ public class Constants {
 	public static final String PAGE_LOGIN = "/login.jsp";
 	public static final String PAGE_INDEX = "/index.jsp";
 	public static final String PAGE_RESET = "/reset.jsp";
+	public static final String PAGE_CONTACT = "/contact.jsp";
 	public static final String PAGE_SECURE = PATH_SECURE_JSP + "/index.jsp";
 	public static final String ACTION_PUBLIC_LINK = PATH_PUBLIC + "/link";
 	public static final String ACTION_PUBLIC_CONTACT = PATH_PUBLIC + "/contact";

@@ -47,7 +47,7 @@ public class ContactActionBean extends JCActionBean {
 		} else {
 			sendEmail();
 		}
-		return new ForwardResolution("contact.jsp");
+		return new ForwardResolution(Constants.PAGE_CONTACT);
 	}
 
 	private void sendEmail() {
