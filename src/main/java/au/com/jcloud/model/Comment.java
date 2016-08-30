@@ -1,56 +1,44 @@
 package au.com.jcloud.model;
 
-import au.com.jcloud.jcframe.annotation.DisplayValueColumn;
-import au.com.jcloud.jcframe.model.BaseBean;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
- * Created by david on 17/07/16.
+ * Created by david.vittor on 17/07/16.
  */
-@DisplayValueColumn("name")
-public class Comment extends BaseBean<Integer> {
-    private String name;
-    private String content;
-    private User user;
-    private Comment parent;
-    private String status;
+@Entity
+@Table(name = "comment")
+public class Comment extends BaseBean {
+	protected String content;
+	@ManyToOne(optional = false, cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	protected User user;
+	protected Comment parent;
 
-    public String getName() {
-        return name;
-    }
+	public String getContent() {
+		return content;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setContent(String content) {
+		this.content = content;
+	}
 
-    public String getContent() {
-        return content;
-    }
+	public User getUser() {
+		return user;
+	}
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+	public void setUser(User user) {
+		this.user = user;
+	}
 
-    public User getUser() {
-        return user;
-    }
+	public Comment getParent() {
+		return parent;
+	}
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Comment getParent() {
-        return parent;
-    }
-
-    public void setParent(Comment parent) {
-        this.parent = parent;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	public void setParent(Comment parent) {
+		this.parent = parent;
+	}
 }

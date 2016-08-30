@@ -1,41 +1,40 @@
 package au.com.jcloud.model;
 
-import au.com.jcloud.jcframe.annotation.DisplayValueColumn;
-import au.com.jcloud.jcframe.annotation.TableName;
-import au.com.jcloud.jcframe.model.BaseBean;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
- * Created by david on 17/07/16.
+ * Created by david.vittor on 17/07/16.
  */
-@TableName("OS")
-@DisplayValueColumn("distribution")
-public class OperatingSystem extends BaseBean<Integer> {
+@Entity
+@Table(name = "os")
+public class OperatingSystem extends BaseBean {
 
-    private String distribution;
-    private String version;
-    private String architecture;
+	private String distribution;
+	private String version;
+	private String architecture;
 
-    public String getDistribution() {
-        return distribution;
-    }
+	public String getDistribution() {
+		return distribution;
+	}
 
-    public void setDistribution(String distribution) {
-        this.distribution = distribution;
-    }
+	public void setDistribution(String distribution) {
+		this.distribution = distribution;
+	}
 
-    public String getVersion() {
-        return version;
-    }
+	public String getVersion() {
+		return version;
+	}
 
-    public void setVersion(String version) {
-        this.version = version;
-    }
+	public void setVersion(String version) {
+		this.version = version;
+	}
 
-    public String getArchitecture() {
-        return architecture;
-    }
+	public String getArchitecture() {
+		return architecture;
+	}
 
-    public void setArchitecture(String architecture) {
-        this.architecture = architecture;
-    }
+	public void setArchitecture(String architecture) {
+		this.architecture = architecture;
+	}
 }

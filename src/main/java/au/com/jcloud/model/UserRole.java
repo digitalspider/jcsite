@@ -1,4 +1,4 @@
-package au.com.jcloud.emodel;
+package au.com.jcloud.model;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;

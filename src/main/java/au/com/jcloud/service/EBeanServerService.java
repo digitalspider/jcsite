@@ -11,8 +11,8 @@ import com.avaje.ebean.EbeanServerFactory;
 import com.avaje.ebean.config.ServerConfig;
 import com.avaje.ebean.config.dbplatform.H2Platform;
 
-import au.com.jcloud.emodel.Server;
-import au.com.jcloud.emodel.User;
+import au.com.jcloud.model.Server;
+import au.com.jcloud.model.User;
 import net.sourceforge.stripes.integration.spring.SpringBean;
 
 /**

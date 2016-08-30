@@ -1,13 +1,20 @@
 package au.com.jcloud.model;
 
-import au.com.jcloud.jcframe.model.BaseBean;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
- * Created by david on 17/07/16.
+ * Created by david.vittor on 17/07/16.
  */
-public class Cart extends BaseBean<Integer> {
-	private User user;
-	private String status;
+@Entity
+@Table(name = "cart")
+public class Cart extends BaseBean {
+	@ManyToOne(optional = false, cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	protected User user;
 
 	public User getUser() {
 		return user;
@@ -15,13 +22,5 @@ public class Cart extends BaseBean<Integer> {
 
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
 	}
 }

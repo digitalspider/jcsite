@@ -1,65 +1,53 @@
 package au.com.jcloud.model;
 
-import au.com.jcloud.jcframe.annotation.DisplayValueColumn;
-import au.com.jcloud.jcframe.model.BaseBean;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
- * Created by david on 17/07/16.
+ * Created by david.vittor on 17/07/16.
  */
-@DisplayValueColumn("name")
-public class Request extends BaseBean<Integer> {
-    private String name;
-    private String title;
-    private String content;
-    private String type;
-    private User user;
-    private String status;
+@Entity
+@Table(name = "request")
+public class Request extends BaseBean {
+	private String title;
+	private String content;
+	private String type;
+	@ManyToOne(optional = false, cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	private User user;
 
-    public String getName() {
-        return name;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public String getContent() {
+		return content;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public void setContent(String content) {
+		this.content = content;
+	}
 
-    public String getContent() {
-        return content;
-    }
+	public String getType() {
+		return type;
+	}
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+	public void setType(String type) {
+		this.type = type;
+	}
 
-    public String getType() {
-        return type;
-    }
+	public User getUser() {
+		return user;
+	}
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	public void setUser(User user) {
+		this.user = user;
+	}
 }

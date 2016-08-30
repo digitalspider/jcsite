@@ -8,8 +8,8 @@ import org.apache.commons.lang3.StringUtils;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Expr;
 
-import au.com.jcloud.emodel.Status;
-import au.com.jcloud.emodel.User;
+import au.com.jcloud.model.Status;
+import au.com.jcloud.model.User;
 import net.sourceforge.stripes.integration.spring.SpringBean;
 
 /**

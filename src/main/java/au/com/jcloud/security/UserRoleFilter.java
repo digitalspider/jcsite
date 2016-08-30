@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 import org.apache.log4j.Logger;
 
-import au.com.jcloud.emodel.User;
+import au.com.jcloud.model.User;
 import au.com.jcloud.util.Constants;
 
 /**

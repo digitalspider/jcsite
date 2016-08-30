@@ -1,21 +1,27 @@
 package au.com.jcloud.model;
 
-import au.com.jcloud.jcframe.annotation.DisplayValueColumn;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
- * Created by david on 22/05/16.
+ * Created by david.vittor on 22/05/16.
  */
-@DisplayValueColumn("title")
-public class Page extends AuditBean {
+@Entity
+@Table(name = "page")
+public class Page extends BaseBean {
 	protected String description;
 	protected String tags;
 	protected String type;
-	protected String status;
+	@ManyToOne(optional = false, cascade = CascadeType.ALL)
+	@JoinColumn(name = "author_id", referencedColumnName = "id")
 	protected User authorId;
 	protected Page parentId;
-	private String title;
-	private String content;
-	private String url;
+	protected String title;
+	protected String content;
+	protected String url;
 
 	public String getDescription() {
 		return description;
@@ -39,14 +45,6 @@ public class Page extends AuditBean {
 
 	public void setType(String type) {
 		this.type = type;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
 	}
 
 	public User getAuthorId() {

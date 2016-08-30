@@ -1,73 +1,59 @@
 package au.com.jcloud.model;
 
-import au.com.jcloud.jcframe.annotation.DisplayValueColumn;
+import java.math.BigDecimal;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
- * Created by david on 17/07/16.
+ * Created by david.vittor on 17/07/16.
  */
-@DisplayValueColumn("name")
-public class Product extends AuditBean {
-    private String name;
-    private String status;
-    private Category category;
-    private double costPrice;
-    private double listPrice;
-    private double salePrice;
-    private Product parent;
+@Entity
+@Table(name = "product")
+public class Product extends BaseBean {
+	protected Category category;
+	protected BigDecimal costPrice;
+	protected BigDecimal listPrice;
+	protected BigDecimal salePrice;
+	protected Product parent;
 
-    public String getName() {
-        return name;
-    }
+	public Category getCategory() {
+		return category;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setCategory(Category category) {
+		this.category = category;
+	}
 
-    public String getStatus() {
-        return status;
-    }
+	public BigDecimal getCostPrice() {
+		return costPrice;
+	}
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	public void setCostPrice(BigDecimal costPrice) {
+		this.costPrice = costPrice;
+	}
 
-    public Category getCategory() {
-        return category;
-    }
+	public BigDecimal getListPrice() {
+		return listPrice;
+	}
 
-    public void setCategory(Category category) {
-        this.category = category;
-    }
+	public void setListPrice(BigDecimal listPrice) {
+		this.listPrice = listPrice;
+	}
 
-    public double getCostPrice() {
-        return costPrice;
-    }
+	public BigDecimal getSalePrice() {
+		return salePrice;
+	}
 
-    public void setCostPrice(double costPrice) {
-        this.costPrice = costPrice;
-    }
+	public void setSalePrice(BigDecimal salePrice) {
+		this.salePrice = salePrice;
+	}
 
-    public double getListPrice() {
-        return listPrice;
-    }
+	public Product getParent() {
+		return parent;
+	}
 
-    public void setListPrice(double listPrice) {
-        this.listPrice = listPrice;
-    }
-
-    public double getSalePrice() {
-        return salePrice;
-    }
-
-    public void setSalePrice(double salePrice) {
-        this.salePrice = salePrice;
-    }
-
-    public Product getParent() {
-        return parent;
-    }
-
-    public void setParent(Product parent) {
-        this.parent = parent;
-    }
+	public void setParent(Product parent) {
+		this.parent = parent;
+	}
 }

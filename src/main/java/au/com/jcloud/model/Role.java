@@ -1,30 +1,26 @@
 package au.com.jcloud.model;
 
-import au.com.jcloud.jcframe.annotation.DisplayValueColumn;
-import au.com.jcloud.jcframe.model.BaseBean;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
- * Created by david on 17/07/16.
+ * Created by david.vittor on 24/08/16.
  */
+@Entity
+@Table(name = "role")
+public class Role extends IdBean {
+	private String name;
 
-@DisplayValueColumn("name")
-public class Role extends BaseBean<Integer> {
-    private String name;
-    private String status;
+	@Override
+	public String toString() {
+		return super.toString() + " name=" + name;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 }

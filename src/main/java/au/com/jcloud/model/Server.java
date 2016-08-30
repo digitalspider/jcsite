@@ -2,184 +2,158 @@ package au.com.jcloud.model;
 
 import java.util.Date;
 
-import au.com.jcloud.jcframe.annotation.DisplayValueColumn;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
- * Created by david on 17/07/16.
+ * Created by david.vittor on 5/08/16.
  */
+@Entity
+@Table(name = "server")
+public class Server extends BaseBean {
+	protected String lxdId;
+	protected String ip;
+	protected String alias;
+	@ManyToOne(optional = false, cascade = CascadeType.ALL)
+	@JoinColumn(name = "os_id", referencedColumnName = "id")
+	protected OperatingSystem os;
+	protected String architecture;
+	protected String osVersion;
+	protected String description;
+	protected Date pdate;
+	protected double price;
+	protected double cpuLimit;
+	protected double cpuCurrent;
+	protected double cpuPeak;
+	protected double memLimit;
+	protected double memCurrent;
+	protected double memPeak;
+	protected double hddLimit;
+	protected double hddCurrent;
+	protected double hddPeak;
+	protected String sshKey;
+	protected long parentServerId;
+	@ManyToOne(optional = false, cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	protected User user;
 
-@DisplayValueColumn("name")
-public class Server extends AuditBean {
+	@Override
+	public String toString() {
+		return super.toString() + " ip=" + ip + " alias=" + alias + " os=" + os;
+	}
 
-    private String name;
-    private User user;
-    private String lxdId;
-    private String type;
-    private String description;
-    private String tags;
-    private String status;
-    private OperatingSystem os;
-    private Date pdate;
-    private double price;
-    private double cpulimit;
-    private double cpuusage;
-    private double cpupeak;
-    private double memlimit;
-    private double memusage;
-    private double mempeak;
-    private double hddlimit;
-    private double hddusage;
-    private double hddpeak;
+	public String getIp() {
+		return ip;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getAlias() {
+		return alias;
+	}
 
-    public User getUser() {
-        return user;
-    }
+	public void setAlias(String alias) {
+		this.alias = alias;
+	}
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+	public OperatingSystem getOs() {
+		return os;
+	}
 
-    public String getLxdId() {
-        return lxdId;
-    }
+	public void setOs(OperatingSystem os) {
+		this.os = os;
+	}
 
-    public void setLxdId(String lxdId) {
-        this.lxdId = lxdId;
-    }
+	public String getArchitecture() {
+		return architecture;
+	}
 
-    public String getType() {
-        return type;
-    }
+	public void setArchitecture(String architecture) {
+		this.architecture = architecture;
+	}
 
-    public void setType(String type) {
-        this.type = type;
-    }
+	public String getOsVersion() {
+		return osVersion;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public void setOsversion(String osVersion) {
+		this.osVersion = osVersion;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public double getMemLimit() {
+		return memLimit;
+	}
 
-    public String getTags() {
-        return tags;
-    }
+	public void setMemLimit(double memLimit) {
+		this.memLimit = memLimit;
+	}
 
-    public void setTags(String tags) {
-        this.tags = tags;
-    }
+	public double getMemPeak() {
+		return memPeak;
+	}
 
-    public String getStatus() {
-        return status;
-    }
+	public void setMemPeak(double memPeak) {
+		this.memPeak = memPeak;
+	}
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	public double getMemCurrent() {
+		return memCurrent;
+	}
 
-    public OperatingSystem getOs() {
-        return os;
-    }
+	public void setMemcurrent(double memCurrent) {
+		this.memCurrent = memCurrent;
+	}
 
-    public void setOs(OperatingSystem os) {
-        this.os = os;
-    }
+	public double getHddLimit() {
+		return hddLimit;
+	}
 
-    public Date getPdate() {
-        return pdate;
-    }
+	public void setHddLimit(double hddLimit) {
+		this.hddLimit = hddLimit;
+	}
 
-    public void setPdate(Date pdate) {
-        this.pdate = pdate;
-    }
+	public double getHddPeak() {
+		return hddPeak;
+	}
 
-    public double getPrice() {
-        return price;
-    }
+	public void setHddPeak(double hddPeak) {
+		this.hddPeak = hddPeak;
+	}
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
+	public double getHddCurrent() {
+		return hddCurrent;
+	}
 
-    public double getCpulimit() {
-        return cpulimit;
-    }
+	public void setHddCurrent(double hddCurrent) {
+		this.hddCurrent = hddCurrent;
+	}
 
-    public void setCpulimit(double cpulimit) {
-        this.cpulimit = cpulimit;
-    }
+	public String getSshKey() {
+		return sshKey;
+	}
 
-    public double getCpuusage() {
-        return cpuusage;
-    }
+	public void setSshKey(String sshKey) {
+		this.sshKey = sshKey;
+	}
 
-    public void setCpuusage(double cpuusage) {
-        this.cpuusage = cpuusage;
-    }
+	public long getParentServerId() {
+		return parentServerId;
+	}
 
-    public double getCpupeak() {
-        return cpupeak;
-    }
+	public void setParentServerId(long parentServerId) {
+		this.parentServerId = parentServerId;
+	}
 
-    public void setCpupeak(double cpupeak) {
-        this.cpupeak = cpupeak;
-    }
+	public User getUser() {
+		return user;
+	}
 
-    public double getMemlimit() {
-        return memlimit;
-    }
-
-    public void setMemlimit(double memlimit) {
-        this.memlimit = memlimit;
-    }
-
-    public double getMemusage() {
-        return memusage;
-    }
-
-    public void setMemusage(double memusage) {
-        this.memusage = memusage;
-    }
-
-    public double getMempeak() {
-        return mempeak;
-    }
-
-    public void setMempeak(double mempeak) {
-        this.mempeak = mempeak;
-    }
-
-    public double getHddlimit() {
-        return hddlimit;
-    }
-
-    public void setHddlimit(double hddlimit) {
-        this.hddlimit = hddlimit;
-    }
-
-    public double getHddusage() {
-        return hddusage;
-    }
-
-    public void setHddusage(double hddusage) {
-        this.hddusage = hddusage;
-    }
-
-    public double getHddpeak() {
-        return hddpeak;
-    }
-
-    public void setHddpeak(double hddpeak) {
-        this.hddpeak = hddpeak;
-    }
+	public void setUser(User user) {
+		this.user = user;
+	}
 }

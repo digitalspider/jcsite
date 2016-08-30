@@ -34,8 +34,8 @@ public class Constants {
 
 	static {
 		systemUser = new User();
-		systemUser.setId(1);
-		systemUser.setType("SYSTEM");
+		systemUser.setId(1L);
+		systemUser.setName("SYSTEM");
 	}
 
 	public static User getSystemUser() {

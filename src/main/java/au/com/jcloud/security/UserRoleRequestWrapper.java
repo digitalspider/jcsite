@@ -9,7 +9,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
-import au.com.jcloud.emodel.User;
+import au.com.jcloud.model.User;
 
 /**
  * An extension for the HTTPServletRequest that overrides the getUserPrincipal()

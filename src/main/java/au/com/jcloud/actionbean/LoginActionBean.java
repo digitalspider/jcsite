@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 
-import au.com.jcloud.emodel.User;
+import au.com.jcloud.model.User;
 import au.com.jcloud.service.EmailService;
 import au.com.jcloud.service.TokenService;
 import au.com.jcloud.service.UserService;

@@ -2,48 +2,36 @@ package au.com.jcloud.model;
 
 import java.util.Date;
 
-import au.com.jcloud.jcframe.annotation.DisplayValueColumn;
-import au.com.jcloud.jcframe.model.BaseBean;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
- * Created by david on 17/07/16.
+ * Created by david.vittor on 17/07/16.
  */
-@DisplayValueColumn("name")
-public class Purchase extends BaseBean<Integer> {
-    private String name;
-    private User user;
-    private Date date;
-    private String status;
+@Entity
+@Table(name = "purchase")
+public class Purchase extends BaseBean {
+	@ManyToOne(optional = false, cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	protected User user;
+	protected Date date;
 
-    public String getName() {
-        return name;
-    }
+	public User getUser() {
+		return user;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setUser(User user) {
+		this.user = user;
+	}
 
-    public User getUser() {
-        return user;
-    }
+	public Date getDate() {
+		return date;
+	}
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	public void setDate(Date date) {
+		this.date = date;
+	}
 }

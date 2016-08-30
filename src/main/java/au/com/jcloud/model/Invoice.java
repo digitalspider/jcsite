@@ -1,91 +1,83 @@
 package au.com.jcloud.model;
 
-import au.com.jcloud.jcframe.annotation.DisplayValueColumn;
+import java.math.BigDecimal;
+import java.util.Currency;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
- * Created by david on 17/07/16.
+ * Created by david.vittor on 17/07/16.
  */
-@DisplayValueColumn("name")
-public class Invoice extends AuditBean {
-    private String name;
-    private Purchase purchase;
-    private User user;
-    private int month;
-    private int year;
-    private String description;
-    private double price;
-    private String currency;
-    private String status;
+@Entity
+@Table(name = "invoice")
+public class Invoice extends BaseBean {
+	protected Purchase purchase;
+	@ManyToOne(optional = false, cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	protected User user;
+	protected int month;
+	protected int year;
+	protected String description;
+	protected BigDecimal price;
+	protected Currency currency;
 
-    public String getName() {
-        return name;
-    }
+	public Purchase getPurchase() {
+		return purchase;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setPurchase(Purchase purchase) {
+		this.purchase = purchase;
+	}
 
-    public Purchase getPurchase() {
-        return purchase;
-    }
+	public User getUser() {
+		return user;
+	}
 
-    public void setPurchase(Purchase purchase) {
-        this.purchase = purchase;
-    }
+	public void setUser(User user) {
+		this.user = user;
+	}
 
-    public User getUser() {
-        return user;
-    }
+	public int getMonth() {
+		return month;
+	}
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+	public void setMonth(int month) {
+		this.month = month;
+	}
 
-    public int getMonth() {
-        return month;
-    }
+	public int getYear() {
+		return year;
+	}
 
-    public void setMonth(int month) {
-        this.month = month;
-    }
+	public void setYear(int year) {
+		this.year = year;
+	}
 
-    public int getYear() {
-        return year;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public void setYear(int year) {
-        this.year = year;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public BigDecimal getPrice() {
+		return price;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
 
-    public double getPrice() {
-        return price;
-    }
+	public Currency getCurrency() {
+		return currency;
+	}
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	public void setCurrency(Currency currency) {
+		this.currency = currency;
+	}
 }

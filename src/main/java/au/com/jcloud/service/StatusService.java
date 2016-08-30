@@ -2,8 +2,8 @@ package au.com.jcloud.service;
 
 import com.avaje.ebean.Ebean;
 
-import au.com.jcloud.emodel.BaseBean;
-import au.com.jcloud.emodel.Status;
+import au.com.jcloud.model.BaseBean;
+import au.com.jcloud.model.Status;
 
 /**
  * Created by david.vittor on 5/08/16.

@@ -1,74 +1,33 @@
 package au.com.jcloud.model;
 
-import au.com.jcloud.jcframe.annotation.DisplayValueColumn;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
- * Created by david on 22/05/16.
+ * Created by david.vittor on 5/08/16.
  */
+@Entity
+@Table(name = "user")
+public class User extends BaseBean {
+	protected String email;
+	protected String password;
+	protected String firstName;
+	protected String lastName;
 
-@DisplayValueColumn("email")
-public class User extends AuditBean {
+	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+	protected List<Server> serverList;
 
-	private String description;
-	private String tags;
-	private String type = "CUSTOMER";
-	private String status = "NEW";
-	private String firstname;
-	private String lastname;
-	private String email;
-	private String username;
-	private String password;
-	private String url;
-	private String mobile;
-	private String token;
-	private String image;
-
-	public String getDescription() {
-		return description;
+	public String getFullName() {
+		return firstName + " " + lastName;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getTags() {
-		return tags;
-	}
-
-	public void setTags(String tags) {
-		this.tags = tags;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public String getFirstname() {
-		return firstname;
-	}
-
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
-
-	public String getLastname() {
-		return lastname;
-	}
-
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
+	@Override
+	public String toString() {
+		return super.toString() + " email=" + email + " firstName=" + firstName + " lastName=" + lastName;
 	}
 
 	public String getEmail() {
@@ -79,14 +38,6 @@ public class User extends AuditBean {
 		this.email = email;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
 	public String getPassword() {
 		return password;
 	}
@@ -95,35 +46,19 @@ public class User extends AuditBean {
 		this.password = password;
 	}
 
-	public String getUrl() {
-		return url;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public String getMobile() {
-		return mobile;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
-
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-
-	public String getImage() {
-		return image;
-	}
-
-	public void setImage(String image) {
-		this.image = image;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 }

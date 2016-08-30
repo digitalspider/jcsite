@@ -1,64 +1,56 @@
 package au.com.jcloud.model;
 
-import au.com.jcloud.jcframe.annotation.DisplayValueColumn;
+import java.math.BigDecimal;
+import java.util.Currency;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
- * Created by david on 17/07/16.
+ * Created by david.vittor on 17/07/16.
  */
-@DisplayValueColumn("name")
-public class InvoiceLine extends AuditBean {
-    private String name;
-    private Invoice invoice;
-    private String description;
-    private double price;
-    private String currency;
-    private String status;
+@Entity
+@Table(name = "invoiceline")
+public class InvoiceLine extends BaseBean {
+	@ManyToOne(optional = false, cascade = CascadeType.ALL)
+	@JoinColumn(name = "invoice_id", referencedColumnName = "id")
+	protected Invoice invoice;
+	protected String description;
+	protected BigDecimal price;
+	protected Currency currency;
 
-    public String getName() {
-        return name;
-    }
+	public Invoice getInvoice() {
+		return invoice;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setInvoice(Invoice invoice) {
+		this.invoice = invoice;
+	}
 
-    public Invoice getInvoice() {
-        return invoice;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public void setInvoice(Invoice invoice) {
-        this.invoice = invoice;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public BigDecimal getPrice() {
+		return price;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
 
-    public double getPrice() {
-        return price;
-    }
+	public Currency getCurrency() {
+		return currency;
+	}
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	public void setCurrency(Currency currency) {
+		this.currency = currency;
+	}
 }

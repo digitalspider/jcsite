@@ -1,73 +1,57 @@
 package au.com.jcloud.model;
 
-import au.com.jcloud.jcframe.annotation.DisplayValueColumn;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
- * Created by david on 17/07/16.
+ * Created by david.vittor on 17/07/16.
  */
-@DisplayValueColumn("name")
-public class Service extends AuditBean {
-    private String name;
-    private String version;
-    private String status;
-    private Server server;
-    private String alias;
-    private String description;
-    private String tags;
+@Entity
+@Table(name = "service")
+public class Service extends BaseBean {
+	protected String version;
+	protected Server server;
+	protected String alias;
+	protected String description;
+	protected String tags;
 
-    public String getName() {
-        return name;
-    }
+	public String getVersion() {
+		return version;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setVersion(String version) {
+		this.version = version;
+	}
 
-    public String getVersion() {
-        return version;
-    }
+	public Server getServer() {
+		return server;
+	}
 
-    public void setVersion(String version) {
-        this.version = version;
-    }
+	public void setServer(Server server) {
+		this.server = server;
+	}
 
-    public String getStatus() {
-        return status;
-    }
+	public String getAlias() {
+		return alias;
+	}
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	public void setAlias(String alias) {
+		this.alias = alias;
+	}
 
-    public Server getServer() {
-        return server;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public void setServer(Server server) {
-        this.server = server;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public String getAlias() {
-        return alias;
-    }
+	public String getTags() {
+		return tags;
+	}
 
-    public void setAlias(String alias) {
-        this.alias = alias;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getTags() {
-        return tags;
-    }
-
-    public void setTags(String tags) {
-        this.tags = tags;
-    }
+	public void setTags(String tags) {
+		this.tags = tags;
+	}
 }

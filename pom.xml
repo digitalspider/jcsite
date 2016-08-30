@@ -90,7 +90,7 @@
                         <configuration>
                             <classSource>target/classes</classSource>
                             <transformArgs>debug=1</transformArgs>
-                            <packages>au.com.jcloud.emodel.**</packages>
+                            <packages>au.com.jcloud.model.**</packages>
                         </configuration>
                         <goals>
                             <goal>enhance</goal>

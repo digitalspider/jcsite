@@ -1,13 +1,22 @@
 package au.com.jcloud.model;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
- * Created by david on 17/07/16.
+ * Created by david.vittor on 17/07/16.
  */
-public class Rating {
+@Entity
+@Table(name = "rating")
+public class Rating extends BaseBean {
 	private int rating;
 	private String content;
+	@ManyToOne(optional = false, cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
-	private String status;
 
 	public int getRating() {
 		return rating;
@@ -31,13 +40,5 @@ public class Rating {
 
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
 	}
 }

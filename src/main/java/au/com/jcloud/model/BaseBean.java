@@ -1,4 +1,4 @@
-package au.com.jcloud.emodel;
+package au.com.jcloud.model;
 
 import java.util.Date;
 
