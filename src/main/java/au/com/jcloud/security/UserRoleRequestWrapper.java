@@ -3,12 +3,16 @@ package au.com.jcloud.security;
 /**
  * Created by david on 13/06/16.
  */
+import org.apache.commons.lang3.StringUtils;
+
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
+import au.com.jcloud.model.Role;
 import au.com.jcloud.model.User;
 
 /**
@@ -27,10 +31,10 @@ import au.com.jcloud.model.User;
 public class UserRoleRequestWrapper extends HttpServletRequestWrapper {
 
 	User user;
-	List<String> roles = null;
+	Set<Role> roles = null;
 	HttpServletRequest realRequest;
 
-	public UserRoleRequestWrapper(User user, List<String> roles, HttpServletRequest request) {
+	public UserRoleRequestWrapper(User user, Set<Role> roles, HttpServletRequest request) {
 		super(request);
 		this.user = user;
 		this.roles = roles;
@@ -39,10 +43,18 @@ public class UserRoleRequestWrapper extends HttpServletRequestWrapper {
 
 	@Override
 	public boolean isUserInRole(String role) {
-		if (roles == null) {
+		if (StringUtils.isBlank(role) || role.startsWith("*")) {
+			return false;
+		}
+		if (roles == null || roles.size()==0) {
 			return this.realRequest.isUserInRole(role);
 		}
-		return roles.contains(role);
+		for (Role roleItem: roles) {
+			if (roleItem!=null && roleItem.getName().equals(role)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override

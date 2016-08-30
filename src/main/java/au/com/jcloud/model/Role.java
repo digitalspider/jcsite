@@ -1,6 +1,9 @@
 package au.com.jcloud.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 /**
@@ -10,6 +13,9 @@ import javax.persistence.Table;
 @Table(name = "role")
 public class Role extends IdBean {
 	private String name;
+
+	@ManyToMany(mappedBy = "roles")
+	protected List<User> users;
 
 	@Override
 	public String toString() {
@@ -22,5 +28,13 @@ public class Role extends IdBean {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
 	}
 }

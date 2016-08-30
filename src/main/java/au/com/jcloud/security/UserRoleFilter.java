@@ -2,6 +2,7 @@ package au.com.jcloud.security;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 import org.apache.log4j.Logger;
 
+import au.com.jcloud.model.Role;
 import au.com.jcloud.model.User;
 import au.com.jcloud.util.Constants;
 
@@ -57,7 +59,7 @@ public class UserRoleFilter implements Filter {
 		User user = (User) request.getSession().getAttribute(Constants.SESSION_ATTRIBUTE_USER);
 
 		@SuppressWarnings("unchecked")
-		List<String> roles = (List<String>) request.getSession().getAttribute(Constants.SESSION_ATTRIBUTE_ROLES);
+		Set<Role> roles = (Set<Role>) request.getSession().getAttribute(Constants.SESSION_ATTRIBUTE_ROLES);
 
 		if (user != null) {
 			next.doFilter(new UserRoleRequestWrapper(user, roles, request), response);

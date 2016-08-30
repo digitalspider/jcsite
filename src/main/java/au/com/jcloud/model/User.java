@@ -1,9 +1,13 @@
 package au.com.jcloud.model;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -17,6 +21,14 @@ public class User extends BaseBean {
 	protected String password;
 	protected String firstName;
 	protected String lastName;
+
+	@ManyToMany
+	@JoinTable(
+			name = "userrole",
+			joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+			inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
+	)
+	protected Set<Role> roles;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
 	protected List<Server> serverList;
@@ -60,5 +72,21 @@ public class User extends BaseBean {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
+
+	public List<Server> getServerList() {
+		return serverList;
+	}
+
+	public void setServerList(List<Server> serverList) {
+		this.serverList = serverList;
 	}
 }
