@@ -1,32 +1,26 @@
 package au.com.jcloud.actionbean;
 
+import net.sourceforge.stripes.action.UrlBinding;
+import net.sourceforge.stripes.validation.EmailTypeConverter;
+import net.sourceforge.stripes.validation.Validate;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.annotation.security.PermitAll;
 
 import au.com.jcloud.util.Constants;
-import net.sourceforge.stripes.action.DefaultHandler;
-import net.sourceforge.stripes.action.DontBind;
-import net.sourceforge.stripes.action.DontValidate;
-import net.sourceforge.stripes.action.ForwardResolution;
-import net.sourceforge.stripes.action.Resolution;
-import net.sourceforge.stripes.action.UrlBinding;
-import net.sourceforge.stripes.validation.EmailTypeConverter;
-import net.sourceforge.stripes.validation.Validate;
 
-import static au.com.jcloud.actionbean.ServerActionBean.JSP_BINDING;
+import static au.com.jcloud.actionbean.RequestActionBean.JSP_BINDING;
 
 /**
  * Created by david.vittor on 3/08/16.
  */
 @PermitAll
 @UrlBinding(Constants.PATH_SECURE+JSP_BINDING)
-public class ServerActionBean extends JCSecureActionBean {
+public class RequestActionBean extends JCSecureActionBean {
 
-	private ExecutorService executorService = Executors.newSingleThreadExecutor();
-
-	public static final String JSP_BINDING = "/server";
+	public static final String JSP_BINDING = "/request";
 
 	@Validate(required = true, minlength = 2)
 	private String name;

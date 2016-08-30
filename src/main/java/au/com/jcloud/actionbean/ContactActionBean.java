@@ -4,6 +4,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import au.com.jcloud.service.EmailService;
+import au.com.jcloud.util.Constants;
+
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.HandlesEvent;
 import net.sourceforge.stripes.action.Resolution;
@@ -15,7 +17,7 @@ import net.sourceforge.stripes.validation.Validate;
 /**
  * Created by david.vittor on 3/08/16.
  */
-@UrlBinding("/contact.action")
+@UrlBinding(Constants.ACTION_PUBLIC_CONTACT)
 public class ContactActionBean extends JCActionBean {
 
 	@SpringBean

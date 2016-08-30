@@ -15,8 +15,14 @@ public class Constants {
 	public static final String PATH_RESOURCES_TEST = "src/test/resources/";
 	public static final String PATH_RESOURCES_MAIN = "src/main/resources/";
 
+	public static final String SHOW_JSP = "show.jsp";
+	public static final String EDIT_JSP = "edit.jsp";
+	public static final String LIST_JSP = "list.jsp";
+
 	public static final String SESSION_ATTRIBUTE_USER = "jcuser";
 	public static final String SESSION_ATTRIBUTE_ROLES = "jcroles";
+	public static final String PATH_PUBLIC = "/public";
+	public static final String PATH_ADMIN = "/admin";
 	public static final String PATH_SECURE = "/secure";
 	public static final String PATH_SECURE_JSP = "/jsp/secure";
 
@@ -24,9 +30,9 @@ public class Constants {
 	public static final String PAGE_INDEX = "/index.jsp";
 	public static final String PAGE_RESET = "/reset.jsp";
 	public static final String PAGE_SECURE = PATH_SECURE_JSP + "/index.jsp";
-	public static final String PAGE_SERVER = PATH_SECURE_JSP + "/server.jsp";
+	public static final String ACTION_PUBLIC_LINK = PATH_PUBLIC + "/link";
+	public static final String ACTION_PUBLIC_CONTACT = PATH_PUBLIC + "/contact";
 	public static final String ACTION_SECURE_INDEX = PATH_SECURE + "/index";
-	public static final String ACTION_SECURE_SERVER = PATH_SECURE + "/server";
 	public static final String ACTION_SECURE_LOGIN = PATH_SECURE + "/login";
 	public static final String URL_PARAM_LOGIN_REDIRECT = "?r=";
 

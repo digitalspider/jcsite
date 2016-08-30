@@ -18,7 +18,7 @@
                             </p>
 
 
-                            <s:form action="/contact.action" method="post" class="tm-contact-form">
+                            <s:form action="/public/contact" method="post" class="tm-contact-form">
                             	<s:errors/>
                                 <div class="form-group">
                                     <input type="name" id="name" name="name" class="form-control" placeholder="Name" required="true"/>

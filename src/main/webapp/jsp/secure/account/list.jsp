@@ -58,7 +58,7 @@ String username = request.getRemoteUser();
                                         </td>
                                     </tr>
                                 </tbody>
-                                
+
                             </table>
                         </div>
 
@@ -100,7 +100,7 @@ String username = request.getRemoteUser();
                                                     </td>
                                                 </tr>
                                             </tbody>
-                                            
+
                                         </table>
                                     </p>
                                 </div>

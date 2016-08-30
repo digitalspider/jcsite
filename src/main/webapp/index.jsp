@@ -112,6 +112,7 @@
                                             Categories
                                         </h3>
                                         <nav>
+
                                             <ul class="nav">
                                                 <li><a href="#" class="tm-text-link">Java development</a></li>
                                                 <li><a href="#" class="tm-text-link">Hosting</a></li>

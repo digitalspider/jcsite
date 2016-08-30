@@ -15,7 +15,7 @@ import net.sourceforge.stripes.action.UrlBinding;
  */
 
 @UrlBinding(Constants.ACTION_SECURE_INDEX)
-public class SecureActionBean extends JCActionBean {
+public class SecureIndexActionBean extends JCActionBean {
 
 	@PermitAll
 	@DontValidate
