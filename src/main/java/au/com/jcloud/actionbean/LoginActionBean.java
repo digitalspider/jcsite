@@ -81,7 +81,7 @@ public class LoginActionBean extends JCActionBean {
 		// Try authenticate the user
 		User user = userService.getUserByAuth(username, password);
 		if (user == null) {
-			formSubmissionCountService.incrementCount(ipAddress, FormType.LOGIN);
+			formSubmissionCountService.increment(ipAddress, FormType.LOGIN);
 			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN + ".invalidAttempt", username);
 			return getSourcePageResolution();
 		} else {
@@ -134,7 +134,7 @@ public class LoginActionBean extends JCActionBean {
 		LOG.info("user created=" + user);
 
 		// Register
-		formSubmissionCountService.incrementCount(ipAddress, FormType.REGISTRATION);
+		formSubmissionCountService.increment(ipAddress, FormType.REGISTRATION);
 
 		// save the logged in user to the session
 		context.setUser(user);
