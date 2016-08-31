@@ -21,6 +21,7 @@ public class Constants {
 
 	public static final String SESSION_ATTRIBUTE_USER = "jcuser";
 	public static final String SESSION_ATTRIBUTE_ROLES = "jcroles";
+	public static final String SESSION_ATTRIBUTE_DEVICE = "jcdevice";
 	public static final String PATH_PUBLIC = "/public";
 	public static final String PATH_ADMIN = "/admin";
 	public static final String PATH_SECURE = "/secure";
@@ -50,6 +51,8 @@ public class Constants {
 	public static final String SESSION_NONCE_UID_REGSITER = "";
 	public static final String SESSION_NONCE_UID_PASSWORD = "";
 	public static final String SESSION_NONCE_UID_USERACCOUNT = "";
+
+	public static final String REQUEST_DEVICE_TYPE = "deviceType";
 
 	public static final User systemUser;
 
