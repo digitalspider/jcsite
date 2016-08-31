@@ -7,8 +7,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 
+import au.com.jcloud.enums.FormType;
 import au.com.jcloud.model.User;
 import au.com.jcloud.service.EmailService;
+import au.com.jcloud.service.FormSubmissionCountService;
 import au.com.jcloud.service.TokenService;
 import au.com.jcloud.service.UserService;
 import au.com.jcloud.util.Constants;
@@ -34,6 +36,8 @@ public class LoginActionBean extends JCActionBean {
 	private EmailService emailService;
 	@SpringBean
 	private TokenService tokenService;
+	@SpringBean
+	private FormSubmissionCountService formSubmissionCountService;
 	@Validate(required = true, minlength = 2, maxlength = 64, on = "{login, forgot}")
 	private String username;
 	@Validate(required = true, minlength = 8, maxlength = 64, on = "{login, reset}")
@@ -59,17 +63,31 @@ public class LoginActionBean extends JCActionBean {
 
 	@HandlesEvent("login")
 	public Resolution login() throws Exception {
-		LOG.info("login attempt for user=" + username);
+		String ipAddress = getIpAddress();
+		LOG.info("login attempt for user=" + username+" from ip="+ipAddress);
+		// Ensure user is valid
 		if (validateAlreadyLoggedIn()) {
 			return getSourcePageResolution();
 		}
+
+		// Prevent too many logins from the same ipAddress
+		try {
+			formSubmissionCountService.allow(ipAddress, FormType.LOGIN);
+		} catch (Exception e) {
+			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN + ".tooManyAttempts", username);
+			return getSourcePageResolution();
+		}
+
+		// Try authenticate the user
 		User user = userService.getUserByAuth(username, password);
 		if (user == null) {
+			formSubmissionCountService.incrementCount(ipAddress, FormType.LOGIN);
 			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN + ".invalidAttempt", username);
 			return getSourcePageResolution();
 		} else {
 			context.setUser(user);
 		}
+
 		LOG.info("login successful for user=" + username);
 		String redirect = Constants.PAGE_SECURE;
 		String referrer = getReferrer();
@@ -92,25 +110,48 @@ public class LoginActionBean extends JCActionBean {
 
 	@HandlesEvent("register")
 	public Resolution register() throws Exception {
-		LOG.info("register attempt for user=" + newusername);
+		String ipAddress = getIpAddress();
+		LOG.info("register attempt for user=" + newusername+" from ip="+ipAddress);
 		if (validateAlreadyLoggedIn()) {
 			return getContext().getSourcePageResolution();
 		}
-		if (userService.getByUsername(newusername) != null) {
-			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN + ".newusername.alreadyExists");
+
+		// Prevent too many registations from the same ipAddress
+		try {
+			formSubmissionCountService.allow(ipAddress, FormType.REGISTRATION);
+		} catch (Exception e) {
+			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN + ".tooManyAttempts", username);
+			return getSourcePageResolution();
+		}
+
+		// Ensure user does not already exist
+		if (!isValidNewUser()) {
 			return getContext().getSourcePageResolution();
 		}
-		if (userService.getByEmail(email) != null) {
-			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN + ".email.alreadyExists");
-			return getContext().getSourcePageResolution();
-		}
+
+		// Create the new user
 		User user = userService.createUser(newusername, firstname, lastname, email, newpassword);
 		LOG.info("user created=" + user);
+
+		// Register
+		formSubmissionCountService.incrementCount(ipAddress, FormType.REGISTRATION);
 
 		// save the logged in user to the session
 		context.setUser(user);
 
 		return new RedirectResolution(Constants.PAGE_SECURE);
+	}
+
+	private boolean isValidNewUser() {
+		if (userService.getByUsername(newusername) != null) {
+			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN + ".newusername.alreadyExists");
+			return false;
+		}
+		if (userService.getByEmail(email) != null) {
+			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN + ".email.alreadyExists");
+			return false;
+		}
+		return true;
 	}
 
 	public static boolean isResetReady(HttpServletRequest request) {

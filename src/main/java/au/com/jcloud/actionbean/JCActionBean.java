@@ -43,32 +43,40 @@ public class JCActionBean implements ActionBean {
 		return null;
 	}
 
+	public String getIpAddress() {
+		return HttpUtil.getIpAddress(context.getRequest());
+	}
+
+	public String getUserAgent() {
+		return HttpUtil.getUserAgent(context.getRequest());
+	}
+
 	protected HttpServletRequest getRequest() {
-		return getContext().getRequest();
+		return context.getRequest();
 	}
 
 	protected HttpServletResponse getResponse() {
-		return getContext().getResponse();
+		return context.getResponse();
 	}
 
 	protected Resolution getSourcePageResolution() {
-		return getContext().getSourcePageResolution();
+		return context.getSourcePageResolution();
 	}
 
 	protected String getReferrer() {
-		String referrer = getContext().getRequest().getHeader("referer");
+		String referrer = context.getRequest().getHeader("referer");
 		return referrer;
 	}
 
 	protected String getQueryString() {
-		String queryString = getContext().getRequest().getQueryString();
+		String queryString = context.getRequest().getQueryString();
 		return queryString;
 	}
 
 	protected void addGlobalValidationError(String messageKey, Object... params) {
 		ValidationErrors errors = new ValidationErrors();
 		errors.addGlobalError(new LocalizableError(messageKey, params));
-		getContext().setValidationErrors(errors);
+		context.setValidationErrors(errors);
 	}
 
 	protected String getConextPath() {
