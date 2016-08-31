@@ -10,6 +10,7 @@
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
 
                         <s:form id="loginForm" method="post" action="/secure/login" class="tm-login-form">
+                        	<input type="hidden" id="requestId" name="requestId" value="$request.getSession().getAttribute(Constants.SESSION_NONCE_UID_LOGIN)" />
                         	<s:errors globalErrorsOnly="true"/>
                             <div class="h4">Login</div>
                             <div class="form-group">
@@ -28,6 +29,7 @@
 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                         <s:form id="registerForm" method="post" action="/secure/login" class="tm-login-form">
+                        	<input type="hidden" id="requestId" name="requestId" value="$request.getSession().getAttribute(Constants.SESSION_NONCE_UID_REGISTER)" />
                             <div class="h4">Register</div>
                             <div class="form-group">
                                 <s:errors field="firstname"/>

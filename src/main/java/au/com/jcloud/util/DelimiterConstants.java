@@ -1,4 +1,4 @@
-package au.com.booktopia.constants;
+package au.com.jcloud.util;
 
 public class DelimiterConstants {
 	public static final String COMMA = ",";

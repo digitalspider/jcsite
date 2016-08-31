@@ -39,6 +39,10 @@ public class JCActionBean implements ActionBean {
 		return new RedirectResolution(url);
 	}
 
+	public String getRequestId() {
+		return null;
+	}
+
 	protected HttpServletRequest getRequest() {
 		return getContext().getRequest();
 	}
