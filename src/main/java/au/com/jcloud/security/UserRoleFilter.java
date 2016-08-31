@@ -42,19 +42,11 @@ import au.com.jcloud.util.Constants;
  * @author thein
  */
 @WebFilter(urlPatterns = { "/*" })
-public class UserRoleFilter implements Filter {
-
-	private final static Logger LOG = Logger.getLogger(UserRoleFilter.class);
+public class UserRoleFilter extends BaseFilter {
 
 	@Override
-	public void init(FilterConfig cfg) throws ServletException {
-	}
-
-	@Override
-	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain next)
-			throws IOException, ServletException {
-		HttpServletRequest request = (HttpServletRequest) req;
-		HttpServletResponse response = (HttpServletResponse) resp;
+	public boolean filterAction(final HttpServletRequest request, final HttpServletResponse response,
+	                         FilterChain filterChain) throws IOException, ServletException {
 
 		User user = (User) request.getSession().getAttribute(Constants.SESSION_ATTRIBUTE_USER);
 
@@ -62,7 +54,7 @@ public class UserRoleFilter implements Filter {
 		Set<Role> roles = (Set<Role>) request.getSession().getAttribute(Constants.SESSION_ATTRIBUTE_ROLES);
 
 		if (user != null) {
-			next.doFilter(new UserRoleRequestWrapper(user, roles, request), response);
+			filterChain.doFilter(new UserRoleRequestWrapper(user, roles, request), response);
 		} else {
 			// Secure all "/jsp/secure/*" pages
 			String servletPath = request.getServletPath();
@@ -72,12 +64,10 @@ public class UserRoleFilter implements Filter {
 			if (servletPath.startsWith(Constants.PATH_SECURE_JSP)) {
 				response.sendRedirect(contextPath + Constants.PAGE_LOGIN);
 			} else {
-				next.doFilter(request, response);
+				filterChain.doFilter(request, response);
 			}
 		}
+		return true;
 	}
 
-	@Override
-	public void destroy() {
-	}
 }
