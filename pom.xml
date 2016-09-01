@@ -96,6 +96,11 @@
 			<artifactId>jcmodel</artifactId>
 			<version>${jcloud.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>au.com.jcloud</groupId>
+			<artifactId>jcmodelweb</artifactId>
+			<version>${jcloud.version}</version>
+		</dependency>
 		
 		<!-- Stripes Framework -->
 		<dependency>
