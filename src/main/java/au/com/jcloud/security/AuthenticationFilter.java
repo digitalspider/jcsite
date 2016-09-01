@@ -1,23 +1,13 @@
 package au.com.jcloud.security;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Set;
 
-import javax.servlet.Filter;
 import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-/**
- * Created by david on 13/06/16.
- */
-import org.apache.log4j.Logger;
 
 import au.com.jcloud.model.Role;
 import au.com.jcloud.model.User;
@@ -42,7 +32,7 @@ import au.com.jcloud.util.Constants;
  * @author thein
  */
 @WebFilter(urlPatterns = { "/*" })
-public class UserRoleFilter extends BaseFilter {
+public class AuthenticationFilter extends BaseFilter {
 
 	@Override
 	public boolean filterAction(final HttpServletRequest request, final HttpServletResponse response,

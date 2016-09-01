@@ -1,9 +1,5 @@
 package au.com.jcloud.security;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-import org.springframework.web.bind.ServletRequestUtils;
-
 import java.io.IOException;
 
 import javax.servlet.Filter;
@@ -15,8 +11,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import au.com.jcloud.enums.DeviceType;
-import au.com.jcloud.util.Constants;
+import org.apache.log4j.Logger;
 
 /**
  * Created by david on 31/08/16.

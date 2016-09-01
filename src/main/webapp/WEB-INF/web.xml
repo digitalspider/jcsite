@@ -47,7 +47,32 @@
 			<param-value>org.stripesstuff.plugin.security.J2EESecurityManager</param-value>
 		</init-param>
 	</filter>
-
+	
+	<!-- Clickjack filter configured to DENY - sort out order of filters! 
+	<filter>
+		<filter-name>Clickjack Filter Deny</filter-name>
+		<filter-class>au.com.jcloud.security.ClickjackFilter</filter-class>
+		<init-param>
+			<param-name>mode</param-name>
+			<param-value>DENY</param-value>
+		</init-param>
+	</filter>
+	-->
+	
+	<!-- Clickjack filter configured to SAMEORIGIN -->
+	<filter>
+		<filter-name>Clickjack Filter Same Origin</filter-name>
+		<filter-class>au.com.jcloud.security.ClickjackFilter</filter-class>
+		<init-param>
+			<param-name>mode</param-name>
+			<param-value>SAMEORIGIN</param-value>
+		</init-param>
+		<init-param>
+            <param-name>excludePath</param-name>
+            <param-value>\/public.*</param-value>
+        </init-param>
+	</filter>
+	
 	<filter-mapping>
 		<filter-name>StripesFilter</filter-name>
 		<url-pattern>*.jsp</url-pattern>
