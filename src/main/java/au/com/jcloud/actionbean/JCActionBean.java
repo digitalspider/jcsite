@@ -6,8 +6,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import au.com.jcloud.WebConstants;
 import au.com.jcloud.context.JCActionBeanContext;
-import au.com.jcloud.util.Constants;
 import au.com.jcloud.util.HttpUtil;
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
@@ -31,7 +31,7 @@ public class JCActionBean implements ActionBean {
 	@DontBind
 	@DefaultHandler
 	public Resolution action() throws Exception {
-		String url = Constants.PAGE_LOGIN;
+		String url = WebConstants.PAGE_LOGIN;
 		String queryString = getQueryString();
 		if (StringUtils.isNotBlank(queryString)) {
 			url += "?" + queryString;

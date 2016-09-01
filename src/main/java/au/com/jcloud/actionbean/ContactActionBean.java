@@ -3,8 +3,8 @@ package au.com.jcloud.actionbean;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import au.com.jcloud.WebConstants;
 import au.com.jcloud.service.EmailService;
-import au.com.jcloud.util.Constants;
 
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.HandlesEvent;
@@ -17,7 +17,7 @@ import net.sourceforge.stripes.validation.Validate;
 /**
  * Created by david.vittor on 3/08/16.
  */
-@UrlBinding(Constants.ACTION_PUBLIC_CONTACT)
+@UrlBinding(WebConstants.ACTION_PUBLIC_CONTACT)
 public class ContactActionBean extends JCActionBean {
 
 	@SpringBean
@@ -47,7 +47,7 @@ public class ContactActionBean extends JCActionBean {
 		} else {
 			sendEmail();
 		}
-		return new ForwardResolution(Constants.PAGE_CONTACT);
+		return new ForwardResolution(WebConstants.PAGE_CONTACT);
 	}
 
 	private void sendEmail() {

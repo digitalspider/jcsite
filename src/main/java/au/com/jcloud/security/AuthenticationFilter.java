@@ -9,9 +9,14 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import au.com.jcloud.filter.BaseFilter;
 import au.com.jcloud.model.Role;
 import au.com.jcloud.model.User;
-import au.com.jcloud.util.Constants;
+
+import static au.com.jcloud.WebConstants.PAGE_LOGIN;
+import static au.com.jcloud.WebConstants.PATH_SECURE_JSP;
+import static au.com.jcloud.WebConstants.SESSION_ATTRIBUTE_ROLES;
+import static au.com.jcloud.WebConstants.SESSION_ATTRIBUTE_USER;
 
 /**
  * https://coderanch.com/t/466744/Servlets/java/Set-user-principal-filter
@@ -38,10 +43,10 @@ public class AuthenticationFilter extends BaseFilter {
 	public boolean filterAction(final HttpServletRequest request, final HttpServletResponse response,
 	                         FilterChain filterChain) throws IOException, ServletException {
 
-		User user = (User) request.getSession().getAttribute(Constants.SESSION_ATTRIBUTE_USER);
+		User user = (User) request.getSession().getAttribute(SESSION_ATTRIBUTE_USER);
 
 		@SuppressWarnings("unchecked")
-		Set<Role> roles = (Set<Role>) request.getSession().getAttribute(Constants.SESSION_ATTRIBUTE_ROLES);
+		Set<Role> roles = (Set<Role>) request.getSession().getAttribute(SESSION_ATTRIBUTE_ROLES);
 
 		if (user != null) {
 			filterChain.doFilter(new UserRoleRequestWrapper(user, roles, request), response);
@@ -51,8 +56,8 @@ public class AuthenticationFilter extends BaseFilter {
 			LOG.debug("servletPath=" + servletPath);
 			String contextPath = request.getContextPath();
 			LOG.debug("contextPath=" + contextPath);
-			if (servletPath.startsWith(Constants.PATH_SECURE_JSP)) {
-				response.sendRedirect(contextPath + Constants.PAGE_LOGIN);
+			if (servletPath.startsWith(PATH_SECURE_JSP)) {
+				response.sendRedirect(contextPath + PAGE_LOGIN);
 			} else {
 				filterChain.doFilter(request, response);
 			}

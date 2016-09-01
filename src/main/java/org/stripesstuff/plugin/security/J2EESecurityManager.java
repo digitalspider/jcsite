@@ -15,7 +15,8 @@ import net.sourceforge.stripes.config.DontAutoLoad;
 import net.sourceforge.stripes.util.HttpUtil;
 import net.sourceforge.stripes.util.Log;
 
-import au.com.jcloud.util.Constants;
+import static au.com.jcloud.WebConstants.ACTION_SECURE_LOGIN;
+import static au.com.jcloud.WebConstants.URL_PARAM_REDIRECT;
 
 
 /**
@@ -183,6 +184,6 @@ public class J2EESecurityManager
 			url = url + '?' + request.getQueryString();
 		}
 		LOG.debug("Intercepting request: ", url);
-		return new RedirectResolution(Constants.ACTION_SECURE_LOGIN+Constants.URL_PARAM_LOGIN_REDIRECT+url);
+		return new RedirectResolution(ACTION_SECURE_LOGIN+ URL_PARAM_REDIRECT +url);
 	}
 }

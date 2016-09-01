@@ -1,4 +1,4 @@
-package au.com.jcloud.security;
+package au.com.jcloud.filter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.annotation.WebFilter;
@@ -9,7 +9,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.ServletRequestUtils;
 
 import au.com.jcloud.enums.DeviceType;
-import au.com.jcloud.util.Constants;
+
+import static au.com.jcloud.WebConstants.REQUEST_DEVICE_TYPE;
+import static au.com.jcloud.WebConstants.SESSION_ATTRIBUTE_DEVICE;
 
 /**
  * This filter used to determine the device type (PC or Mobile) by looking at the request.
@@ -19,12 +21,12 @@ public class DetectDeviceTypeFilter extends BaseFilter {
 
 	@Override
 	public boolean filterAction(final HttpServletRequest request, final HttpServletResponse response, FilterChain filterChain) {
-		String deviceTypeParam = ServletRequestUtils.getStringParameter(request, Constants.REQUEST_DEVICE_TYPE, null);
+		String deviceTypeParam = ServletRequestUtils.getStringParameter(request, REQUEST_DEVICE_TYPE, null);
 		LOG.info("deviceTypeParam="+deviceTypeParam);
 		if (StringUtils.isNotBlank(deviceTypeParam)) {
 			DeviceType deviceType = DeviceType.parse(deviceTypeParam);
 			LOG.info("deviceType="+deviceType);
-			request.getSession().setAttribute(Constants.SESSION_ATTRIBUTE_DEVICE, deviceType);
+			request.getSession().setAttribute(SESSION_ATTRIBUTE_DEVICE, deviceType);
 		}
 		return false;
 	}

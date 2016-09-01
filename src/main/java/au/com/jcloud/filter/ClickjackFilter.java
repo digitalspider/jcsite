@@ -1,4 +1,4 @@
-package au.com.jcloud.security;
+package au.com.jcloud.filter;
 
 import static au.com.jcloud.util.Constants.HEADER_X_FRAME_OPTIONS;
 

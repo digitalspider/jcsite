@@ -4,12 +4,9 @@ import net.sourceforge.stripes.action.UrlBinding;
 import net.sourceforge.stripes.validation.EmailTypeConverter;
 import net.sourceforge.stripes.validation.Validate;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import javax.annotation.security.PermitAll;
 
-import au.com.jcloud.util.Constants;
+import au.com.jcloud.WebConstants;
 
 import static au.com.jcloud.actionbean.InvoiceActionBean.JSP_BINDING;
 
@@ -17,7 +14,7 @@ import static au.com.jcloud.actionbean.InvoiceActionBean.JSP_BINDING;
  * Created by david.vittor on 3/08/16.
  */
 @PermitAll
-@UrlBinding(Constants.PATH_SECURE+JSP_BINDING)
+@UrlBinding(WebConstants.PATH_SECURE+JSP_BINDING)
 public class InvoiceActionBean extends JCSecureActionBean {
 
 	public static final String JSP_BINDING = "/invoice";

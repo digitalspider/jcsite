@@ -8,7 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Expr;
 
-import au.com.jcloud.model.Status;
+import au.com.jcloud.enums.Status;
 import au.com.jcloud.model.User;
 import net.sourceforge.stripes.integration.spring.SpringBean;
 
@@ -31,13 +31,13 @@ public class UserService extends BaseService {
 			throw new Exception("This email is already registered! Please select a different one");
 		}
 		user = new User();
-		user.setName(username);
+		user.setUsername(username);
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
 		user.setEmail(email);
 		String passValue = getPassword(username, password);
 		user.setPassword(passValue);
-		user.setStatus(Status.ENABLED.name());
+		user.setStatus(Status.ENABLED.value());
 		LOG.info("creating new user: " + user);
 
 		Ebean.save(user);

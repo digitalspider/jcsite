@@ -2,7 +2,7 @@ package au.com.jcloud.actionbean;
 
 import javax.annotation.security.PermitAll;
 
-import au.com.jcloud.util.Constants;
+import au.com.jcloud.WebConstants;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.DontBind;
 import net.sourceforge.stripes.action.DontValidate;
@@ -14,7 +14,7 @@ import net.sourceforge.stripes.action.UrlBinding;
  * Created by david.vittor on 29/08/16.
  */
 
-@UrlBinding(Constants.ACTION_SECURE_INDEX)
+@UrlBinding(WebConstants.ACTION_SECURE_INDEX)
 public class SecureIndexActionBean extends JCActionBean {
 
 	@PermitAll
@@ -23,6 +23,6 @@ public class SecureIndexActionBean extends JCActionBean {
 	@DefaultHandler
 	@Override
 	public Resolution action() {
-		return new ForwardResolution(Constants.PAGE_SECURE);
+		return new ForwardResolution(WebConstants.PAGE_SECURE);
 	}
 }

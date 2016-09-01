@@ -5,7 +5,7 @@ import java.util.concurrent.Executors;
 
 import javax.annotation.security.PermitAll;
 
-import au.com.jcloud.util.Constants;
+import au.com.jcloud.WebConstants;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.DontBind;
 import net.sourceforge.stripes.action.DontValidate;
@@ -21,7 +21,7 @@ import static au.com.jcloud.actionbean.ServerActionBean.JSP_BINDING;
  * Created by david.vittor on 3/08/16.
  */
 @PermitAll
-@UrlBinding(Constants.PATH_SECURE+JSP_BINDING)
+@UrlBinding(WebConstants.PATH_SECURE+JSP_BINDING)
 public class ServerActionBean extends JCSecureActionBean {
 
 	private ExecutorService executorService = Executors.newSingleThreadExecutor();

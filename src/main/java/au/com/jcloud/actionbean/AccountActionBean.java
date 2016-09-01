@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 
 import javax.annotation.security.PermitAll;
 
-import au.com.jcloud.util.Constants;
+import au.com.jcloud.WebConstants;
 
 import static au.com.jcloud.actionbean.AccountActionBean.JSP_BINDING;
 
@@ -17,7 +17,7 @@ import static au.com.jcloud.actionbean.AccountActionBean.JSP_BINDING;
  * Created by david.vittor on 3/08/16.
  */
 @PermitAll
-@UrlBinding(Constants.PATH_SECURE+JSP_BINDING)
+@UrlBinding(WebConstants.PATH_SECURE+JSP_BINDING)
 public class AccountActionBean extends JCSecureActionBean {
 
 	public static final String JSP_BINDING = "/account";

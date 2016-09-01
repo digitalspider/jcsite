@@ -1,4 +1,4 @@
-package au.com.jcloud.security;
+package au.com.jcloud.filter;
 
 import static au.com.jcloud.util.Constants.HEADER_X_FRAME_OPTIONS;
 import static org.junit.Assert.assertEquals;
@@ -21,6 +21,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+
+import au.com.jcloud.filter.ClickjackFilter;
 
 
 public class ClickjackFilterTest {

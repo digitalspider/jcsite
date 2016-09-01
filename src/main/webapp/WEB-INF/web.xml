@@ -51,7 +51,7 @@
 	<!-- Clickjack filter configured to DENY - sort out order of filters! 
 	<filter>
 		<filter-name>Clickjack Filter Deny</filter-name>
-		<filter-class>au.com.jcloud.security.ClickjackFilter</filter-class>
+		<filter-class>au.com.jcloud.filter.ClickjackFilter</filter-class>
 		<init-param>
 			<param-name>mode</param-name>
 			<param-value>DENY</param-value>
@@ -62,7 +62,7 @@
 	<!-- Clickjack filter configured to SAMEORIGIN -->
 	<filter>
 		<filter-name>Clickjack Filter Same Origin</filter-name>
-		<filter-class>au.com.jcloud.security.ClickjackFilter</filter-class>
+		<filter-class>au.com.jcloud.filter.ClickjackFilter</filter-class>
 		<init-param>
 			<param-name>mode</param-name>
 			<param-value>SAMEORIGIN</param-value>

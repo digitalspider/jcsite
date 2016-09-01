@@ -7,13 +7,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 
+import au.com.jcloud.WebConstants;
 import au.com.jcloud.enums.FormType;
 import au.com.jcloud.model.User;
 import au.com.jcloud.service.EmailService;
 import au.com.jcloud.service.FormSubmissionCountService;
 import au.com.jcloud.service.TokenService;
 import au.com.jcloud.service.UserService;
-import au.com.jcloud.util.Constants;
 import net.sourceforge.stripes.action.Before;
 import net.sourceforge.stripes.action.HandlesEvent;
 import net.sourceforge.stripes.action.RedirectResolution;
@@ -24,10 +24,16 @@ import net.sourceforge.stripes.integration.spring.SpringBean;
 import net.sourceforge.stripes.validation.EmailTypeConverter;
 import net.sourceforge.stripes.validation.Validate;
 
+import static au.com.jcloud.WebConstants.ACTION_SECURE_LOGIN;
+import static au.com.jcloud.WebConstants.PAGE_INDEX;
+import static au.com.jcloud.WebConstants.PAGE_RESET;
+import static au.com.jcloud.WebConstants.PAGE_SECURE;
+import static au.com.jcloud.WebConstants.URL_PARAM_REDIRECT;
+
 /**
  * Created by david.vittor on 3/08/16.
  */
-@UrlBinding(Constants.ACTION_SECURE_LOGIN)
+@UrlBinding(ACTION_SECURE_LOGIN)
 public class LoginActionBean extends JCActionBean {
 
 	@SpringBean
@@ -74,7 +80,7 @@ public class LoginActionBean extends JCActionBean {
 		try {
 			formSubmissionCountService.allow(ipAddress, FormType.LOGIN);
 		} catch (Exception e) {
-			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN + ".tooManyAttempts", username);
+			addGlobalValidationError(ACTION_SECURE_LOGIN + ".tooManyAttempts", username);
 			return getSourcePageResolution();
 		}
 
@@ -82,18 +88,18 @@ public class LoginActionBean extends JCActionBean {
 		User user = userService.getUserByAuth(username, password);
 		if (user == null) {
 			formSubmissionCountService.increment(ipAddress, FormType.LOGIN);
-			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN + ".invalidAttempt", username);
+			addGlobalValidationError(ACTION_SECURE_LOGIN + ".invalidAttempt", username);
 			return getSourcePageResolution();
 		} else {
 			context.setUser(user);
 		}
 
 		LOG.info("login successful for user=" + username);
-		String redirect = Constants.PAGE_SECURE;
+		String redirect = PAGE_SECURE;
 		String referrer = getReferrer();
 		String path = getConextPath();
 		if (path != null) {
-			path += Constants.PAGE_LOGIN;
+			path += WebConstants.PAGE_LOGIN;
 		}
 		LOG.debug("referrer=" + referrer);
 		LOG.debug("path=" + path);
@@ -101,8 +107,8 @@ public class LoginActionBean extends JCActionBean {
 			String queryString = referrer.substring(path.length());
 			LOG.debug("queryString=" + queryString);
 
-			if (queryString != null && queryString.startsWith(Constants.URL_PARAM_LOGIN_REDIRECT)) {
-				redirect = queryString.substring(Constants.URL_PARAM_LOGIN_REDIRECT.length());
+			if (queryString != null && queryString.startsWith(URL_PARAM_REDIRECT)) {
+				redirect = queryString.substring(URL_PARAM_REDIRECT.length());
 			}
 		}
 		return new RedirectResolution(redirect);
@@ -120,7 +126,7 @@ public class LoginActionBean extends JCActionBean {
 		try {
 			formSubmissionCountService.allow(ipAddress, FormType.REGISTRATION);
 		} catch (Exception e) {
-			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN + ".tooManyAttempts", username);
+			addGlobalValidationError(ACTION_SECURE_LOGIN + ".tooManyAttempts", username);
 			return getSourcePageResolution();
 		}
 
@@ -139,16 +145,16 @@ public class LoginActionBean extends JCActionBean {
 		// save the logged in user to the session
 		context.setUser(user);
 
-		return new RedirectResolution(Constants.PAGE_SECURE);
+		return new RedirectResolution(PAGE_SECURE);
 	}
 
 	private boolean isValidNewUser() {
 		if (userService.getByUsername(newusername) != null) {
-			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN + ".newusername.alreadyExists");
+			addGlobalValidationError(ACTION_SECURE_LOGIN + ".newusername.alreadyExists");
 			return false;
 		}
 		if (userService.getByEmail(email) != null) {
-			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN + ".email.alreadyExists");
+			addGlobalValidationError(ACTION_SECURE_LOGIN + ".email.alreadyExists");
 			return false;
 		}
 		return true;
@@ -169,13 +175,13 @@ public class LoginActionBean extends JCActionBean {
 		}
 		User user = userService.getByUsernameOrEmail(username);
 		if (user == null) {
-			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN + ".username.invalid");
+			addGlobalValidationError(ACTION_SECURE_LOGIN + ".username.invalid");
 			return getContext().getSourcePageResolution();
 		}
 		String basePath = getConextPath();
 		LOG.info("basePath=" + basePath);
-		String url = basePath + Constants.PAGE_RESET + "?" + PARAM_USERNAME + "=" + user.getName() + "&" + PARAM_TOKEN
-				+ "=" + tokenService.generateAndRecordToken(user.getName());
+		String url = basePath + PAGE_RESET + "?" + PARAM_USERNAME + "=" + user.getUsername() + "&" + PARAM_TOKEN
+				+ "=" + tokenService.generateAndRecordToken(user.getUsername());
 		LOG.info("url=" + url);
 		String message = "Hi " + user.getFirstName() + ",<br/><br/>"
 				+ "You have 30 minutes to use the below link to reset your password<br/>" + "<a href=\"" + url + "\">"
@@ -202,17 +208,17 @@ public class LoginActionBean extends JCActionBean {
 				String usernameParam = queryParamMap.get(PARAM_USERNAME);
 				LOG.info("usernameParam=" + usernameParam);
 				if (StringUtils.isBlank(usernameParam)) {
-					addGlobalValidationError(Constants.ACTION_SECURE_LOGIN + ".reset.userMissing", usernameParam);
+					addGlobalValidationError(ACTION_SECURE_LOGIN + ".reset.userMissing", usernameParam);
 					return getContext().getSourcePageResolution();
 				}
 				String token = queryParamMap.get(PARAM_TOKEN);
 				LOG.info("token=" + token);
 				if (StringUtils.isBlank(token)) {
-					addGlobalValidationError(Constants.ACTION_SECURE_LOGIN + ".reset.tokenMissing", usernameParam);
+					addGlobalValidationError(ACTION_SECURE_LOGIN + ".reset.tokenMissing", usernameParam);
 					return getContext().getSourcePageResolution();
 				}
 				if (!tokenService.validateToken(usernameParam, token)) {
-					addGlobalValidationError(Constants.ACTION_SECURE_LOGIN + ".reset.invalidToken", usernameParam);
+					addGlobalValidationError(ACTION_SECURE_LOGIN + ".reset.invalidToken", usernameParam);
 					return getContext().getSourcePageResolution();
 				}
 				User user = userService.updatePassword(usernameParam, password);
@@ -220,12 +226,12 @@ public class LoginActionBean extends JCActionBean {
 				tokenService.clearToken(usernameParam);
 			}
 		}
-		return new RedirectResolution(Constants.PAGE_INDEX);
+		return new RedirectResolution(PAGE_INDEX);
 	}
 
 	private boolean validateAlreadyLoggedIn() {
 		if (context.getUser() != null) {
-			addGlobalValidationError(Constants.ACTION_SECURE_LOGIN + ".alreadyLoggedIn", context.getUser().getName());
+			addGlobalValidationError(ACTION_SECURE_LOGIN + ".alreadyLoggedIn", context.getUser().getUsername());
 			return true;
 		}
 		return false;

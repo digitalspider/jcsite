@@ -67,7 +67,7 @@ public class UserRoleRequestWrapper extends HttpServletRequestWrapper {
 		return new Principal() {
 			@Override
 			public String getName() {
-				return user.getName();
+				return user.getUsername();
 			}
 		};
 	}
@@ -77,7 +77,7 @@ public class UserRoleRequestWrapper extends HttpServletRequestWrapper {
 		if (user == null) {
 			return super.getRemoteUser();
 		} else {
-			return user.getName();
+			return user.getUsername();
 		}
 	}
 }

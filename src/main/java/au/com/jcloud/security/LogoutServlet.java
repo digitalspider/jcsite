@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import au.com.jcloud.util.Constants;
 
+import static au.com.jcloud.WebConstants.PAGE_LOGIN;
+
 /**
  * Created by david.vittor on 27/08/16.
  */
@@ -29,7 +31,7 @@ public class LogoutServlet extends HttpServlet {
 		// Redirect the user to the secure web page.
 		// Since the user is now logged out the
 		// authentication form will be shown
-		response.sendRedirect(request.getContextPath() + Constants.PAGE_LOGIN);
+		response.sendRedirect(request.getContextPath() + PAGE_LOGIN);
 
 	}
 
