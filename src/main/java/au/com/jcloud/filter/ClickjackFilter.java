@@ -20,7 +20,7 @@ import org.apache.commons.lang3.StringUtils;
  * A filter to prevent to clickjacking.
  * Adapted from https://www.owasp.org/index.php/ClickjackFilter_for_Java_EE
  */
-@WebFilter(urlPatterns = { "/*" })
+@WebFilter(urlPatterns = "/*")
 public class ClickjackFilter extends BaseFilter {
 	
 	public static final String MODE_DENY = "DENY";

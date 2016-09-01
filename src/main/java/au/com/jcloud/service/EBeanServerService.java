@@ -11,8 +11,11 @@ import com.avaje.ebean.EbeanServerFactory;
 import com.avaje.ebean.config.ServerConfig;
 import com.avaje.ebean.config.dbplatform.H2Platform;
 
+import au.com.jcloud.model.OperatingSystem;
+import au.com.jcloud.model.Role;
 import au.com.jcloud.model.Server;
 import au.com.jcloud.model.User;
+import au.com.jcloud.util.Constants;
 import au.com.jcloud.util.PropertyUtil;
 
 /**
@@ -60,7 +63,9 @@ public class EBeanServerService extends BaseService {
 
 		List<Class<?>> beanClasses = new ArrayList<Class<?>>();
 		beanClasses.add(User.class);
+		beanClasses.add(Role.class);
 		beanClasses.add(Server.class);
+		beanClasses.add(OperatingSystem.class);
 		System.setProperty("ebean.ignoreExtraDdl", "true");
 
 		ServerConfig c = new ServerConfig();
@@ -100,5 +105,14 @@ public class EBeanServerService extends BaseService {
 
 	public static ServerConfig getServerConfig() {
 		return serverConfig;
+	}
+
+	public static void main(String[] args) {
+//		EbeanServer server = EBeanServerService.createEbeanServer();
+		EBeanServerService e = new EBeanServerService(true);
+		EbeanServer server = e.getEBeanServer();
+		System.out.println("server="+server);
+		User user = server.find(User.class).findUnique();
+		System.out.println("user="+user);
 	}
 }

@@ -16,7 +16,7 @@ import static au.com.jcloud.WebConstants.SESSION_ATTRIBUTE_DEVICE;
 /**
  * This filter used to determine the device type (PC or Mobile) by looking at the request.
  */
-@WebFilter(urlPatterns = { "/*" })
+@WebFilter(urlPatterns = "/*")
 public class DetectDeviceTypeFilter extends BaseFilter {
 
 	@Override
