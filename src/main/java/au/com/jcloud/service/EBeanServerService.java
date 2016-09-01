@@ -13,7 +13,7 @@ import com.avaje.ebean.config.dbplatform.H2Platform;
 
 import au.com.jcloud.model.Server;
 import au.com.jcloud.model.User;
-import net.sourceforge.stripes.integration.spring.SpringBean;
+import au.com.jcloud.util.PropertyUtil;
 
 /**
  * Created by david.vittor on 5/08/16.
@@ -24,9 +24,6 @@ public class EBeanServerService extends BaseService {
 
 	private static ServerConfig serverConfig;
 	private static EbeanServer ebeanServer;
-
-	@SpringBean
-	private PropertyReaderService propertyReaderService;
 
 	public EBeanServerService() {
 		this(false);
@@ -50,7 +47,7 @@ public class EBeanServerService extends BaseService {
 				serverConfig = new ServerConfig();
 				serverConfig.setName("jc");
 				serverConfig.setDefaultServer(true);
-				Properties properties = propertyReaderService.loadProperties(propertiesFile);
+				Properties properties = PropertyUtil.loadProperties(propertiesFile);
 				serverConfig.loadFromProperties(properties);
 				ebeanServer = EbeanServerFactory.create(serverConfig);
 			}
@@ -103,9 +100,5 @@ public class EBeanServerService extends BaseService {
 
 	public static ServerConfig getServerConfig() {
 		return serverConfig;
-	}
-
-	protected void setPropertyReaderService(PropertyReaderService propertyReaderService) {
-		this.propertyReaderService = propertyReaderService;
 	}
 }

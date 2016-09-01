@@ -19,8 +19,6 @@ public class UserService extends BaseService {
 
 	@SpringBean
 	private EncryptService encryptService;
-	@SpringBean
-	private PropertyReaderService propertyReaderService;
 
 	public User createUser(String username, String firstName, String lastName, String email, String password)
 			throws Exception {
@@ -119,14 +117,6 @@ public class UserService extends BaseService {
 
 	public void setEncryptService(EncryptService encryptService) {
 		this.encryptService = encryptService;
-	}
-
-	public PropertyReaderService getPropertyReaderService() {
-		return propertyReaderService;
-	}
-
-	public void setPropertyReaderService(PropertyReaderService propertyReaderService) {
-		this.propertyReaderService = propertyReaderService;
 	}
 
 	public static void main(String[] args) {

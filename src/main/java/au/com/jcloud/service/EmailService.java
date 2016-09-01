@@ -10,7 +10,7 @@ import org.simplejavamail.mailer.Mailer;
 import org.simplejavamail.mailer.config.ServerConfig;
 import org.simplejavamail.mailer.config.TransportStrategy;
 
-import net.sourceforge.stripes.integration.spring.SpringBean;
+import au.com.jcloud.util.PropertyUtil;
 
 /**
  * Created by david.vittor on 4/08/16.
@@ -30,12 +30,9 @@ public class EmailService extends BaseService {
 	private static Properties properties = new Properties();
 	private static Mailer mailer;
 
-	@SpringBean
-	private PropertyReaderService propertyReaderService;
-
 	public void init() throws Exception {
 		if (properties.isEmpty() || mailer == null) {
-			properties = propertyReaderService.loadProperties(EMAIL_PROPERTIES);
+			properties = PropertyUtil.loadProperties(EMAIL_PROPERTIES);
 			validateProperties(properties);
 
 			mailer = new Mailer(
@@ -110,13 +107,5 @@ public class EmailService extends BaseService {
 
 		mailer.sendMail(emailMessage);
 		LOG.info("email has been sent to: " + toEmail + " from: " + fromEmail);
-	}
-
-	public void setPropertyReaderService(PropertyReaderService propertyReaderService) {
-		this.propertyReaderService = propertyReaderService;
-	}
-
-	public PropertyReaderService getPropertyReaderService() {
-		return propertyReaderService;
 	}
 }
