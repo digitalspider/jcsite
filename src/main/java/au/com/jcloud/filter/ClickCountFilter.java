@@ -25,11 +25,11 @@ public class ClickCountFilter extends BaseFilter {
 
 	@Override
 	public boolean filterAction(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-		String queryString = request.getQueryString();
+		String queryString = "?"+request.getQueryString();
 		LOG.info("queryString="+queryString);
 		if (queryString.startsWith(URL_PARAM_REDIRECT)) {
+			String url = queryString.substring(URL_PARAM_REDIRECT.length());
 			try {
-				String url = queryString.substring(URL_PARAM_REDIRECT.length());
 				LOG.info("url=" + url);
 				ClickCount cc = new ClickCount();
 				cc.setUrl(url);
@@ -39,11 +39,12 @@ public class ClickCountFilter extends BaseFilter {
 				cc.setUsername(request.getRemoteUser());
 				Ebean.save(cc);
 				LOG.info("saved cc=" + cc);
-				response.sendRedirect(url);
-				return true;
 			} catch (Exception e) {
 				LOG.error(e,e);
 			}
+			response.sendRedirect(url);
+			return true;
+
 		}
 		return false;
 	}
