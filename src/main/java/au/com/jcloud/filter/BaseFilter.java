@@ -1,5 +1,7 @@
 package au.com.jcloud.filter;
 
+import com.avaje.ebean.EbeanServer;
+
 import java.io.IOException;
 
 import javax.servlet.Filter;
@@ -13,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
+import au.com.jcloud.service.EBeanService;
+
 /**
  * Created by david on 31/08/16.
  */
@@ -20,6 +24,8 @@ import org.apache.log4j.Logger;
 public abstract class BaseFilter implements Filter {
 
 	protected Logger LOG = Logger.getLogger(getClass());
+	private static final String SERVER_NAME = "jc";
+	private static boolean serverInitialised = false;
 
 	/**
 	 * Handle the filter action with the request and response parameter.
@@ -39,7 +45,13 @@ public abstract class BaseFilter implements Filter {
 
 	@Override
 	public void init(final FilterConfig arg0) throws ServletException {
-		// No init required
+		// Initialise EbeanServer
+		if (!serverInitialised) {
+			LOG.info("EBean server init " + SERVER_NAME);
+			EBeanService.getServer(SERVER_NAME, false);
+			LOG.info("EBean server ready " + SERVER_NAME);
+			serverInitialised = true;
+		}
 	}
 
 	@Override
