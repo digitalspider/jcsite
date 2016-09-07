@@ -77,25 +77,25 @@ public class UserService extends BaseService {
 	}
 
 	public User getByUsername(String username) {
-		User user = Ebean.find(User.class).select("id, name, email, status, firstName, lastName").where()
-				.eq("name", username).findUnique();
+		User user = Ebean.find(User.class).select("id, username, email, status, firstName, lastName").where()
+				.eq("username", username).findUnique();
 		return user;
 	}
 
 	public User getByEmail(String username) {
-		User user = Ebean.find(User.class).select("id, name, email, status, firstName, lastName").where()
+		User user = Ebean.find(User.class).select("id, username, email, status, firstName, lastName").where()
 				.eq("email", username).findUnique();
 		return user;
 	}
 
 	public List<User> getListByUsername(String username) {
-		List<User> users = Ebean.find(User.class).select("id, name, email, status, firstName, lastName").where()
-				.eq("name", username).findList();
+		List<User> users = Ebean.find(User.class).select("id, username, email, status, firstName, lastName").where()
+				.eq("username", username).findList();
 		return users;
 	}
 
 	public List<User> getListByEmail(String username) {
-		List<User> users = Ebean.find(User.class).select("id, name, email, status, firstName, lastName").where()
+		List<User> users = Ebean.find(User.class).select("id, username, email, status, firstName, lastName").where()
 				.eq("email", username).findList();
 		return users;
 	}
@@ -104,9 +104,9 @@ public class UserService extends BaseService {
 		String passValue = getPassword(username, password);
 		User user = null;
 		if (StringUtils.isNotBlank(username)) {
-			user = Ebean.find(User.class).select("id, name, email, status, firstName, lastName").where()
-					.or(Expr.eq("name", username), Expr.eq("email", username)).eq("password", passValue)
-					.eq("status", Status.ENABLED.name()).findUnique();
+			user = Ebean.find(User.class).select("id, username, email, status, firstName, lastName").where()
+					.or(Expr.eq("username", username), Expr.eq("email", username)).eq("password", passValue)
+					.eq("status", Status.ENABLED.value()).findUnique();
 		}
 		return user;
 	}
