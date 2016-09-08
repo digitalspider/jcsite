@@ -18,6 +18,7 @@ generate.sh
 *.iws
 *.log
 *.db
+/*.sql
 
 # Package Files #
 *.jar
