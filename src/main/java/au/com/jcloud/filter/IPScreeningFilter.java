@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import au.com.jcloud.WebConstants;
 import au.com.jcloud.util.HttpUtil;
 
 import static au.com.jcloud.WebConstants.ENV_IP_FILTER;
@@ -18,7 +19,7 @@ import static au.com.jcloud.WebConstants.ENV_IP_FILTER;
 /**
  * Created by david.vittor on 2/09/16.
  */
-@WebFilter(urlPatterns = "/*")
+@WebFilter(filterName= WebConstants.FILTER_NAME_IP, urlPatterns = "/*")
 public class IPScreeningFilter extends BaseFilter {
 
 	private static Pattern blacklistIpFilterPattern;

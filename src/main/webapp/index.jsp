@@ -4,6 +4,7 @@
 <s:layout-render name="/jsp/layout/public.jsp" pageTitle="Home">
 	<s:layout-component name="customjs">
 		<script src="${ctx}/js/links.js"></script>
+		<script src="${ctx}/js/blogs.js"></script>
 	</s:layout-component>
 
     <s:layout-component name="contents">
@@ -16,7 +17,7 @@
                         JCloud allows you to host your web application with simplicity.</p>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" id="blogs">
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 col-xl-3">
 
                         <div class="tm-content-box">
@@ -116,7 +117,7 @@
                                         </h3>
                                         <nav>
 
-                                            <ul class="nav">
+                                            <ul class="nav" id="categories">
                                                 <li><a href="#" class="tm-text-link">Java development</a></li>
                                                 <li><a href="#" class="tm-text-link">Hosting</a></li>
                                                 <li><a href="#" class="tm-text-link">Technology news</a></li>

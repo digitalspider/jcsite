@@ -16,11 +16,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 
+import au.com.jcloud.WebConstants;
+
 /**
  * A filter to prevent to clickjacking.
  * Adapted from https://www.owasp.org/index.php/ClickjackFilter_for_Java_EE
  */
-@WebFilter(urlPatterns = "/*")
+@WebFilter(filterName= WebConstants.FILTER_NAME_CLICKJACK, urlPatterns = "/*")
 public class ClickjackFilter extends BaseFilter {
 	
 	public static final String MODE_DENY = "DENY";
@@ -47,11 +49,12 @@ public class ClickjackFilter extends BaseFilter {
 	}
 	
 	protected void setConfigMode(String configMode) {
-		if (configMode != null && (configMode.equals(MODE_DENY) || configMode.equals(MODE_SAME_ORIGIN))) {
-			mode = configMode;
-		}
-		else {
-			LOG.error("Unsupported configMode: " + configMode);
+		if (configMode != null) {
+			if (configMode.equals(MODE_DENY) || configMode.equals(MODE_SAME_ORIGIN)) {
+				mode = configMode;
+			} else {
+				LOG.error("Unsupported configMode: " + configMode);
+			}
 		}
 	}
 	

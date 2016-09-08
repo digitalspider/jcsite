@@ -35,7 +35,7 @@ public class BlogLinkActionBean extends JCActionBean {
 	protected List<Blog> getActiveBlogs() {
 		List<Blog> data = new ArrayList<>();
 		try {
-			data = Ebean.find(Blog.class).where().eq("status", 1).findList();
+			data = Ebean.find(Blog.class).where().eq("status", 1).setMaxRows(4).findList();
 		} catch (Exception e) {
 			LOG.error(e,e);
 		}

@@ -64,8 +64,7 @@ public class JCActionBean implements ActionBean {
 	}
 
 	protected String getReferrer() {
-		String referrer = context.getRequest().getHeader("referer");
-		return referrer;
+		return HttpUtil.getReferrer(context.getRequest());
 	}
 
 	protected String getQueryString() {
@@ -81,7 +80,7 @@ public class JCActionBean implements ActionBean {
 
 	protected String getConextPath() {
 		String contextPath = HttpUtil.getContextUrl(getRequest());
-		LOG.info("contextPath=" + contextPath);
+		LOG.debug("contextPath=" + contextPath);
 		return contextPath;
 	}
 
