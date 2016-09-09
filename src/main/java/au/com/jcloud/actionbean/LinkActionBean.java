@@ -2,7 +2,6 @@ package au.com.jcloud.actionbean;
 
 import static au.com.jcloud.WebConstants.URL_CC_PREFIX;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -39,33 +38,22 @@ public class LinkActionBean extends JCActionBean {
 	}
 
 	protected List<Link> getLinkData() {
-		String pathInfo = getRequest().getPathInfo();
-		LOG.info("pathInfo="+pathInfo);
 		PathParts pathParts = HttpUtil.getPathParts(getRequest());
 		LOG.info("pathParts="+pathParts);
-		String url = getRequest().getRequestURI();
-		LOG.info("uri="+url);
-		int index = url.indexOf(WebConstants.ACTION_PUBLIC_LINK);
-		if (index<1) {
-			return new ArrayList<>();
-		}
+
 		String tags = null;
 		int maxRows = DEFAULT_ROWS;
-		String urlPath = url.substring(index+WebConstants.ACTION_PUBLIC_LINK.length());
-		if (StringUtils.isNotBlank(urlPath)) {
-			String[] urlParts = urlPath.split("/");
-			tags = urlParts[0];
-			if (urlParts.length>1 && StringUtils.isNumeric(urlParts[1])) {
-				maxRows = Integer.parseInt(urlParts[1]);
-				if (maxRows>MAX_ROWS) {
-					maxRows = MAX_ROWS;
-				}
+		if (pathParts.size()>1) {
+			tags = pathParts.get(1);
+			if (pathParts.isNumeric(2)) {
+				maxRows = pathParts.getInt(2,0,MAX_ROWS);
 			}
 		}
 		ExpressionList<Link> query = Ebean.find(Link.class).setMaxRows(maxRows).where().eq("status", Status.ENABLED.value());
 		if (StringUtils.isNotBlank(tags)) {
 			query = query.and().ilike("tags",'%'+tags+'%');
 		}
+		LOG.info("query="+query);
 		List<Link> linkList = query.findList();
 		for (Link link : linkList) {
 			link.setUrl(getConextPath()+URL_CC_PREFIX+link.getUrl());
