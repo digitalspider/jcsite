@@ -13,6 +13,8 @@ import com.avaje.ebean.ExpressionList;
 import au.com.jcloud.WebConstants;
 import au.com.jcloud.enums.Status;
 import au.com.jcloud.model.Link;
+import au.com.jcloud.util.HttpUtil;
+import au.com.jcloud.util.PathParts;
 import net.sourceforge.stripes.action.JsonResolution;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.RestActionBean;
@@ -37,7 +39,12 @@ public class LinkActionBean extends JCActionBean {
 	}
 
 	protected List<Link> getLinkData() {
+		String pathInfo = getRequest().getPathInfo();
+		LOG.info("pathInfo="+pathInfo);
+		PathParts pathParts = HttpUtil.getPathParts(getRequest());
+		LOG.info("pathParts="+pathParts);
 		String url = getRequest().getRequestURI();
+		LOG.info("uri="+url);
 		int index = url.indexOf(WebConstants.ACTION_PUBLIC_LINK);
 		if (index<1) {
 			return new ArrayList<>();
