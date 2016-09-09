@@ -7,6 +7,8 @@ import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.RestActionBean;
 import net.sourceforge.stripes.action.UrlBinding;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,15 +35,19 @@ public class BlogLinkActionBean extends JCActionBean {
 	}
 
 	protected List<Blog> getActiveBlogs() {
+		LOG.info("getActiveBlogs() START");
 		List<Blog> data = new ArrayList<>();
 		try {
-			data = Ebean.find(Blog.class).where().eq("status", 1).findList();
+			data = Ebean.find(Blog.class).where().eq("status", 1).setMaxRows(4).findList();
+			LOG.info("data="+data);
 		} catch (Exception e) {
 			LOG.error(e,e);
 		}
 		for (Blog blog : data) {
+			// Update link to go through clickCount
 			blog.setLink( getConextPath()+URL_CC_PREFIX+blog.getLink());
 		}
+		LOG.info("getActiveBlogs() DONE. data="+data);
 		return data;
 	}
 }

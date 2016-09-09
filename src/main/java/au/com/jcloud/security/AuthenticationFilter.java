@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import au.com.jcloud.WebConstants;
 import au.com.jcloud.filter.BaseFilter;
 import au.com.jcloud.model.Role;
 import au.com.jcloud.model.User;
@@ -36,7 +37,7 @@ import static au.com.jcloud.WebConstants.SESSION_ATTRIBUTE_USER;
  *
  * @author thein
  */
-@WebFilter(urlPatterns = { "/*" })
+@WebFilter(filterName= WebConstants.FILTER_NAME_AUTH, urlPatterns = "/*" )
 public class AuthenticationFilter extends BaseFilter {
 
 	@Override

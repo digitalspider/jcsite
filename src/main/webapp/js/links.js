@@ -5,15 +5,16 @@ $(document).ready(function () {
 			type: "POST",
 			dataType: 'json',
 			success: function (data, textStatus, jqXHR) {
-				var $el = $("#links");
-				var $backup = $.extend( true, {}, $el );
-				$el.empty(); // remove old values
+				var ele = $("#links");
+				var backup = $.extend( true, {}, ele );
+				ele.empty(); // remove old values
 				$.each(data, function(key, value) {
-					$el.append($("<li></li>").append($("<a></a>").attr("href", value).attr("class","tm-text-link").text(key)));
+					ele.append($("<li></li>")
+						.append($("<a></a>").attr("href", value).attr("class","tm-text-link").text(key)));
 				});
 			},
 			error: function (jqXHR, textStatus, errorThrown) {
-				$el = $backup;
+				ele = backup;
 			}
 	});
 });

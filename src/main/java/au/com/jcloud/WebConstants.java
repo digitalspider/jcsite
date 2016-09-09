@@ -37,6 +37,12 @@ public class WebConstants {
 
 	public static final String ENV_IP_FILTER = "ipFilter";
 
+	public static final String FILTER_NAME_IP="ip";
+	public static final String FILTER_NAME_AUTH="auth";
+	public static final String FILTER_NAME_CLICK_COUNT="cc";
+	public static final String FILTER_NAME_DEVICE="device";
+	public static final String FILTER_NAME_CLICKJACK="clickjack";
+
 	public static final String SESSION_NONCE_UID_LOGIN = "";
 	public static final String SESSION_NONCE_UID_REGSITER = "";
 	public static final String SESSION_NONCE_UID_PASSWORD = "";
