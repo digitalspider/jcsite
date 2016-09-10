@@ -56,7 +56,8 @@ public class LinkActionBean extends JCActionBean {
 		LOG.info("query="+query);
 		List<Link> linkList = query.findList();
 		for (Link link : linkList) {
-			link.setUrl(getConextPath()+URL_CC_PREFIX+link.getUrl());
+			// Update link to go through clickCount
+			link.setLink(getConextPath()+URL_CC_PREFIX+link.getLink());
 		}
 		return linkList;
 	}
