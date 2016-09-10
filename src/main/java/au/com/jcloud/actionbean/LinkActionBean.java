@@ -26,8 +26,8 @@ import net.sourceforge.stripes.action.UrlBinding;
 @UrlBinding(WebConstants.ACTION_PUBLIC_LINK)
 public class LinkActionBean extends JCActionBean {
 
-	public static final int DEFAULT_ROWS=10;
-	public static final int MAX_ROWS=50;
+	public static final int DEFAULT_ROWS=1;
+	public static final int MAX_ROWS=12;
 	
 	public Resolution get() {
 		return new JsonResolution( getLinkData() );
@@ -44,9 +44,13 @@ public class LinkActionBean extends JCActionBean {
 		String tags = null;
 		int maxRows = DEFAULT_ROWS;
 		if (pathParts.size()>1) {
-			tags = pathParts.get(1);
-			if (pathParts.isNumeric(2)) {
-				maxRows = pathParts.getInt(2,0,MAX_ROWS);
+			if (pathParts.isNumeric(1)) {
+				maxRows = pathParts.getInt(1,0,MAX_ROWS);
+			} else {
+				tags = pathParts.get(1);
+				if (pathParts.isNumeric(2)) {
+					maxRows = pathParts.getInt(2,0,MAX_ROWS);
+				}
 			}
 		}
 		ExpressionList<Link> query = Ebean.find(Link.class).setMaxRows(maxRows).where().eq("status", Status.ENABLED.value());

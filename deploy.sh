@@ -2,8 +2,8 @@
 
 mvn package
 
-#TOMCATDIR=/opt/tomcat/tomcat-stage
-TOMCATDIR=/c/apps/tomcat/apache-tomcat-8.0.35
+TOMCATDIR=/opt/tomcat/tomcat-stage
+#TOMCATDIR=/c/apps/tomcat/apache-tomcat-8.0.35
 
 rm -rf $TOMCATDIR/webapps/website*
 sleep 2

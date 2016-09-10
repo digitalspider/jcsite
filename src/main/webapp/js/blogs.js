@@ -1,8 +1,22 @@
 $(document).ready(function () {
+	getBlogs("home", 4, null);
+});
+
+function getBlogs(tags, maxRows, blogEleName) {
 	var formURL = "/website/public/blog";
-	$.getJSON(formURL, null, function (data) {
-		var ele = $("#blogs");
+	if (tags!=null) {
+		formURL = formURL + "/"+tags;
+	}
+	if (maxRows!=null) {
+		formURL = formURL + "/"+maxRows;
+	}
+	if (blogEleName==null) {
+		blogEleName = "#blogs";
+	}
+	$.post(formURL, null, function (data) {
+		var ele = $(blogEleName);
 		if (data.length>0) {
+			//var backup = $.extend( true, {}, ele );
 			ele.empty(); // remove old values
 			$.each(data, function(i, blog) {
 				ele.append($("<div></div>").attr("class", "col-xs-12 col-sm-6 col-md-6 col-lg-3 col-xl-3")
@@ -14,5 +28,5 @@ $(document).ready(function () {
 				);
 			});
 		}
-	});
-});
+	}, 'json');
+}
