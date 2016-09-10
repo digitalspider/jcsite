@@ -5,6 +5,14 @@
 	<s:layout-component name="customjs">
 		<script src="${ctx}/js/links.js"></script>
 		<script src="${ctx}/js/blogs.js"></script>
+		<script>
+			$(document).ready(function () {
+				getLinks("${ctx}", "home", 5, "#links");
+			});
+			$(document).ready(function () {
+				getBlogs("${ctx}", "home", 4, "#blogs");
+			});
+		</script>
 	</s:layout-component>
 
     <s:layout-component name="contents">

@@ -1,9 +1,5 @@
-$(document).ready(function () {
-	getBlogs("home", 4, null);
-});
-
-function getBlogs(tags, maxRows, blogEleName) {
-	var formURL = "/website/public/blog";
+function getBlogs(ctx, tags, maxRows, blogEleName) {
+	var formURL = ctx+"/public/blog";
 	if (tags!=null) {
 		formURL = formURL + "/"+tags;
 	}
