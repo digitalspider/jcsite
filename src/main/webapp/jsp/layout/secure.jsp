@@ -21,6 +21,8 @@
 
 		<p>Welcome ${username}</p>
 
+		<h3 class="alert alert-danger">These pages are still under construction</h3>
+
 		<ul>
 			<li><a href="${ctx}/secure/account" class="nav-link">Account Settings</a></li>
 			<li><a href="${ctx}/secure/server" class="nav-link">Servers</a></li>

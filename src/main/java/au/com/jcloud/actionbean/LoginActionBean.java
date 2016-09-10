@@ -138,6 +138,7 @@ public class LoginActionBean extends JCActionBean {
 		// Create the new user
 		User user = userService.createUser(newusername, firstname, lastname, email, newpassword);
 		LOG.info("user created=" + user);
+		emailService.sendFromEmail(user.getFullName(), user.getEmail(),"New User Registered", "User="+user);
 
 		// Register
 		formSubmissionCountService.increment(ipAddress, FormType.REGISTRATION);
