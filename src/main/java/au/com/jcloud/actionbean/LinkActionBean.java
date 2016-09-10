@@ -39,7 +39,7 @@ public class LinkActionBean extends JCActionBean {
 
 	protected List<Link> getLinkData() {
 		PathParts pathParts = HttpUtil.getPathParts(getRequest());
-		LOG.info("pathParts="+pathParts);
+		LOG.info("pathParts="+pathParts); // 0=link, 1=category, 2=maxRows
 
 		String tags = null;
 		int maxRows = DEFAULT_ROWS;
