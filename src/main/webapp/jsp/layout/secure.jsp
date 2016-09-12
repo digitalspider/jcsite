@@ -12,6 +12,8 @@
         <s:layout-component name="htmlhead">
         	<jsp:include page="/jsp/include/htmlhead.jsp"/>
         </s:layout-component>
+        <s:layout-component name="customhead">
+        </s:layout-component>
     </head>
 
     <body>
@@ -33,6 +35,9 @@
 
         <s:layout-component name="footer">
             <jsp:include page="/jsp/include/footer.jsp"/>
+        </s:layout-component>
+        <s:layout-component name="defaultjs">
+        	<jsp:include page="/jsp/include/javascript.jsp"/>
         </s:layout-component>
         <s:layout-component name="customjs">
         </s:layout-component>

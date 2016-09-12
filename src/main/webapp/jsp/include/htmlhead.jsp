@@ -11,10 +11,3 @@ http://www.templatemo.com/tm-488-classic
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400">  <!-- Google web font "Open Sans" -->
 <link rel="stylesheet" href="${ctx}/css/bootstrap.min.css">                                      <!-- Bootstrap style -->
 <link rel="stylesheet" href="${ctx}/css/templatemo-style.css">                                   <!-- Templatemo style -->
-
-<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-<script type="text/javascript" src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-<script type="text/javascript" src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
