@@ -4,12 +4,8 @@ import com.avaje.ebean.Ebean;
 import com.avaje.ebean.ExpressionList;
 
 import net.sourceforge.stripes.action.DefaultHandler;
-import net.sourceforge.stripes.action.DontBind;
-import net.sourceforge.stripes.action.DontValidate;
-import net.sourceforge.stripes.action.JsonResolution;
-import net.sourceforge.stripes.action.RedirectResolution;
+import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
-import net.sourceforge.stripes.action.RestActionBean;
 import net.sourceforge.stripes.action.UrlBinding;
 
 import org.apache.commons.lang3.StringUtils;
@@ -73,7 +69,7 @@ public class PageActionBean extends JCActionBean {
 		} catch (Exception e) {
 			LOG.error(e, e);
 		}
-		return new RedirectResolution(url);
+		return new ForwardResolution(url);
 	}
 
 	public Blog getPage() {
