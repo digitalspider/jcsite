@@ -21,7 +21,7 @@
 
                     <h3 class="tm-gold-text tm-title tm-footer-content-box-title">Links</h3>
                     <nav>
-                        <ul class="nav">
+                        <ul class="nav" id="footer-links">
                             <li><a href="blog.jsp" class="tm-footer-link">Our Blogs</a></li>
                             <li><a href="contact.jsp" class="tm-footer-link">Contact Us</a></li>
                             <li><a href="#" class="tm-footer-link">Privacy Policy</a></li>

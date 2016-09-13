@@ -3,15 +3,10 @@
 
 <s:layout-render name="/jsp/layout/public.jsp" pageTitle="Home">
 	<s:layout-component name="customjs">
-		<script src="${ctx}/js/jcloud.links.js"></script>
-		<script src="${ctx}/js/jcloud.blogs.js"></script>
-		<script src="${ctx}/js/jcloud.templates.js"></script>
 		<script>
 			$(document).ready(function () {
-				getLinks("${ctx}", "categories", 5, "#link-template", "#categories");
-				getLinks("${ctx}", "home", 5, "#link-template", "#links");
-			});
-			$(document).ready(function () {
+				getLinks("${ctx}", "category", 5, "#link-template", "#category-links");
+				getLinks("${ctx}", "home", 5, "#link-template", "#useful-links");
 				getBlogs("${ctx}", "", 4, "#blog-template", "#blogs");
 				getBlogs("${ctx}", "", 4, "#related-template", "#related-posts");
 			});
@@ -128,7 +123,7 @@
                                         </h3>
                                         <nav>
 
-                                            <ul class="nav" id="categories">
+                                            <ul class="nav" id="category-links">
                                                 <li><a href="#" class="tm-text-link">Java development</a></li>
                                                 <li><a href="#" class="tm-text-link">Hosting</a></li>
                                                 <li><a href="#" class="tm-text-link">Technology news</a></li>
@@ -143,7 +138,7 @@
                                             Useful Links
                                         </h3>
                                         <nav>
-                                            <ul class="nav" id="links">
+                                            <ul class="nav" id="useful-links">
                                                 <li><a href="http://www.java.com" class="tm-text-link">Oracle Java</a></li>
                                                 <li><a href="http://www.se-radio.net" class="tm-text-link">SE Radio</a></li>
                                                 <li><a href="http://www.mkyong.com/" class="tm-text-link">Mykong</a></li>

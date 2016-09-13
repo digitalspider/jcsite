@@ -1,22 +1,31 @@
-function getBlogs(ctx, tags, maxRows, templateEleName, blogEleName) {
+function getLinks(ctx, tags, maxRows, templateEleName, resultEleName) {
+	var formURL = ctx+"/public/link";
+	getAjaxContent(formURL, tags, maxRows, templateEleName, resultEleName);
+}
+
+function getBlogs(ctx, tags, maxRows, templateEleName, resultEleName) {
 	var formURL = ctx+"/public/blog";
+	getAjaxContent(formURL, tags, maxRows, templateEleName, resultEleName);
+}
+
+function getAjaxContent(ajaxURL, tags, maxRows, templateEleName, resultEleName) {
 	if (tags!=null) {
-		formURL = formURL + "/"+tags;
+		ajaxURL = ajaxURL + "/"+tags;
 	}
 	if (maxRows!=null) {
-		formURL = formURL + "/"+maxRows;
+		ajaxURL = ajaxURL + "/"+maxRows;
 	}
-	if (blogEleName==null) {
-		blogEleName = "#blogs";
+	if (resultEleName==null) {
+		resultEleName = "#links";
 	}
-	$.post(formURL, null, function (data) {
-		var ele = $(blogEleName);
+	$.post(ajaxURL, null, function (data) {
+		var ele = $(resultEleName);
 		if (data.length>0) {
 			//var backup = $.extend( true, {}, ele );
 			ele.empty(); // remove old values
 			var template = $(templateEleName).html();
 			Mustache.parse(template);   // optional, speeds up future uses
-			var rendered = Mustache.render(template, {blog: data});
+			var rendered = Mustache.render(template, {content: data});
 			ele.html(rendered);
 			/*
 			$.each(data, function(i, blog) {

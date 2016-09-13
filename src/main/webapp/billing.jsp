@@ -123,20 +123,22 @@ function stripeResponseHandler(status, response) {
                             <div class="h4">Payment Details</div>                            
 							<input id="cc-exp-month" data-stripe="exp_month" type="hidden"/>
 							<input id="cc-exp-year" data-stripe="exp_year" type="hidden"/>
-                            
+
+                            <div id="price" class="control-label">Price <span class="text-muted price">$12.99</span></div>
+
                             <div class="form-group">
                             	<s:errors field="cc-number"/>
-                            	<label for="cc-number" class="control-label">Card number formatting <small class="text-muted">[<span class="cc-brand"></span>]</small></label>
+                            	<label for="cc-number" class="control-label">Card number <small class="text-muted">[<span class="cc-brand">MasterCard</span>]</small></label>
                                 <input type="tel" id="cc-number" data-stripe="number" class="form-control cc-number" placeholder="1234 5678 9012 3456" required="true"/>
                             </div>
                             <div class="form-group">
                             	<s:errors field="cc-address"/>
-                            	<label for="cc-exp" class="control-label">Card expiry formatting</label>
+                            	<label for="cc-exp" class="control-label">Card expiry </label>
                                 <input type="tel" id="cc-exp" class="form-control cc-exp" autocomplete="cc-exp" placeholder="01 / 16" required="true"/>
                             </div>
                             <div class="form-group">
                             	<s:errors field="cc-cvc"/>
-                            	<label for="cc-cvc" class="control-label">Card CVC formatting</label>
+                            	<label for="cc-cvc" class="control-label">Card CVC </label>
                                 <input type="tel" id="cc-cvc" data-stripe="cvc" class="form-control cc-cvc" auto-complete="off" placeholder="111" required="true"/>
                             </div>
                             <s:submit id="bill" name="bill" value="buy" class="tm-btn text-uppercase" />

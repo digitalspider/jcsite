@@ -2,6 +2,16 @@
 <%@ include file="/jsp/include/taglibs.jsp"%>
 
 <s:layout-render name="/jsp/layout/secure.jsp" pageTitle="Account">
+
+	<s:layout-component name="customjs">
+		<script>
+			$(document).ready(function () {
+				getLinks("${ctx}", "category", 5, "#link-template", "#category-links");
+				getLinks("${ctx}", "home", 5, "#link-template", "#useful-links");
+			});
+		</script>
+	</s:layout-component>
+
     <s:layout-component name="contents">
 
 <%
@@ -234,7 +244,7 @@ String username = request.getRemoteUser();
                                 Categories
                             </h3>
                             <nav>
-                                <ul class="nav">
+                                <ul class="nav" id='category-links'>
                                     <li><a href="#" class="tm-text-link">Java development</a></li>
                                     <li><a href="#" class="tm-text-link">Hosting</a></li>
                                     <li><a href="#" class="tm-text-link">Technology news</a></li>
@@ -247,7 +257,7 @@ String username = request.getRemoteUser();
                                 Useful Links
                             </h3>
                             <nav>   
-                                <ul class="nav">
+                                <ul class="nav" id="useful-links">
                                     <li><a href="http://www.java.com" class="tm-text-link">Oracle Java</a></li>
                                     <li><a href="http://www.se-radio.net" class="tm-text-link">SE Radio</a></li>
                                     <li><a href="http://www.mkyong.com/" class="tm-text-link">Mykong</a></li>
