@@ -26,6 +26,7 @@
         </s:layout-component>
         <s:layout-component name="defaultjs">
         	<jsp:include page="/jsp/include/javascript.jsp"/>
+        	<jsp:include page="/jsp/include/templates.jsp"/>
         </s:layout-component>
         <s:layout-component name="customjs">
         </s:layout-component>

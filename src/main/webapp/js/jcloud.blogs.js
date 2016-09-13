@@ -1,4 +1,4 @@
-function getBlogs(ctx, tags, maxRows, blogEleName) {
+function getBlogs(ctx, tags, maxRows, templateEleName, blogEleName) {
 	var formURL = ctx+"/public/blog";
 	if (tags!=null) {
 		formURL = formURL + "/"+tags;
@@ -14,6 +14,11 @@ function getBlogs(ctx, tags, maxRows, blogEleName) {
 		if (data.length>0) {
 			//var backup = $.extend( true, {}, ele );
 			ele.empty(); // remove old values
+			var template = $(templateEleName).html();
+			Mustache.parse(template);   // optional, speeds up future uses
+			var rendered = Mustache.render(template, {blog: data});
+			ele.html(rendered);
+			/*
 			$.each(data, function(i, blog) {
 				ele.append($("<div></div>").attr("class", "col-xs-12 col-sm-6 col-md-6 col-lg-3 col-xl-3")
 					.append($("<div></div>").attr("class", "tm-content-box")
@@ -23,6 +28,7 @@ function getBlogs(ctx, tags, maxRows, blogEleName) {
 					)
 				);
 			});
+			*/
 		}
 	}, 'json');
 }
