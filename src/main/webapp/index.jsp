@@ -5,6 +5,9 @@
 	<s:layout-component name="customjs">
 		<script src="${ctx}/js/links.js"></script>
 		<script src="${ctx}/js/blogs.js"></script>
+		<script id="template" type="x-tmpl-mustache">
+		Hello {{ name }}!
+		</script>
 		<script>
 			$(document).ready(function () {
 				getLinks("${ctx}", "home", 5, "#links");
@@ -12,10 +15,17 @@
 			$(document).ready(function () {
 				getBlogs("${ctx}", "home", 4, "#blogs");
 			});
+			$(document).ready(function () {
+				var template = $('#template').html();
+				Mustache.parse(template);   // optional, speeds up future uses
+				var rendered = Mustache.render(template, {name: "Luke"});
+				$('#target').html(rendered);
+			});
 		</script>
 	</s:layout-component>
 
     <s:layout-component name="contents">
+    	<div id="target">Loading...</div>
         <section class="tm-section">
             <div class="container-fluid">
                 <div class="row">

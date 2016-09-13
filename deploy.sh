@@ -8,4 +8,4 @@ TOMCATDIR=/opt/tomcat/tomcat-stage
 rm -rf $TOMCATDIR/webapps/website*
 sleep 2
 cp target/website.war $TOMCATDIR/webapps/
-tail -100f $TOMCATDIR/logs/catalina.out
+tail -100f $TOMCATDIR/logs/catalina.out | sed -e 's/\(.*WARN.*\)/\o033[33m\1\o033[39m/' -e 's/\(.*ERROR.*\)/\o033[31m\1\o033[39m/'
