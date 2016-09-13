@@ -34,7 +34,7 @@ public class PageActionBean extends JCActionBean {
 	public static final int DEFAULT_ROWS = 1;
 	public static final int MAX_ROWS = 12;
 
-	private Blog page;
+	private Blog page = new Blog();
 	private List<Blog> relatedPages = new ArrayList<Blog>();
 
 	@Override

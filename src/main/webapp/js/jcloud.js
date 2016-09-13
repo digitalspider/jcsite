@@ -1,10 +1,10 @@
 function getLinks(ctx, tags, maxRows, templateEleName, resultEleName) {
-	var formURL = ctx+"/public/link";
+	var formURL = ctx+"/rest/link";
 	getAjaxContent(formURL, tags, maxRows, templateEleName, resultEleName);
 }
 
 function getBlogs(ctx, tags, maxRows, templateEleName, resultEleName) {
-	var formURL = ctx+"/public/blog";
+	var formURL = ctx+"/rest/blog";
 	getAjaxContent(formURL, tags, maxRows, templateEleName, resultEleName);
 }
 
