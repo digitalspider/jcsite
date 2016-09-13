@@ -24,7 +24,7 @@ import net.sourceforge.stripes.action.UrlBinding;
  * Created by david.vittor on 3/08/16.
  */
 @RestActionBean
-@UrlBinding(WebConstants.ACTION_PUBLIC_BLOG)
+@UrlBinding(WebConstants.ACTION_REST_BLOG)
 public class BlogLinkActionBean extends JCActionBean {
 
 	public static final int DEFAULT_ROWS = 1;

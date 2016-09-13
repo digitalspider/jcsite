@@ -19,16 +19,19 @@ public class WebConstants {
 	public static final String PATH_CLICK_COUNT = "/cc";
 	public static final String PATH_PUBLIC = "/public";
 	public static final String PATH_ADMIN = "/admin";
+	public static final String PATH_REST = "/rest";
 	public static final String PATH_SECURE = "/secure";
 	public static final String PATH_SECURE_JSP = "/jsp/secure";
 
 	public static final String PAGE_LOGIN = "/login.jsp";
 	public static final String PAGE_INDEX = "/index.jsp";
 	public static final String PAGE_RESET = "/reset.jsp";
+	public static final String PAGE_PAGE = "/page.jsp";
 	public static final String PAGE_CONTACT = "/contact.jsp";
 	public static final String PAGE_SECURE = PATH_SECURE_JSP + "/index.jsp";
-	public static final String ACTION_PUBLIC_LINK = PATH_PUBLIC + "/link";
-	public static final String ACTION_PUBLIC_BLOG = PATH_PUBLIC + "/blog";
+	public static final String ACTION_REST_LINK = PATH_REST + "/link";
+	public static final String ACTION_REST_BLOG = PATH_REST + "/blog";
+	public static final String ACTION_PUBLIC_PAGE = PATH_PUBLIC + "/page";
 	public static final String ACTION_PUBLIC_CONTACT = PATH_PUBLIC + "/contact";
 	public static final String ACTION_SECURE_INDEX = PATH_SECURE + "/index";
 	public static final String ACTION_SECURE_LOGIN = PATH_SECURE + "/login";
