@@ -19,17 +19,14 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-xs-center">
                         <h2 class="tm-gold-text tm-title">Welcome to JCloud</h2>
-                        <p class="tm-subtitle">Welcome to Australias premier java hosting solution.<br/>
-                        JCloud allows you to host your web application with simplicity.</p>
+                        <p class="tm-subtitle">Welcome to Australia&apos;s premier java hosting solution.<br/>
+                        JCloud allows you to host your own Java web applications.</p>
                     </div>
                 </div>
                 <div class="row" id="blogs">
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 col-xl-3">
 
                         <div class="tm-content-box">
-                            <!--
-                            <img src="img/tm-img-310x180-1.jpg" alt="Image" class="tm-margin-b-20 img-fluid">
-                            -->
                             <h4 class="tm-margin-b-20 tm-gold-text">Business Hosting</h4>
                             <p class="tm-margin-b-20">Host your business applications with us,
                             either exclusively, or as part of your load balanced solution. We focus on
@@ -43,9 +40,6 @@
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 col-xl-3">
 
                         <div class="tm-content-box">
-                            <!--
-                            <img src="img/tm-img-310x180-2.jpg" alt="Image" class="tm-margin-b-20 img-fluid">
-                            -->
                             <h4 class="tm-margin-b-20 tm-gold-text">Software Developers</h4>
                             <p class="tm-margin-b-20">Your job is to build awesome applications. Let
                             us take care of hosting them for you. We provide databases, application containers,
@@ -58,9 +52,6 @@
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 col-xl-3">
 
                         <div class="tm-content-box">
-                            <!--
-                            <img src="img/tm-img-310x180-3.jpg" alt="Image" class="tm-margin-b-20 img-fluid">
-                            -->
                             <h4 class="tm-margin-b-20 tm-gold-text">Educators and Students</h4>
                             <p class="tm-margin-b-20">Run Java training courses and help your students
                             host their solutions in the java cloud. <br/>
@@ -74,9 +65,6 @@
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 col-xl-3">
 
                         <div class="tm-content-box">
-                            <!--
-                            <img src="img/tm-img-310x180-4.jpg" alt="Image" class="tm-margin-b-20 img-fluid">
-                            -->
                             <h4 class="tm-margin-b-20 tm-gold-text">Services</h4>
                             <p class="tm-margin-b-20">Interested in us developing a website solution
                             for you. We can host wordpress, integration with payments, build an ecommerce

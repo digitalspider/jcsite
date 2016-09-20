@@ -87,9 +87,8 @@ function stripeResponseHandler(status, response) {
             <div class="container-fluid">
                 <div class="row">
 
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                    
-                        <s:form id="billingForm" method="post" action="/secure/billing" class="tm-billing-form">
+					<s:form id="paymentForm" method="post" action="/secure/payment" class="tm-payment-form">
+                    	<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                         	<s:errors globalErrorsOnly="true"/>
                             <div class="h4">Billing Details</div>
                             <div class="form-group">
@@ -112,15 +111,11 @@ function stripeResponseHandler(status, response) {
                             	<s:errors field="postcode"/>
                                 <input type="text" id="postcode" name="postcode" class="form-control" placeholder="Postcode" required="true"/>
                             </div>
-                            <s:submit id="bill" name="bill" value="save" class="tm-btn text-uppercase" />
-						</s:form>
-                    </div>
 
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                    
-                        <s:form id="paymentForm" method="post" action="/secure/payment" class="tm-payment-form">
-                        	<s:errors globalErrorsOnly="true"/>
-                            <div class="h4">Payment Details</div>                            
+						</div>
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+
+                            <div class="h4">Payment Details</div>
 							<input id="cc-exp-month" data-stripe="exp_month" type="hidden"/>
 							<input id="cc-exp-year" data-stripe="exp_year" type="hidden"/>
 
@@ -142,8 +137,9 @@ function stripeResponseHandler(status, response) {
                                 <input type="tel" id="cc-cvc" data-stripe="cvc" class="form-control cc-cvc" auto-complete="off" placeholder="111" required="true"/>
                             </div>
                             <s:submit id="bill" name="bill" value="buy" class="tm-btn text-uppercase" />
-						</s:form>                        
-                    </div>
+                            
+                    	</div>
+                    </s:form>
 
                 </div>
                 
