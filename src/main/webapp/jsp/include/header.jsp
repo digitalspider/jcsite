@@ -16,7 +16,7 @@
                 <div class="collapse navbar-toggleable-sm" id="tmNavbar">
                     <ul class="nav navbar-nav">
                         <li class="nav-item">
-                            <a href="${ctx}/about.jsp" class="nav-link">Services</a>
+                            <a href="${ctx}/service.jsp" class="nav-link">Services</a>
                         </li>
                         <li class="nav-item">
                             <a href="http://blog.jcloud.com.au" class="nav-link">Blog</a>

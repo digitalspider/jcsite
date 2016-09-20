@@ -20,7 +20,7 @@
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-xs-center">
                         <h2 class="tm-gold-text tm-title">Welcome to JCloud</h2>
                         <p class="tm-subtitle">Welcome to Australia&apos;s premier java hosting solution.<br/>
-                        JCloud allows you to host your own Java web applications.</p>
+                        JCloud allows you to host your own Java web applications in the cloud.</p>
                     </div>
                 </div>
                 <div class="row" id="blogs">
@@ -32,7 +32,7 @@
                             either exclusively, or as part of your load balanced solution. We focus on
                             Small to Medium business, and will work with you to find the right solution
                             for you.</p>
-                            <a href="#" class="tm-btn text-uppercase">Read more</a>
+                            <a href="${ctx}/hosting.jsp" class="tm-btn text-uppercase">Read more</a>
                         </div>
 
                     </div>
@@ -44,7 +44,7 @@
                             <p class="tm-margin-b-20">Your job is to build awesome applications. Let
                             us take care of hosting them for you. We provide databases, application containers,
                             and monitoring, so you can focus on development.</p>
-                            <a href="#" class="tm-btn text-uppercase">Read More</a>    
+                            <a href="${ctx}/develop.jsp" class="tm-btn text-uppercase">Read More</a>
                         </div>  
 
                     </div>
@@ -57,7 +57,7 @@
                             host their solutions in the java cloud. <br/>
                             Or as a student learning web development programming, host your creation
                             within our java cloud.</p>
-                            <a href="#" class="tm-btn text-uppercase">Read More</a>
+                            <a href="${ctx}/learn.jsp" class="tm-btn text-uppercase">Read More</a>
                         </div>  
 
                     </div>
@@ -69,7 +69,7 @@
                             <p class="tm-margin-b-20">Interested in us developing a website solution
                             for you. We can host wordpress, integration with payments, build an ecommerce
                             solution, or help you fix your java applications. Contact us for a quote</p>
-                            <a href="#" class="tm-btn text-uppercase">Read More</a>    
+                            <a href="${ctx}/service.jsp" class="tm-btn text-uppercase">Read More</a>
                         </div>  
 
                     </div>

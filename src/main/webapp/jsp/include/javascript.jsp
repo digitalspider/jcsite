@@ -2,7 +2,6 @@
 <%@ include file="/jsp/include/taglibs.jsp"%>
 
 <!-- load JS files -->
-<script type="text/javascript" src="${ctx}/js/jquery-1.11.3.min.js"></script>   <!-- jQuery (https://jquery.com/download/) -->
 <script type="text/javascript" src="${ctx}/js/tether.min.js"></script> <!-- Tether for Bootstrap, https://www.atlasestateagents.co.uk/javascript/tether.min.js, http://stackoverflow.com/questions/34567939/how-to-fix-the-error-error-bootstrap-tooltips-require-tether-http-github-h -->
 <script type="text/javascript" src="${ctx}/js/bootstrap.min.js"></script>       <!-- Bootstrap (http://v4-alpha.getbootstrap.com/) -->
 <script type="text/javascript" src="${ctx}/js/mustache-2.2.1.min.js"></script>  <!-- Templates in Javascript (https://mustache.github.io/) -->

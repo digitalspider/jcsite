@@ -137,7 +137,7 @@ function stripeResponseHandler(status, response) {
                                 <input type="tel" id="cc-cvc" data-stripe="cvc" class="form-control cc-cvc" auto-complete="off" placeholder="111" required="true"/>
                             </div>
                             <s:submit id="bill" name="bill" value="buy" class="tm-btn text-uppercase" />
-                            
+
                     	</div>
                     </s:form>
 
