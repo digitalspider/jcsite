@@ -22,10 +22,10 @@
                     <h3 class="tm-gold-text tm-title tm-footer-content-box-title">Links</h3>
                     <nav>
                         <ul class="nav" id="footer-links">
-                            <li><a href="blog.jsp" class="tm-footer-link">Our Blogs</a></li>
-                            <li><a href="contact.jsp" class="tm-footer-link">Contact Us</a></li>
-                            <li><a href="#" class="tm-footer-link">Privacy Policy</a></li>
-                            <li><a href="#" class="tm-footer-link">Terms and Conditions</a></li>
+                            <li><a href="${ctx}/blog.jsp" class="tm-footer-link">Our Blogs</a></li>
+                            <li><a href="${ctx}/contact.jsp" class="tm-footer-link">Contact Us</a></li>
+                            <li><a href="${ctx}/privacy.jsp" class="tm-footer-link">Privacy Policy</a></li>
+                            <li><a href="${ctx}/terms.jsp" class="tm-footer-link">Terms and Conditions</a></li>
                             <li><a href="#" class="tm-footer-link">JIRA Support Portal</a></li>
                         </ul>
                     </nav>
@@ -46,7 +46,7 @@
                     <h3 class="tm-gold-text tm-title tm-footer-content-box-title">Support</h3>
                     <p class="tm-margin-b-30">If your container is not responding, please use the contact us page and submit a request. We will address this ASAP!</p><hr class="tm-margin-b-30">
                     <p class="tm-margin-b-30">If your container is working, but your application is failing, please look at our support contracts.</p>
-                    <a href="about.jsp" class="tm-btn tm-btn-gray text-uppercase">Support</a>
+                    <a href="${ctx}/service.jsp" class="tm-btn tm-btn-gray text-uppercase">Support</a>
 
                 </div>
 
@@ -57,7 +57,7 @@
                 <div class="tm-footer-content-box">
                     <h3 class="tm-gold-text tm-title tm-footer-content-box-title">Partners</h3>
                     <p class="tm-margin-b-20">If you would like to partner with us, please contact us through the contact page</p>
-                    <a href="contact.jsp" class="tm-btn tm-btn-gray text-uppercase">Contact</a>
+                    <a href="${ctx}/contact.jsp" class="tm-btn tm-btn-gray text-uppercase">Contact</a>
                 </div>
 
             </div>

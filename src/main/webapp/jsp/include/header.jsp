@@ -19,7 +19,7 @@
                             <a href="${ctx}/service.jsp" class="nav-link">Services</a>
                         </li>
                         <li class="nav-item">
-                            <a href="http://blog.jcloud.com.au" class="nav-link">Blog</a>
+                            <a href="${ctx}/blog.jsp" class="nav-link">Blog</a>
                         </li>
                         <li class="nav-item">
                             <a href="${ctx}/contact.jsp" class="nav-link">Contact</a>

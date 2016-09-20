@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ include file="/jsp/include/taglibs.jsp"%>
 
-<s:layout-render name="/jsp/layout/public.jsp" pageTitle="Page">
+<s:layout-render name="/jsp/layout/public.jsp" pageTitle="Blogs">
 
 	<s:layout-component name="customjs">
 		<script>
@@ -21,8 +21,12 @@
 
                     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
                         <div class="tm-blog-post">
-                            <h3 class="tm-gold-text">Title</h3>
-                            <p>Content</p>
+                            <h3 class="tm-gold-text">Blogs from JCloud</h3>
+                            <p>This page contains some of our most popular blogs</p>
+                            <p>To see all of them see:</p>
+                            <ul>
+                            	<li><a href="http://blog.jcloud.com.au">Blogs</a></li>
+                            </ul>
                         </div>
                         
                         <div class="row tm-margin-t-big" id="blogs">
