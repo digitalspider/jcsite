@@ -15,6 +15,9 @@
                         for you. We can host wordpress, integration with payments, build an ecommerce
                         solution, or help you fix your java applications. Contact us for a quote
                         </p>
+						<p class="m-b-2">Try it out today, or contact us for more information. </p>
+						<a href="login.jsp" class="tm-btn text-uppercase">Sign up</a>
+						<a href="contact.jsp" class="tm-btn text-uppercase">Contact Us</a>
                     </div>
 
                     <jsp:include page="/jsp/include/sidebar.jsp"/>

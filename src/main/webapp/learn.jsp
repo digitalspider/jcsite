@@ -16,6 +16,9 @@
                         Or as a student learning web development programming, host your creation
                         within our java cloud.
                         </p>
+						<p class="m-b-2">Try it out today, or contact us for more information. </p>
+						<a href="login.jsp" class="tm-btn text-uppercase">Sign up</a>
+						<a href="contact.jsp" class="tm-btn text-uppercase">Contact Us</a>
                     </div>
 
                     <jsp:include page="/jsp/include/sidebar.jsp"/>

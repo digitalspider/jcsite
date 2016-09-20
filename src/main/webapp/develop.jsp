@@ -15,6 +15,9 @@
                         us take care of hosting them for you. We provide databases, application containers,
                         and monitoring, so you can focus on development.
                         </p>
+						<p class="m-b-2">Try it out today, or contact us for more information. </p>
+						<a href="login.jsp" class="tm-btn text-uppercase">Sign up</a>
+						<a href="contact.jsp" class="tm-btn text-uppercase">Contact Us</a>
                     </div>
 
 					<jsp:include page="/jsp/include/sidebar.jsp"/>
