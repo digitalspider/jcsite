@@ -38,8 +38,8 @@ public class LinkActionBean extends JCActionBean {
 	}
 
 	protected List<Link> getLinkData() {
-		PathParts pathParts = HttpUtil.getPathParts(getRequest());
-		LOG.info("pathParts="+pathParts); // 0=link, 1=category, 2=maxRows
+		PathParts pathParts = getPathParts();
+		LOG.debug("pathParts="+pathParts); // 0=link, 1=category, 2=maxRows
 
 		String tags = null;
 		int maxRows = DEFAULT_ROWS;
@@ -57,7 +57,7 @@ public class LinkActionBean extends JCActionBean {
 		if (StringUtils.isNotBlank(tags)) {
 			query = query.and().ilike("tags",'%'+tags+'%');
 		}
-		LOG.info("query="+query);
+		LOG.debug("query="+query);
 		List<Link> linkList = query.findList();
 		for (Link link : linkList) {
 			// Update link to go through clickCount

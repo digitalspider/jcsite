@@ -9,6 +9,8 @@ import org.apache.log4j.Logger;
 import au.com.jcloud.WebConstants;
 import au.com.jcloud.context.JCActionBeanContext;
 import au.com.jcloud.util.HttpUtil;
+import au.com.jcloud.util.PathParts;
+
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.DefaultHandler;
@@ -82,6 +84,16 @@ public class JCActionBean implements ActionBean {
 		String contextPath = HttpUtil.getContextUrl(getRequest());
 		LOG.debug("contextPath=" + contextPath);
 		return contextPath;
+	}
+
+	protected PathParts getPathParts() {
+		PathParts pathParts = HttpUtil.getPathParts(getRequest());
+		LOG.debug("pathParts=" + pathParts);
+		return pathParts;
+	}
+
+	protected JCActionBeanContext getJCContext() {
+		return context;
 	}
 
 	@Override
