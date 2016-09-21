@@ -23,14 +23,14 @@ String username = request.getRemoteUser();
             <div class="container-fluid">
                 <div class="row">
 
-                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                         <div class="tm-blog-post">
                             <h3 class="tm-gold-text">Your Servers</h3>
                             Your server list
                             <table>
-                                <thead>
+                                <thead style="background-color: #4CAF50; color: white; padding: 6px;">
                                     <tr>
-                                        <th>Server</th>
+                                        <th style="padding: 6px;">Server</th>
                                         <th>Status</th>
                                         <th>Processes</th>
                                         <th>Mem (cur)</th>
@@ -45,7 +45,7 @@ String username = request.getRemoteUser();
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><a href="#">alpine1</a></td>
+                                        <td><a href="${ctx}/secure/server/123/view">alpine1</a></td>
                                         <td>Running</td>
                                         <td>235</td>
                                         <td>1.82GB</td>
@@ -56,9 +56,9 @@ String username = request.getRemoteUser();
                                         <td>JIRA</td>
                                         <td>$12.95</td>
                                         <td>
-                                            <a href="#">Stop</a>
-                                            <a href="#">Start</a>
-                                            <a href="#">Restart</a>
+                                            <a href="${ctx}/secure/server/123/stop">Stop</a>
+                                            <a href="${ctx}/secure/server/123/start">Start</a>
+                                            <a href="${ctx}/secure/server/123/restart">Restart</a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -66,7 +66,7 @@ String username = request.getRemoteUser();
                             </table>
                         </div>
 
-                        <a href="server.html" class="tm-btn text-uppercase">Add New Server</a>
+                        <a href="${ctx}/secure/server/add" class="tm-btn text-uppercase">Add New Server</a>
 
                         <div class="row tm-margin-t-small">
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
@@ -88,9 +88,9 @@ String username = request.getRemoteUser();
                                                     <td>Tomcat</td>
                                                     <td>Running</td>
                                                     <td>
-                                                        <a href="#">Stop</a>
-                                                        <a href="#">Start</a>
-                                                        <a href="#">Restart</a>
+                                                        <a href="${ctx}/secure/server/123/service/1/stop">Stop</a>
+                                                        <a href="${ctx}/secure/server/123/service/1/start">Start</a>
+                                                        <a href="${ctx}/secure/server/123/service/1/restart">Restart</a>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -98,9 +98,9 @@ String username = request.getRemoteUser();
                                                     <td>MySQL</td>
                                                     <td>Running</td>
                                                     <td>
-                                                        <a href="#">Stop</a>
-                                                        <a href="#">Start</a>
-                                                        <a href="#">Restart</a>
+                                                        <a href="${ctx}/secure/server/123/service/2/stop">Stop</a>
+                                                        <a href="${ctx}/secure/server/123/service/2/start">Start</a>
+                                                        <a href="${ctx}/secure/server/123/service/2/restart">Restart</a>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -111,40 +111,6 @@ String username = request.getRemoteUser();
                             </div>
                         </div>
                     </div>
-
-                    <aside class="col-xs-12 col-sm-12 col-md-4 col-lg-3 col-xl-3 tm-aside-r">
-
-                        <div class="tm-aside-container">
-                            <h3 class="tm-gold-text tm-title">
-                                Categories
-                            </h3>
-                            <nav>
-                                <ul class="nav" id="category-links">
-                                    <li><a href="#" class="tm-text-link">Java development</a></li>
-                                    <li><a href="#" class="tm-text-link">Hosting</a></li>
-                                    <li><a href="#" class="tm-text-link">Technology news</a></li>
-                                    <li><a href="#" class="tm-text-link">Business news</a></li>
-                                    <li><a href="#" class="tm-text-link">Other</a></li>
-                                </ul>
-                            </nav>
-                            <hr class="tm-margin-t-small">   
-                            <h3 class="tm-gold-text tm-title tm-margin-t-small">
-                                Useful Links
-                            </h3>
-                            <nav>   
-                                <ul class="nav" id="useful-links">
-                                    <li><a href="http://www.java.com" class="tm-text-link">Oracle Java</a></li>
-                                    <li><a href="http://www.se-radio.net" class="tm-text-link">SE Radio</a></li>
-                                    <li><a href="http://www.mkyong.com/" class="tm-text-link">Mykong</a></li>
-                                    <li><a href="http://build-podcast.com" class="tm-text-link">Build Podcast</a></li>
-                                    <li><a href="http://www.theserverside.com" class="tm-text-link">The Server Side</a></li>
-                                    <li><a href="#" class="tm-text-link">Other..</a></li>
-                                </ul>
-                            </nav>
-                        </div>
-                        
-                        
-                    </aside>
 
                 </div>
                 

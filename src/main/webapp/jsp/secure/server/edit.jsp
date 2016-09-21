@@ -236,41 +236,6 @@ String username = request.getRemoteUser();
                         <br/>
                         <a href="#" class="tm-btn text-uppercase">Create Server</a>
                     </div>
-
-                    <aside class="col-xs-12 col-sm-12 col-md-4 col-lg-3 col-xl-3 tm-aside-r">
-
-                        <div class="tm-aside-container">
-                            <h3 class="tm-gold-text tm-title">
-                                Categories
-                            </h3>
-                            <nav>
-                                <ul class="nav" id="category-links">
-                                    <li><a href="#" class="tm-text-link">Java development</a></li>
-                                    <li><a href="#" class="tm-text-link">Hosting</a></li>
-                                    <li><a href="#" class="tm-text-link">Technology news</a></li>
-                                    <li><a href="#" class="tm-text-link">Business news</a></li>
-                                    <li><a href="#" class="tm-text-link">Other</a></li>
-                                </ul>
-                            </nav>
-                            <hr class="tm-margin-t-small">   
-                            <h3 class="tm-gold-text tm-title tm-margin-t-small">
-                                Useful Links
-                            </h3>
-                            <nav>   
-                                <ul class="nav" id="useful-links">
-                                    <li><a href="http://www.java.com" class="tm-text-link">Oracle Java</a></li>
-                                    <li><a href="http://www.se-radio.net" class="tm-text-link">SE Radio</a></li>
-                                    <li><a href="http://www.mkyong.com/" class="tm-text-link">Mykong</a></li>
-                                    <li><a href="http://build-podcast.com" class="tm-text-link">Build Podcast</a></li>
-                                    <li><a href="http://www.theserverside.com" class="tm-text-link">The Server Side</a></li>
-                                    <li><a href="#" class="tm-text-link">Other..</a></li>
-                                </ul>
-                            </nav>
-                        </div>
-                        
-                        
-                    </aside>
-
                 </div>
                 
             </div>
