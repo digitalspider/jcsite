@@ -1,6 +1,11 @@
 package au.com.jcloud.actionbean;
 
+import com.avaje.ebean.Ebean;
+
 import net.sourceforge.stripes.action.DefaultHandler;
+import net.sourceforge.stripes.action.DontBind;
+import net.sourceforge.stripes.action.DontValidate;
+import net.sourceforge.stripes.action.HandlesEvent;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.UrlBinding;
 import net.sourceforge.stripes.validation.EmailTypeConverter;
@@ -23,25 +28,42 @@ public class AccountActionBean extends JCSecureActionBean {
 
 	public static final String JSP_BINDING = "/account";
 
-	@Validate(required = true, minlength = 2, maxlength = 64, on = "{login, forgot}")
+	@Validate(required = true, minlength = 2, maxlength = 64, on = "save")
 	private String username;
-	@Validate(required = true, minlength = 8, maxlength = 64, on = "{login, reset}")
+	@Validate(required = true, minlength = 8, maxlength = 64, on = "{save, changepwd}")
 	private String password;
-	@Validate(required = true, minlength = 2, maxlength = 64, on = "register", converter = EmailTypeConverter.class)
+	@Validate(required = true, minlength = 2, maxlength = 64, on = "save", converter = EmailTypeConverter.class)
 	private String email;
-	@Validate(required = true, minlength = 2, maxlength = 32, on = "register")
+	@Validate(required = true, minlength = 2, maxlength = 32, on = "save")
 	private String firstname;
-	@Validate(required = true, minlength = 2, maxlength = 32, on = "register")
+	@Validate(required = true, minlength = 2, maxlength = 32, on = "save")
 	private String lastname;
-	@Validate(required = true, minlength = 2, maxlength = 64, on = "register")
+	@Validate(required = true, minlength = 2, maxlength = 64, on = "{save, changepwd}")
 	private String newusername;
-	@Validate(required = true, minlength = 8, maxlength = 64, on = "register")
+	@Validate(required = true, minlength = 8, maxlength = 64, on = "{save, changepwd}")
 	private String newpassword;
 
+	@Validate(required = false, minlength = 2, maxlength = 64, on = "save")
+	private String address;
+	@Validate(required = false, minlength = 2, maxlength = 64, on = "save")
+	private String city;
+	@Validate(required = false, minlength = 2, maxlength = 3, on = "save")
+	private String state;
+	@Validate(required = false, minlength = 2, maxlength = 4, on = "save")
+	private String postcode;
+
+
+	public String getJSPBinding() {
+		return JSP_BINDING;
+	}
+
+	@PermitAll
+	@DontValidate
+	@DontBind
 	@DefaultHandler
 	@Override
 	public Resolution action() {
-		User user = getJCContext().getUser();
+		User user = getUser();
 		username = user.getUsername();
 		firstname = user.getFirstName();
 		lastname = user.getLastName();
@@ -56,10 +78,28 @@ public class AccountActionBean extends JCSecureActionBean {
 		return getShowResolution();
 	}
 
-	public String getJSPBinding() {
-		return JSP_BINDING;
+	@HandlesEvent("save")
+	public Resolution save() throws Exception {
+		User user = getUser();
+		try {
+			user.setUsername(username);
+			user.setFirstName(firstname);
+			user.setLastName(lastname);
+			user.setEmail(email);
+			Ebean.save(user);
+			return getShowResolution();
+		} catch (Exception e) {
+			LOG.error("Error saving user "+user+". "+e,e);
+		}
+		return getEditResolution();
 	}
 
+	@HandlesEvent("changepwd")
+	public Resolution changePassword() throws Exception {
+		User user = getUser();
+		// TODO: Chnage password
+		return action();
+	}
 
 	public String getUsername() {
 		return username;
@@ -115,5 +155,37 @@ public class AccountActionBean extends JCSecureActionBean {
 
 	public void setNewpassword(String newpassword) {
 		this.newpassword = newpassword;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getPostcode() {
+		return postcode;
+	}
+
+	public void setPostcode(String postcode) {
+		this.postcode = postcode;
 	}
 }

@@ -53,23 +53,23 @@ String username = request.getRemoteUser();
                             <div class="h4">Billing Details</div>
                             <div class="form-group">
                             	<s:errors field="address"/>
-                            	<label for="address" class="control-label">Address</label>
-                                <input type="text" id="address" name="address" class="form-control" placeholder="Street Address" required="true"/>
+                            	<label for="address" class="control-label">Street Address</label>
+                                <input type="text" id="address" name="address" class="form-control" placeholder="Street Address" value="${actionBean.address}"/>
                             </div>
                             <div class="form-group">
                             	<s:errors field="city"/>
                             	<label for="city" class="control-label">City</label>
-                                <input type="text" id="city" name="city" class="form-control" placeholder="Suburb" required="true"/>
+                                <input type="text" id="city" name="city" class="form-control" placeholder="Suburb" value="${actionBean.city}"/>
                             </div>
                             <div class="form-group">
                             	<s:errors field="state"/>
                             	<label for="state" class="control-label">State</label>
-                                <input type="text" id="state" name="state" class="form-control" placeholder="State" required="true"/>
+                                <input type="text" id="state" name="state" class="form-control" placeholder="State" value="${actionBean.state}"/>
                             </div>
                             <div class="form-group">
                             	<s:errors field="postcode"/>
                             	<label for="postcode" class="control-label">Postcode</label>
-                                <input type="text" id="postcode" name="postcode" class="form-control" placeholder="Postcode" required="true"/>
+                                <input type="text" id="postcode" name="postcode" class="form-control" placeholder="Postcode" value="${actionBean.postcode}"/>
                             </div>
 						</div>
 
@@ -87,6 +87,7 @@ String username = request.getRemoteUser();
                     </div>
                     <div class="row">
                         <s:submit id="save" name="save" value="save" class="tm-btn text-uppercase"/>
+                        <s:submit id="cancel" name="cancel" value="cancel" class="tm-btn text-uppercase"/>
                     </div>
                 </s:form>
             </div>

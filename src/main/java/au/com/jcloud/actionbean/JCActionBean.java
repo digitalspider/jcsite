@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 
 import au.com.jcloud.WebConstants;
 import au.com.jcloud.context.JCActionBeanContext;
+import au.com.jcloud.model.User;
 import au.com.jcloud.util.HttpUtil;
 import au.com.jcloud.util.PathParts;
 
@@ -90,6 +91,10 @@ public class JCActionBean implements ActionBean {
 		PathParts pathParts = HttpUtil.getPathParts(getRequest());
 		LOG.debug("pathParts=" + pathParts);
 		return pathParts;
+	}
+
+	protected User getUser() {
+		return context.getUser();
 	}
 
 	protected JCActionBeanContext getJCContext() {
