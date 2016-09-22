@@ -222,6 +222,12 @@ p { line-height: 1.9; }
 	padding: 0.75rem 1rem;
 }
 
+.form-control-bootstrap {
+	border-radius: 0;
+	font-size: 1rem;
+	padding: 0.375rem 0.75rem;
+}
+
 .form-control:focus { border-color: #CC9900; }
 
 .tm-form-description { margin-top: 30px; }
