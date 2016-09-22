@@ -203,7 +203,7 @@ String username = request.getRemoteUser();
 				Click to agree with our <a href="${ctx}/terms.jsp" target="_blank">Terms and Conditions</a>&nbsp;
 				<input type="checkbox" id="terms" name="terms" class="terms" required="true"/>
 				<br/>
-				<s:submit id="add" name="add" value="Add to Cart" class="tm-btn text-uppercase"/>
+				<s:submit id="addserver" name="addserver" value="Add Server" class="tm-btn text-uppercase"/>
 				<a href="${ctx}/secure/server" class="tm-btn text-uppercase">Cancel</a>
 			</div>
 		</s:form>

@@ -19,28 +19,6 @@ String username = request.getRemoteUser();
 %>
 <span>Hello <%= username %>. This is a secure resource</span>
 
-<s:form action="/secure/server" method="post" class="tm-contact-form">
-	<s:errors/>
-	<div class="form-group">
-		<input type="name" id="name" name="name" class="form-control" placeholder="Name" required="true"/>
-		<s:errors field="name"/>
-	</div>
-	<div class="form-group">
-		<input type="email" id="email" name="email" class="form-control" placeholder="Email" required="true"/>
-		<s:errors field="email"/>
-	</div>
-	<div class="form-group">
-		<input type="text" id="subject" name="subject" class="form-control" placeholder="Subject" required="true"/>
-		<s:errors field="subject"/>
-	</div>
-	<div class="form-group">
-		<textarea id="message" name="message" class="form-control" rows="6" placeholder="Message" required="true"></textarea>
-		<s:errors field="message"/>
-	</div>
-
-	<s:submit name="contact" class="tm-btn">Submit</s:submit>
-</s:form>
-
         <section class="tm-section">
             <div class="container-fluid">
                 <div class="row">
@@ -118,13 +96,13 @@ String username = request.getRemoteUser();
                                         </select><br/>
                                         Database Server
                                         <select>
-                                            <option>None</option>
+                                            <option value="none">None</option>
                                             <option>MySQL 5.7</option>
                                             <option>Postgres</option>
                                         </select><br/>
                                         Application Server
                                         <select>
-                                            <option>None</option>
+                                            <option value="none">None</option>
                                             <option>Jetty</option>
                                             <option>Tomcat 6.x</option>
                                             <option>Tomcat 7.x</option>
@@ -139,7 +117,7 @@ String username = request.getRemoteUser();
                                         </select><br/>
                                         WebServer
                                         <select>
-                                            <option>None</option>
+                                            <option value="none">None</option>
                                             <option>Apache 2.x</option>
                                             <option>Nginx</option>
                                         </select><br/>
@@ -153,7 +131,7 @@ String username = request.getRemoteUser();
                                     <p class="tm-margin-b-20">
                                         Application Bundle
                                         <select>
-                                            <option>None / Custom</option>
+                                            <option value="none">None / Custom</option>
                                             <option>JSPWiki</option>
                                             <option>Wordpress</option>
                                             <option>JIRA</option>
@@ -184,7 +162,7 @@ String username = request.getRemoteUser();
                                     <p class="tm-margin-b-20">
                                         Support
                                         <select>
-                                            <option>None / Self managed</option>
+                                            <option value="none">None / Self managed</option>
                                             <option>Basic Email</option>
                                             <option>Business Hours</option>
                                             <option>Enterprise 24x7</option>

@@ -27,7 +27,7 @@ String username = request.getRemoteUser();
                         <div class="tm-blog-post">
                             <h3 class="tm-gold-text">Your Servers</h3>
                             Your server list
-                            <table>
+                            <table class="table table-striped table-condensed">
                                 <thead style="background-color: #4CAF50; color: white; padding: 6px;">
                                     <tr>
                                         <th style="padding: 6px;">Server</th>
@@ -61,6 +61,25 @@ String username = request.getRemoteUser();
                                             <a href="${ctx}/secure/server/123/restart">Restart</a>
                                         </td>
                                     </tr>
+									<c:forEach items="${actionBean.servers}" var="server">
+										<tr>
+											<td><a href="${ctx}/secure/server/${server.id}/view">${server.name}</a></td>
+									   		<td>${server.status}</td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td>
+												<a href="${ctx}/secure/server/${server.id}/stop">Stop</a>
+												<a href="${ctx}/secure/server/${server.id}/start">Start</a>
+												<a href="${ctx}/secure/server/${server.id}/restart">Restart</a>
+											</td>
+									   	</tr>
+									</c:forEach>
                                 </tbody>
 
                             </table>
