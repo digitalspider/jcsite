@@ -8,13 +8,18 @@ import net.sourceforge.stripes.action.DontValidate;
 import net.sourceforge.stripes.action.HandlesEvent;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.UrlBinding;
+import net.sourceforge.stripes.integration.spring.SpringBean;
 import net.sourceforge.stripes.validation.EmailTypeConverter;
 import net.sourceforge.stripes.validation.Validate;
+
+import java.util.List;
 
 import javax.annotation.security.PermitAll;
 
 import au.com.jcloud.WebConstants;
+import au.com.jcloud.model.Address;
 import au.com.jcloud.model.User;
+import au.com.jcloud.service.UserService;
 import au.com.jcloud.util.PathParts;
 
 import static au.com.jcloud.actionbean.AccountActionBean.JSP_BINDING;
@@ -52,6 +57,8 @@ public class AccountActionBean extends JCSecureActionBean {
 	@Validate(required = false, minlength = 2, maxlength = 4, on = "save")
 	private String postcode;
 
+	@SpringBean
+	private UserService userService;
 
 	public String getJSPBinding() {
 		return JSP_BINDING;
@@ -68,6 +75,14 @@ public class AccountActionBean extends JCSecureActionBean {
 		firstname = user.getFirstName();
 		lastname = user.getLastName();
 		email = user.getEmail();
+
+		Address defaultAddress = userService.getDefaultAddress(user);
+		if (defaultAddress!=null) {
+			address = defaultAddress.getAddress();
+			city = defaultAddress.getCity();
+			state = defaultAddress.getState();
+			postcode = defaultAddress.getPostcode();
+		}
 
 		PathParts pathParts = getPathParts(); // 0=account, 1=edit
 		LOG.debug("pathParts="+pathParts);
@@ -87,6 +102,18 @@ public class AccountActionBean extends JCSecureActionBean {
 			user.setLastName(lastname);
 			user.setEmail(email);
 			Ebean.save(user);
+
+			Address defaultAddress = userService.getDefaultAddress(user);
+			if (defaultAddress==null) {
+				defaultAddress = new Address();
+				defaultAddress.setUser(user);
+			}
+			defaultAddress.setAddress(address);
+			defaultAddress.setCity(city);
+			defaultAddress.setState(state);
+			defaultAddress.setPostcode(postcode);
+			Ebean.save(defaultAddress);
+
 			return getShowResolution();
 		} catch (Exception e) {
 			LOG.error("Error saving user "+user+". "+e,e);
@@ -187,5 +214,13 @@ public class AccountActionBean extends JCSecureActionBean {
 
 	public void setPostcode(String postcode) {
 		this.postcode = postcode;
+	}
+
+	public UserService getUserService() {
+		return userService;
+	}
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
 	}
 }

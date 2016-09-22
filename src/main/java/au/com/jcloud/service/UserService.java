@@ -9,6 +9,8 @@ import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Expr;
 
 import au.com.jcloud.enums.Status;
+import au.com.jcloud.model.Address;
+import au.com.jcloud.model.CreditCard;
 import au.com.jcloud.model.User;
 import net.sourceforge.stripes.integration.spring.SpringBean;
 
@@ -60,6 +62,28 @@ public class UserService extends BaseService {
 		Ebean.save(user);
 		user = getByUsername(username);
 		return user;
+	}
+
+
+	public Address getDefaultAddress(User user) {
+		List<Address> addresses = user.getAddresses();
+		if (addresses.isEmpty()) {
+			addresses = Ebean.find(Address.class).where().eq("user_id",user.getId()).findList();
+		}
+		if (!addresses.isEmpty()) {
+			Address address = addresses.get(0);
+			return address;
+		}
+		return null;
+	}
+
+	public CreditCard getDefaultCreditCard(User user) {
+		List<CreditCard> creditCards = user.getCreditCards();
+		if (creditCards.size()>0) {
+			CreditCard creditCard = creditCards.get(0);
+			return creditCard;
+		}
+		return null;
 	}
 
 	public User get(int id) {

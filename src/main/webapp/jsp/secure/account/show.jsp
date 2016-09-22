@@ -46,19 +46,19 @@ String username = request.getRemoteUser();
 						<div class="h4">Billing Details</div>
 						<div class="form-group">
 							<label for="address" class="control-label">Street Address</label>
-							<div id="address" name="address" class="form-control"></div>
+							<div id="address" name="address" class="form-control">${actionBean.address}</div>
 						</div>
 						<div class="form-group">
 							<label for="city" class="control-label">Suburb</label>
-							<div id="city" name="city" class="form-control"></div>
+							<div id="city" name="city" class="form-control">${actionBean.city}</div>
 						</div>
 						<div class="form-group">
 							<label for="state" class="control-label">State</label>
-							<div id="state" name="state" class="form-control"></div>
+							<div id="state" name="state" class="form-control">${actionBean.state}</div>
 						</div>
 						<div class="form-group">
 							<label for="postcode" class="control-label">Postcode</label>
-							<div id="postcode" name="postcode" class="form-control"></div>
+							<div id="postcode" name="postcode" class="form-control">${actionBean.postcode}</div>
 						</div>
 
 					</div>
