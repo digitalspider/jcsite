@@ -1,11 +1,16 @@
 package au.com.jcloud.actionbean;
 
+import com.avaje.ebean.Ebean;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.annotation.security.PermitAll;
 
 import au.com.jcloud.WebConstants;
+import au.com.jcloud.enums.Status;
+import au.com.jcloud.model.Address;
+import au.com.jcloud.model.Server;
 import au.com.jcloud.model.User;
 import au.com.jcloud.util.PathParts;
 
@@ -13,6 +18,7 @@ import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.DontBind;
 import net.sourceforge.stripes.action.DontValidate;
 import net.sourceforge.stripes.action.ForwardResolution;
+import net.sourceforge.stripes.action.HandlesEvent;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.UrlBinding;
 import net.sourceforge.stripes.validation.EmailTypeConverter;
@@ -27,18 +33,32 @@ import static au.com.jcloud.actionbean.ServerActionBean.JSP_BINDING;
 @UrlBinding(WebConstants.PATH_SECURE+JSP_BINDING)
 public class ServerActionBean extends JCSecureActionBean {
 
-	private ExecutorService executorService = Executors.newSingleThreadExecutor();
-
 	public static final String JSP_BINDING = "/server";
 
-	@Validate(required = true, minlength = 2)
-	private String name;
-	@Validate(required = true, converter = EmailTypeConverter.class)
-	private String email;
-	@Validate(required = true, minlength = 2)
-	private String subject;
-	@Validate(required = true, minlength = 2)
-	private String message;
+	@Validate(required = true, minlength = 3)
+	private String hostname;
+	@Validate(required = true)
+	private boolean terms;
+	@Validate(required = true)
+	private String memory;
+	@Validate(required = true)
+	private String disk;
+	@Validate(required = true)
+	private String backups;
+	@Validate(required = true)
+	private String cores;
+	@Validate(required = true)
+	private String os;
+	@Validate(required = true)
+	private String dbserver;
+	@Validate(required = true)
+	private String appserver;
+	@Validate(required = true)
+	private String webserver;
+	@Validate(required = true)
+	private String application;
+	@Validate(required = true)
+	private String support;
 
 	@PermitAll
 	@DontValidate
@@ -47,7 +67,6 @@ public class ServerActionBean extends JCSecureActionBean {
 	@Override
 	public Resolution action() {
 		User user = getUser();
-		email = user.getEmail();
 
 		PathParts pathParts = getPathParts(); // 0=server, 1=123 2=start
 		LOG.info("pathParts="+pathParts);
@@ -80,39 +99,126 @@ public class ServerActionBean extends JCSecureActionBean {
 		return getDefaultResolution();
 	}
 
+
+	@HandlesEvent("add")
+	public Resolution add() throws Exception {
+		User user = getUser();
+		Server server = new Server();
+		try {
+			server.setUser(user);
+			server.setName(hostname);
+			server.setAlias(hostname);
+			server.setHddLimit(Double.valueOf(disk));
+			server.setCpuLimit(Double.valueOf(cores));
+			server.setMemLimit(Double.valueOf(memory));
+			server.setStatus(Status.ENABLED.value());
+			server.setDescription("os="+os+", appserver="+appserver+", dbserver="+dbserver+", webserver="+webserver+", bkup="+backups+", support="+support+", app="+application);
+			Ebean.save(server);
+
+			return getShowResolution();
+		} catch (Exception e) {
+			LOG.error("Error saving server "+server+" for user "+user+". "+e,e);
+		}
+		return getEditResolution();
+	}
+
 	public String getJSPBinding() {
 		return JSP_BINDING;
 	}
 
-	public String getName() {
-		return name;
+	public String getHostname() {
+		return hostname;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setHostname(String hostname) {
+		this.hostname = hostname;
 	}
 
-	public String getEmail() {
-		return email;
+	public boolean isTerms() {
+		return terms;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setTerms(boolean terms) {
+		this.terms = terms;
 	}
 
-	public String getSubject() {
-		return subject;
+	public String getMemory() {
+		return memory;
 	}
 
-	public void setSubject(String subject) {
-		this.subject = subject;
+	public void setMemory(String memory) {
+		this.memory = memory;
 	}
 
-	public String getMessage() {
-		return message;
+	public String getDisk() {
+		return disk;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public void setDisk(String disk) {
+		this.disk = disk;
+	}
+
+	public String getBackups() {
+		return backups;
+	}
+
+	public void setBackups(String backups) {
+		this.backups = backups;
+	}
+
+	public String getCores() {
+		return cores;
+	}
+
+	public void setCores(String cores) {
+		this.cores = cores;
+	}
+
+	public String getOs() {
+		return os;
+	}
+
+	public void setOs(String os) {
+		this.os = os;
+	}
+
+	public String getDbserver() {
+		return dbserver;
+	}
+
+	public void setDbserver(String dbserver) {
+		this.dbserver = dbserver;
+	}
+
+	public String getAppserver() {
+		return appserver;
+	}
+
+	public void setAppserver(String appserver) {
+		this.appserver = appserver;
+	}
+
+	public String getWebserver() {
+		return webserver;
+	}
+
+	public void setWebserver(String webserver) {
+		this.webserver = webserver;
+	}
+
+	public String getApplication() {
+		return application;
+	}
+
+	public void setApplication(String application) {
+		this.application = application;
+	}
+
+	public String getSupport() {
+		return support;
+	}
+
+	public void setSupport(String support) {
+		this.support = support;
 	}
 }

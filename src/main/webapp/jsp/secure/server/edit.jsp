@@ -48,11 +48,11 @@ String username = request.getRemoteUser();
 										<td><label for="memory">Memory</label></td>
 										<td>
 											<select class="form-control form-control-bootstrap" id="memory" name="memory">
-												<option>128 MB</option>
-												<option>0.5 GB</option>
-												<option>1 GB</option>
-												<option>2 GB</option>
-												<option>4 GB</option>
+												<option value="128">128 MB</option>
+												<option value="512">0.5 GB</option>
+												<option value="1024">1 GB</option>
+												<option value="2048">2 GB</option>
+												<option value="4096">4 GB</option>
 											</select>
 										</td>
 									</tr>
@@ -60,11 +60,11 @@ String username = request.getRemoteUser();
 										<td><label for="disk">Hard Disk</label></td>
 										<td>
 											<select class="form-control form-control-bootstrap" id="disk" name="disk">
-												<option>0.5 GB</option>
-												<option>10 GB</option>
-												<option>20 GB</option>
-												<option>40 GB</option>
-												<option>80 GB</option>
+												<option value="1000">1 GB</option>
+												<option value="10000">10 GB</option>
+												<option value="20000">20 GB</option>
+												<option value="40000">40 GB</option>
+												<option value="80000">80 GB</option>
 											</select>
 										</td>
 									</tr>
