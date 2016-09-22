@@ -11,9 +11,21 @@ import com.avaje.ebean.EbeanServerFactory;
 import com.avaje.ebean.config.ServerConfig;
 import com.avaje.ebean.config.dbplatform.H2Platform;
 
+import au.com.jcloud.model.Address;
+import au.com.jcloud.model.BaseBean;
+import au.com.jcloud.model.Category;
+import au.com.jcloud.model.CreditCard;
+import au.com.jcloud.model.IdBean;
+import au.com.jcloud.model.Invoice;
+import au.com.jcloud.model.InvoiceLine;
 import au.com.jcloud.model.OperatingSystem;
+import au.com.jcloud.model.Product;
+import au.com.jcloud.model.Purchase;
+import au.com.jcloud.model.Rating;
+import au.com.jcloud.model.Request;
 import au.com.jcloud.model.Role;
 import au.com.jcloud.model.Server;
+import au.com.jcloud.model.Service;
 import au.com.jcloud.model.User;
 import au.com.jcloud.util.Constants;
 import au.com.jcloud.util.PropertyUtil;
@@ -62,9 +74,21 @@ public class EBeanServerService extends BaseService {
 	public static EbeanServer createEbeanServer() {
 
 		List<Class<?>> beanClasses = new ArrayList<Class<?>>();
+		beanClasses.add(IdBean.class);
+		beanClasses.add(BaseBean.class);
 		beanClasses.add(User.class);
 		beanClasses.add(Role.class);
 		beanClasses.add(Server.class);
+		beanClasses.add(Service.class);
+		beanClasses.add(Address.class);
+		beanClasses.add(CreditCard.class);
+		beanClasses.add(Invoice.class);
+		beanClasses.add(InvoiceLine.class);
+		beanClasses.add(Purchase.class);
+		beanClasses.add(Rating.class);
+		beanClasses.add(Request.class);
+		beanClasses.add(Product.class);
+		beanClasses.add(Category.class);
 		beanClasses.add(OperatingSystem.class);
 		System.setProperty("ebean.ignoreExtraDdl", "true");
 
