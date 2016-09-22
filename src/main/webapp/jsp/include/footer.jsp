@@ -24,8 +24,8 @@
                         <ul class="nav" id="footer-links">
                             <li><a href="${ctx}/blog.jsp" class="tm-footer-link">Our Blogs</a></li>
                             <li><a href="${ctx}/contact.jsp" class="tm-footer-link">Contact Us</a></li>
-                            <li><a href="${ctx}/privacy.jsp" class="tm-footer-link">Privacy Policy</a></li>
-                            <li><a href="${ctx}/terms.jsp" class="tm-footer-link">Terms and Conditions</a></li>
+                            <li><a href="${ctx}/privacy.jsp" target="_blank" class="tm-footer-link">Privacy Policy</a></li>
+                            <li><a href="${ctx}/terms.jsp" target="_blank" class="tm-footer-link">Terms and Conditions</a></li>
                             <li><a href="#" class="tm-footer-link">JIRA Support Portal</a></li>
                         </ul>
                     </nav>

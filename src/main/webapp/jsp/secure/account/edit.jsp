@@ -87,7 +87,7 @@ String username = request.getRemoteUser();
                     </div>
                     <div class="row">
                         <s:submit id="save" name="save" value="save" class="tm-btn text-uppercase"/>
-                        <s:submit id="cancel" name="cancel" value="cancel" class="tm-btn text-uppercase"/>
+                        <a href="${ctx}/secure/account" class="tm-btn text-uppercase">Cancel</a>
                     </div>
                 </s:form>
             </div>
