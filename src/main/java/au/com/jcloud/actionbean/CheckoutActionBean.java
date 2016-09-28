@@ -81,30 +81,16 @@ public class CheckoutActionBean extends JCSecureActionBean {
 		PathParts pathParts = getPathParts(); // 0=checkout, 1=add, 2=123 (productId), 3=description
 		LOG.info("pathParts=" + pathParts);
 		if (pathParts.size() > 1) {
-			if (pathParts.get(1).equals("add")) {
-				LOG.info("go add = " + getEditResolution());
-				return getEditResolution();
+			String action = pathParts.get(1);
+			LOG.info("action=" + action);
+			switch (action) {
+			case ("cart"):
+				return getCartResolution();
+			case ("billing"):
+				return getBillingResolution();
+			case ("purchase"):
+				return getThankYouResolution();
 			}
-			if (pathParts.isNumeric(1) && pathParts.size() > 2) {
-				int serverId = pathParts.getInt(1);
-				if (pathParts.get(2).equals("view")) {
-					LOG.info("view server " + serverId);
-					return getShowResolution();
-				}
-				else if (pathParts.get(2).equals("start")) {
-					LOG.info("start server " + serverId);
-				}
-				else if (pathParts.get(2).equals("stop")) {
-					LOG.info("stop server " + serverId);
-				}
-				else if (pathParts.get(2).equals("restart")) {
-					LOG.info("restart server " + serverId);
-				}
-				else if (pathParts.get(2).equals("service")) {
-					LOG.info("service on server " + serverId);
-				}
-			}
-
 		}
 		return getDefaultResolution();
 	}

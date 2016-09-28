@@ -1,39 +1,33 @@
 package au.com.jcloud.actionbean;
 
-import com.avaje.ebean.Ebean;
+import static au.com.jcloud.actionbean.ServerActionBean.JSP_BINDING;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import javax.annotation.security.PermitAll;
 
+import com.avaje.ebean.Ebean;
+
 import au.com.jcloud.WebConstants;
 import au.com.jcloud.enums.Status;
-import au.com.jcloud.model.Address;
 import au.com.jcloud.model.OperatingSystem;
 import au.com.jcloud.model.Purchase;
 import au.com.jcloud.model.Server;
 import au.com.jcloud.model.User;
 import au.com.jcloud.util.PathParts;
-
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.DontBind;
 import net.sourceforge.stripes.action.DontValidate;
-import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.HandlesEvent;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.UrlBinding;
-import net.sourceforge.stripes.validation.EmailTypeConverter;
 import net.sourceforge.stripes.validation.Validate;
-
-import static au.com.jcloud.actionbean.ServerActionBean.JSP_BINDING;
 
 /**
  * Created by david.vittor on 3/08/16.
  */
 @PermitAll
-@UrlBinding(WebConstants.PATH_SECURE+JSP_BINDING)
+@UrlBinding(WebConstants.PATH_SECURE + JSP_BINDING)
 public class ServerActionBean extends JCSecureActionBean {
 
 	public static final String JSP_BINDING = "/server";
@@ -74,40 +68,46 @@ public class ServerActionBean extends JCSecureActionBean {
 		User user = getUser();
 		servers = user.getServers();
 		if (servers.isEmpty()) {
-			servers = Ebean.find(Server.class).where().eq("user_id",user.getId()).findList();
+			servers = Ebean.find(Server.class).where().eq("user_id", user.getId()).findList();
 		}
 
 		PathParts pathParts = getPathParts(); // 0=server, 1=123 2=start
-		LOG.info("pathParts="+pathParts);
-		if (pathParts.size()>1) {
-			if (pathParts.get(1).equals("add")) {
-				LOG.info("go add = " + getEditResolution());
+		LOG.info("pathParts=" + pathParts);
+		if (pathParts.size() > 1) {
+			String action = pathParts.get(1);
+			LOG.info("action=" + action);
+			switch (action) {
+			case ("add"):
 				return getEditResolution();
-			}
-			if (pathParts.isNumeric(1) && pathParts.size()>2) {
-				int serverId = pathParts.getInt(1);
-				if (pathParts.get(2).equals("view")) {
-					LOG.info("view server " + serverId);
+			case ("edit"):
+				return getEditResolution();
+			default:
+				if (pathParts.isNumeric(1) && pathParts.size() > 2) {
+					int serverId = pathParts.getInt(1);
+					String serverAction = pathParts.get(2);
+					switch (serverAction) {
+					case ("view"):
+						LOG.info(serverAction + " server " + serverId);
+						break;
+					case ("start"):
+						LOG.info(serverAction + " server " + serverId);
+						break;
+					case ("stop"):
+						LOG.info(serverAction + " server " + serverId);
+						break;
+					case ("restart"):
+						LOG.info(serverAction + " server " + serverId);
+						break;
+					case ("service"):
+						LOG.info(serverAction + " server " + serverId);
+						break;
+					}
 					return getShowResolution();
 				}
-				else if (pathParts.get(2).equals("start")) {
-					LOG.info("start server " + serverId);
-				}
-				else if (pathParts.get(2).equals("stop")) {
-					LOG.info("stop server " + serverId);
-				}
-				else if (pathParts.get(2).equals("restart")) {
-					LOG.info("restart server " + serverId);
-				}
-				else if (pathParts.get(2).equals("service")) {
-					LOG.info("service on server " + serverId);
-				}
 			}
-
 		}
 		return getDefaultResolution();
 	}
-
 
 	@HandlesEvent("addserver")
 	public Resolution addServer() throws Exception {
@@ -125,16 +125,17 @@ public class ServerActionBean extends JCSecureActionBean {
 			server.setCpuLimit(Double.valueOf(cores));
 			server.setMemLimit(Double.valueOf(memory));
 			server.setStatus(Status.ENABLED.value());
-			server.setDescription("os="+os+", appserver="+appserver+", dbserver="+dbserver+", webserver="+webserver+", bkup="+backups+", support="+support+", app="+application);
+			server.setDescription("os=" + os + ", appserver=" + appserver + ", dbserver=" + dbserver + ", webserver=" + webserver + ", bkup=" + backups + ", support=" + support + ", app=" + application);
 			Ebean.save(server);
 
 			return getListResolution();
 		} catch (Exception e) {
-			LOG.error("Error saving server "+server+" for user "+user+". "+e,e);
+			LOG.error("Error saving server " + server + " for user " + user + ". " + e, e);
 		}
 		return getEditResolution();
 	}
 
+	@Override
 	public String getJSPBinding() {
 		return JSP_BINDING;
 	}
