@@ -12,7 +12,7 @@
 <script>
 function stripeResponseHandler(status, response) {
   // Grab the form:
-  var $form = $('#payment-form');
+  var $form = $('#paymentForm');
 
   if (response.error) {
     $form.find('.payment-errors').text(response.error.message);
@@ -118,6 +118,9 @@ function stripeResponseHandler(status, response) {
                             <div class="h4">Payment Details</div>
 							<input id="cc-exp-month" data-stripe="exp_month" type="hidden"/>
 							<input id="cc-exp-year" data-stripe="exp_year" type="hidden"/>
+
+<div id="validation" name="validation"></div>
+<div id="payment-errors" name="payment-errors"></div>
 
                             <div id="price" class="control-label">Price <span class="text-muted price">$12.99</span></div>
 
