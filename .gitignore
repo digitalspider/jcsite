@@ -9,6 +9,7 @@ stripes
 .metadata
 .gradle
 .idea
+.tern-project
 local.properties
 RemoteSystemsTempFiles
 push.sh

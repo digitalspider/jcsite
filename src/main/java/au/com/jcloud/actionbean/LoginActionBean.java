@@ -1,5 +1,11 @@
 package au.com.jcloud.actionbean;
 
+import static au.com.jcloud.WebConstants.ACTION_SECURE_LOGIN;
+import static au.com.jcloud.WebConstants.PAGE_INDEX;
+import static au.com.jcloud.WebConstants.PAGE_RESET;
+import static au.com.jcloud.WebConstants.PAGE_SECURE;
+import static au.com.jcloud.WebConstants.URL_PARAM_REDIRECT;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,12 +29,6 @@ import net.sourceforge.stripes.controller.LifecycleStage;
 import net.sourceforge.stripes.integration.spring.SpringBean;
 import net.sourceforge.stripes.validation.EmailTypeConverter;
 import net.sourceforge.stripes.validation.Validate;
-
-import static au.com.jcloud.WebConstants.ACTION_SECURE_LOGIN;
-import static au.com.jcloud.WebConstants.PAGE_INDEX;
-import static au.com.jcloud.WebConstants.PAGE_RESET;
-import static au.com.jcloud.WebConstants.PAGE_SECURE;
-import static au.com.jcloud.WebConstants.URL_PARAM_REDIRECT;
 
 /**
  * Created by david.vittor on 3/08/16.
@@ -70,7 +70,7 @@ public class LoginActionBean extends JCActionBean {
 	@HandlesEvent("login")
 	public Resolution login() throws Exception {
 		String ipAddress = getIpAddress();
-		LOG.info("login attempt for user=" + username+" from ip="+ipAddress);
+		LOG.info("login attempt for user=" + username + " from ip=" + ipAddress);
 		// Ensure user is valid
 		if (validateAlreadyLoggedIn()) {
 			return getSourcePageResolution();
@@ -90,7 +90,8 @@ public class LoginActionBean extends JCActionBean {
 			formSubmissionCountService.increment(ipAddress, FormType.LOGIN);
 			addGlobalValidationError(ACTION_SECURE_LOGIN + ".invalidAttempt", username);
 			return getSourcePageResolution();
-		} else {
+		}
+		else {
 			context.setUser(user);
 		}
 
@@ -117,7 +118,7 @@ public class LoginActionBean extends JCActionBean {
 	@HandlesEvent("register")
 	public Resolution register() throws Exception {
 		String ipAddress = getIpAddress();
-		LOG.info("register attempt for user=" + newusername+" from ip="+ipAddress);
+		LOG.info("register attempt for user=" + newusername + " from ip=" + ipAddress);
 		if (validateAlreadyLoggedIn()) {
 			return getContext().getSourcePageResolution();
 		}
@@ -138,7 +139,11 @@ public class LoginActionBean extends JCActionBean {
 		// Create the new user
 		User user = userService.createUser(newusername, firstname, lastname, email, newpassword);
 		LOG.info("user created=" + user);
-		emailService.sendFromEmail(user.getFullName(), user.getEmail(),"New User Registered", "User="+user);
+		try {
+			emailService.sendFromEmail(user.getFullName(), user.getEmail(), "New User Registered", "User=" + user);
+		} catch (Exception e) {
+			LOG.error("Email not sent " + e.getMessage());
+		}
 
 		// Register
 		formSubmissionCountService.increment(ipAddress, FormType.REGISTRATION);
@@ -181,12 +186,9 @@ public class LoginActionBean extends JCActionBean {
 		}
 		String basePath = getConextPath();
 		LOG.info("basePath=" + basePath);
-		String url = basePath + PAGE_RESET + "?" + PARAM_USERNAME + "=" + user.getUsername() + "&" + PARAM_TOKEN
-				+ "=" + tokenService.generateAndRecordToken(user.getUsername());
+		String url = basePath + PAGE_RESET + "?" + PARAM_USERNAME + "=" + user.getUsername() + "&" + PARAM_TOKEN + "=" + tokenService.generateAndRecordToken(user.getUsername());
 		LOG.info("url=" + url);
-		String message = "Hi " + user.getFirstName() + ",<br/><br/>"
-				+ "You have 30 minutes to use the below link to reset your password<br/>" + "<a href=\"" + url + "\">"
-				+ url + "</a><br/><br/>" + "Yours sincerely,<br/>" + "The JCloud team<br/>";
+		String message = "Hi " + user.getFirstName() + ",<br/><br/>" + "You have 30 minutes to use the below link to reset your password<br/>" + "<a href=\"" + url + "\">" + url + "</a><br/><br/>" + "Yours sincerely,<br/>" + "The JCloud team<br/>";
 		emailService.sendToEmail(user.getFullName(), user.getEmail(), "JCloud Password Reset", message);
 		return getContext().getSourcePageResolution();
 	}

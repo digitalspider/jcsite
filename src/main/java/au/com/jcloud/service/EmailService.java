@@ -35,11 +35,7 @@ public class EmailService extends BaseService {
 			properties = PropertyUtil.loadProperties(EMAIL_PROPERTIES);
 			validateProperties(properties);
 
-			mailer = new Mailer(
-					new ServerConfig(properties.getProperty(PROP_EMAIL_HOST),
-							Integer.parseInt(properties.getProperty(PROP_EMAIL_PORT)),
-							properties.getProperty(PROP_EMAIL_USERNAME), properties.getProperty(PROP_EMAIL_PASSWORD)),
-					TransportStrategy.SMTP_TLS);
+			mailer = new Mailer(new ServerConfig(properties.getProperty(PROP_EMAIL_HOST), Integer.parseInt(properties.getProperty(PROP_EMAIL_PORT)), properties.getProperty(PROP_EMAIL_USERNAME), properties.getProperty(PROP_EMAIL_PASSWORD)), TransportStrategy.SMTP_TLS);
 		}
 	}
 
@@ -51,28 +47,23 @@ public class EmailService extends BaseService {
 			throw new Exception("Property " + PROP_EMAIL_PORT + " has not been set! Please update " + EMAIL_PROPERTIES);
 		}
 		if (Integer.parseInt(properties.getProperty(PROP_EMAIL_PORT)) < 0) {
-			throw new Exception("Property " + PROP_EMAIL_PORT + " needs to be a positive number! Please update "
-					+ EMAIL_PROPERTIES);
+			throw new Exception("Property " + PROP_EMAIL_PORT + " needs to be a positive number! Please update " + EMAIL_PROPERTIES);
 		}
 		if (StringUtils.isBlank(properties.getProperty(PROP_EMAIL_USERNAME))) {
-			throw new Exception(
-					"Property " + PROP_EMAIL_USERNAME + " has not been set! Please update " + EMAIL_PROPERTIES);
+			throw new Exception("Property " + PROP_EMAIL_USERNAME + " has not been set! Please update " + EMAIL_PROPERTIES);
 		}
 		if (StringUtils.isBlank(properties.getProperty(PROP_EMAIL_PASSWORD))) {
-			throw new Exception(
-					"Property " + PROP_EMAIL_PASSWORD + " has not been set! Please update " + EMAIL_PROPERTIES);
+			throw new Exception("Property " + PROP_EMAIL_PASSWORD + " has not been set! Please update " + EMAIL_PROPERTIES);
 		}
 	}
 
 	public void sendToEmail(String toName, String toEmail, String subject, String message) throws Exception {
 		init();
 		if (StringUtils.isBlank(properties.getProperty(PROP_DEFAULT_TO_EMAIL))) {
-			throw new Exception(
-					"Property " + PROP_DEFAULT_TO_EMAIL + " has not been set! Please update " + EMAIL_PROPERTIES);
+			throw new Exception("Property " + PROP_DEFAULT_TO_EMAIL + " has not been set! Please update " + EMAIL_PROPERTIES);
 		}
 		if (StringUtils.isBlank(properties.getProperty(PROP_DEFAULT_TO_USERNAME))) {
-			throw new Exception(
-					"Property " + PROP_DEFAULT_TO_USERNAME + " has not been set! Please update " + EMAIL_PROPERTIES);
+			throw new Exception("Property " + PROP_DEFAULT_TO_USERNAME + " has not been set! Please update " + EMAIL_PROPERTIES);
 		}
 
 		String defaultFromName = properties.getProperty(PROP_DEFAULT_FROM_USERNAME);
@@ -83,20 +74,17 @@ public class EmailService extends BaseService {
 	public void sendFromEmail(String fromName, String fromEmail, String subject, String message) throws Exception {
 		init();
 		if (StringUtils.isBlank(properties.getProperty(PROP_DEFAULT_TO_EMAIL))) {
-			throw new Exception(
-					"Property " + PROP_DEFAULT_TO_EMAIL + " has not been set! Please update " + EMAIL_PROPERTIES);
+			throw new Exception("Property " + PROP_DEFAULT_TO_EMAIL + " has not been set! Please update " + EMAIL_PROPERTIES);
 		}
 		if (StringUtils.isBlank(properties.getProperty(PROP_DEFAULT_TO_USERNAME))) {
-			throw new Exception(
-					"Property " + PROP_DEFAULT_TO_USERNAME + " has not been set! Please update " + EMAIL_PROPERTIES);
+			throw new Exception("Property " + PROP_DEFAULT_TO_USERNAME + " has not been set! Please update " + EMAIL_PROPERTIES);
 		}
 		String defaultToName = properties.getProperty(PROP_DEFAULT_TO_USERNAME);
 		String defaultToEmail = properties.getProperty(PROP_DEFAULT_TO_EMAIL);
 		sendEmail(fromName, fromEmail, defaultToName, defaultToEmail, subject, message);
 	}
 
-	public void sendEmail(String fromName, String fromEmail, String toName, String toEmail, String subject,
-			String message) throws Exception {
+	public void sendEmail(String fromName, String fromEmail, String toName, String toEmail, String subject, String message) throws Exception {
 		init();
 		Email emailMessage = new Email();
 		emailMessage.addRecipient(toName, toEmail, Message.RecipientType.TO);

@@ -1,11 +1,10 @@
 package au.com.jcloud.context;
 
-import au.com.jcloud.util.Constants;
-import au.com.jcloud.model.User;
-import net.sourceforge.stripes.action.ActionBeanContext;
-
 import static au.com.jcloud.WebConstants.SESSION_ATTRIBUTE_ROLES;
 import static au.com.jcloud.WebConstants.SESSION_ATTRIBUTE_USER;
+
+import au.com.jcloud.model.User;
+import net.sourceforge.stripes.action.ActionBeanContext;
 
 public class JCActionBeanContext extends ActionBeanContext {
 	public void setUser(User user) {
