@@ -6,13 +6,8 @@ import java.util.List;
 
 import javax.annotation.security.PermitAll;
 
-import com.avaje.ebean.Ebean;
-
 import au.com.jcloud.WebConstants;
 import au.com.jcloud.model.Cart;
-import au.com.jcloud.model.OperatingSystem;
-import au.com.jcloud.model.Purchase;
-import au.com.jcloud.model.Server;
 import au.com.jcloud.model.User;
 import au.com.jcloud.util.PathParts;
 import net.sourceforge.stripes.action.DefaultHandler;
@@ -87,29 +82,28 @@ public class CheckoutActionBean extends JCSecureActionBean {
 			case ("cart"):
 				return getCartResolution();
 			case ("billing"):
+				LOG.info("Need to validate cart()");
 				return getBillingResolution();
 			case ("purchase"):
+				LOG.info("Need to validate cart()");
 				return getThankYouResolution();
 			}
 		}
 		return getDefaultResolution();
 	}
 
-	@HandlesEvent("addserver")
-	public Resolution addServer() throws Exception {
+	@HandlesEvent("checkout")
+	public Resolution checkout() throws Exception {
 		User user = getUser();
-		Server server = new Server();
-		try {
-			OperatingSystem os = Ebean.find(OperatingSystem.class).where().idEq(1).findUnique();
-			Purchase purchase = Ebean.find(Purchase.class).where().idEq(1).findUnique();
-			server.setUser(user);
-			Ebean.save(server);
+		LOG.info(user + " has checked out!");
+		return getBillingResolution();
+	}
 
-			return getListResolution();
-		} catch (Exception e) {
-			LOG.error("Error saving server " + server + " for user " + user + ". " + e, e);
-		}
-		return getEditResolution();
+	@HandlesEvent("purchase")
+	public Resolution purchase() throws Exception {
+		User user = getUser();
+		LOG.info(user + " has bought!");
+		return getThankYouResolution();
 	}
 
 	@Override

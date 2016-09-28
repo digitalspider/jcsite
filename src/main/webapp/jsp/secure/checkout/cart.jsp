@@ -12,13 +12,13 @@
             <div class="container-fluid">
                 <div class="row">
 
-					<s:form id="paymentForm" method="post" action="/secure/checkout/purchase" class="tm-payment-form">
+					<s:form id="paymentForm" method="post" action="/secure/checkout/billing" class="tm-payment-form">
                     	<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                         	<s:errors globalErrorsOnly="true"/>
                             <div class="h4">Cart Details</div>
                             <div class="form-group">
                             	<s:errors field="name"/>
-                                <input type="text" id="name" name="name" class="form-control" placeholder="Name" required="true" value="${actionBean.name}"/>
+                                <input type="text" id="name" name="name" class="form-control" placeholder="Name" required="true"/>
                             </div>
                             <div class="form-group">
                             	<s:errors field="address"/>

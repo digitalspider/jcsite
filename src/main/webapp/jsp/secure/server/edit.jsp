@@ -204,7 +204,7 @@ String username = request.getRemoteUser();
 				<input type="checkbox" id="terms" name="terms" class="terms" required="true"/>
 				<br/>
 				<s:submit id="addserver" name="addserver" value="Add Server" class="tm-btn text-uppercase"/>
-				<a href="${ctx}/checkout/add/1" class="tm-btn text-uppercase">Add To Cart</a>
+				<a href="${ctx}/secure/checkout/add/1" class="tm-btn text-uppercase">Add To Cart</a>
 				<a href="${ctx}/secure/server" class="tm-btn text-uppercase">Cancel</a>
 			</div>
 		</s:form>

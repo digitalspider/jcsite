@@ -18,7 +18,7 @@
                             <div class="h4">Thank You Details</div>
                             <div class="form-group">
                             	<s:errors field="name"/>
-                                <input type="text" id="name" name="name" class="form-control" placeholder="Name" required="true" value="${actionBean.name}"/>
+                                <input type="text" id="name" name="name" class="form-control" placeholder="Name" required="true"/>
                             </div>
                             <div class="form-group">
                             	<s:errors field="address"/>

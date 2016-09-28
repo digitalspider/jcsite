@@ -93,7 +93,7 @@ function stripeResponseHandler(status, response) {
                             <div class="h4">Billing Details</div>
                             <div class="form-group">
                             	<s:errors field="name"/>
-                                <input type="text" id="name" name="name" class="form-control" placeholder="Name" required="true" value="${actionBean.name}"/>
+                                <input type="text" id="name" name="name" class="form-control" placeholder="Name" required="true"/>
                             </div>
                             <div class="form-group">
                             	<s:errors field="address"/>
@@ -136,7 +136,7 @@ function stripeResponseHandler(status, response) {
                             	<label for="cc-cvc" class="control-label">Card CVC </label>
                                 <input type="tel" id="cc-cvc" data-stripe="cvc" class="form-control cc-cvc" auto-complete="off" placeholder="111" required="true"/>
                             </div>
-                            <s:submit id="purchase" name="purchase" value="purchase" class="tm-btn text-uppercase" />
+                            <s:submit id="purchase" name="purchase" value="buy now" class="tm-btn text-uppercase" />
 
                     	</div>
                     </s:form>
