@@ -13,8 +13,10 @@ import javax.annotation.security.PermitAll;
 
 import com.avaje.ebean.Ebean;
 
+import au.com.jcloud.model.Address;
 import au.com.jcloud.model.Cart;
 import au.com.jcloud.model.CartItem;
+import au.com.jcloud.model.CreditCard;
 import au.com.jcloud.model.Product;
 import au.com.jcloud.model.User;
 import au.com.jcloud.util.PathParts;
@@ -36,6 +38,9 @@ public class CheckoutActionBean extends JCSecureActionBean {
 	public static final String JSP_BINDING = "/checkout";
 
 	private Cart cart;
+	private Address address;
+	private CreditCard creditCard;
+	private String name;
 
 	public String getCartPageJsp() {
 		return PATH_SECURE_JSP + getJSPBinding() + "/" + CART_JSP;
@@ -110,7 +115,26 @@ public class CheckoutActionBean extends JCSecureActionBean {
 				}
 				return getCartResolution();
 			case ("billing"):
-				LOG.info("Need to validate cart()");
+				if (cart.getCartItems().size() < 1) {
+					LOG.error("No items in the cart()");
+					addGlobalValidationError("cart.no.items", user);
+					return getCartResolution();
+				}
+				name = user.getFullName();
+				List<Address> addressList = user.getAddresses();
+				if (addressList.isEmpty()) {
+					address = new Address();
+				}
+				else {
+					address = addressList.get(0);
+				}
+				List<CreditCard> creditCardList = user.getCreditCards();
+				if (creditCardList.isEmpty()) {
+					creditCard = new CreditCard();
+				}
+				else {
+					creditCard = creditCardList.get(0);
+				}
 				return getBillingResolution();
 			case ("purchase"):
 				LOG.info("Need to validate cart()");
@@ -145,6 +169,35 @@ public class CheckoutActionBean extends JCSecureActionBean {
 
 	public void setCart(Cart cart) {
 		this.cart = cart;
+	}
+
+	@Override
+	public User getUser() {
+		return getUser();
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+	public CreditCard getCreditCard() {
+		return creditCard;
+	}
+
+	public void setCreditCard(CreditCard creditCard) {
+		this.creditCard = creditCard;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

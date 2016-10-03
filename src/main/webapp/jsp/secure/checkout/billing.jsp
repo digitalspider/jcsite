@@ -93,23 +93,23 @@ function stripeResponseHandler(status, response) {
                             <div class="h4">Billing Details</div>
                             <div class="form-group">
                             	<s:errors field="name"/>
-                                <input type="text" id="name" name="name" class="form-control" placeholder="Name" required="true"/>
+                                <input type="text" id="name" name="name" class="form-control" placeholder="Name" required="true" value="${actionBean.name}"/>
                             </div>
                             <div class="form-group">
                             	<s:errors field="address"/>
-                                <input type="text" id="address" name="address" class="form-control" placeholder="Street Address" required="true"/>
+                                <input type="text" id="address" name="address" class="form-control" placeholder="Street Address" required="true" value="${actionBean.address.address}"/>
                             </div>
                             <div class="form-group">
                             	<s:errors field="city"/>
-                                <input type="text" id="city" name="city" class="form-control" placeholder="Suburb" required="true"/>
+                                <input type="text" id="city" name="city" class="form-control" placeholder="Suburb" required="true" value="${actionBean.address.city}"/>
                             </div>
                             <div class="form-group">
                             	<s:errors field="state"/>
-                                <input type="text" id="state" name="state" class="form-control" placeholder="State" required="true"/>
+                                <input type="text" id="state" name="state" class="form-control" placeholder="State" required="true" value="${actionBean.address.state}"/>
                             </div>
                             <div class="form-group">
                             	<s:errors field="postcode"/>
-                                <input type="text" id="postcode" name="postcode" class="form-control" placeholder="Postcode" required="true"/>
+                                <input type="text" id="postcode" name="postcode" class="form-control" placeholder="Postcode" required="true" value="${actionBean.address.postcode}"/>
                             </div>
 
 						</div>
@@ -126,13 +126,13 @@ function stripeResponseHandler(status, response) {
 
                             <div class="form-group">
                             	<s:errors field="cc-number"/>
-                            	<label for="cc-number" class="control-label">Card number <small class="text-muted">[<span class="cc-brand">MasterCard</span>]</small></label>
-                                <input type="tel" id="cc-number" data-stripe="number" class="form-control cc-number" placeholder="1234 5678 9012 3456" required="true"/>
+                            	<label for="cc-number" class="control-label">Card number <small class="text-muted">[<span class="cc-brand">${actionBean.creditcard.type}</span>]</small></label>
+                                <input type="tel" id="cc-number" data-stripe="number" class="form-control cc-number" placeholder="1234 5678 9012 3456" required="true" value="${actionBean.creditcard.cardSuffix}"/>
                             </div>
                             <div class="form-group">
                             	<s:errors field="cc-address"/>
                             	<label for="cc-exp" class="control-label">Card expiry </label>
-                                <input type="tel" id="cc-exp" class="form-control cc-exp" autocomplete="cc-exp" placeholder="01 / 16" required="true"/>
+                                <input type="tel" id="cc-exp" class="form-control cc-exp" autocomplete="cc-exp" placeholder="01 / 16" required="true" value="${actionBean.creditcard.expiry}"/>
                             </div>
                             <div class="form-group">
                             	<s:errors field="cc-cvc"/>
