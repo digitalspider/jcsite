@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extra-ddl xmlns="http://ebean-orm.github.io/xml/ns/extraddl">
+	<ddl-script name="init">
+
+		INSERT INTO Purchase () VALUES ();
+
+	</ddl-script>
+</extra-ddl>
