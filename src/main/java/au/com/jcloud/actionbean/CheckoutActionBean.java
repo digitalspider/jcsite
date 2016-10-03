@@ -6,8 +6,12 @@ import java.util.List;
 
 import javax.annotation.security.PermitAll;
 
+import com.avaje.ebean.Ebean;
+
 import au.com.jcloud.WebConstants;
 import au.com.jcloud.model.Cart;
+import au.com.jcloud.model.CartItem;
+import au.com.jcloud.model.Product;
 import au.com.jcloud.model.User;
 import au.com.jcloud.util.PathParts;
 import net.sourceforge.stripes.action.DefaultHandler;
@@ -79,6 +83,18 @@ public class CheckoutActionBean extends JCSecureActionBean {
 			String action = pathParts.get(1);
 			LOG.info("action=" + action);
 			switch (action) {
+			case ("add"):
+				int productId = pathParts.getInt(2);
+				if (productId > 0) {
+					Product product = Ebean.find(Product.class).where().idEq(Long.valueOf(productId)).findUnique();
+					if (product != null) {
+						CartItem cartItem = new CartItem();
+						cartItem.setProduct(product);
+						cartItem.setQuantity(1);
+						cart.getCartItems().add(cartItem);
+					}
+				}
+				return getCartResolution();
 			case ("cart"):
 				return getCartResolution();
 			case ("billing"):
@@ -109,6 +125,14 @@ public class CheckoutActionBean extends JCSecureActionBean {
 	@Override
 	public String getJSPBinding() {
 		return JSP_BINDING;
+	}
+
+	public Cart getCart() {
+		return cart;
+	}
+
+	public void setCart(Cart cart) {
+		this.cart = cart;
 	}
 
 }

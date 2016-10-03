@@ -2,23 +2,26 @@ package au.com.jcloud.actionbean;
 
 import static au.com.jcloud.actionbean.ServerActionBean.JSP_BINDING;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.avaje.ebean.Ebean;
 
 import au.com.jcloud.WebConstants;
-import au.com.jcloud.enums.Status;
-import au.com.jcloud.model.OperatingSystem;
-import au.com.jcloud.model.Purchase;
+import au.com.jcloud.model.Product;
 import au.com.jcloud.model.Server;
 import au.com.jcloud.model.User;
 import au.com.jcloud.util.PathParts;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.DontBind;
 import net.sourceforge.stripes.action.DontValidate;
+import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.HandlesEvent;
+import net.sourceforge.stripes.action.RedirectResolution;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.UrlBinding;
 import net.sourceforge.stripes.validation.Validate;
@@ -31,6 +34,7 @@ import net.sourceforge.stripes.validation.Validate;
 public class ServerActionBean extends JCSecureActionBean {
 
 	public static final String JSP_BINDING = "/server";
+	public static final String JSP_ADDSERVER = "addserver.jsp";
 
 	@Validate(required = true, minlength = 3)
 	private String hostname;
@@ -57,7 +61,18 @@ public class ServerActionBean extends JCSecureActionBean {
 	@Validate(required = true)
 	private String support;
 
-	private List<Server> servers;
+	private String selectedProduct;
+	private List<Product> products = new ArrayList<>();
+
+	private List<Server> servers = new ArrayList<>();
+
+	public String getAddServerJsp() {
+		return WebConstants.PATH_SECURE_JSP + getJSPBinding() + "/" + JSP_ADDSERVER;
+	}
+
+	public Resolution getAddServerResolution() {
+		return new ForwardResolution(getAddServerJsp());
+	}
 
 	@PermitAll
 	@DontValidate
@@ -78,7 +93,8 @@ public class ServerActionBean extends JCSecureActionBean {
 			LOG.info("action=" + action);
 			switch (action) {
 			case ("add"):
-				return getEditResolution();
+				products = Ebean.find(Product.class).findList();
+				return getAddServerResolution();
 			case ("edit"):
 				return getEditResolution();
 			default:
@@ -111,28 +127,13 @@ public class ServerActionBean extends JCSecureActionBean {
 
 	@HandlesEvent("addserver")
 	public Resolution addServer() throws Exception {
-		User user = getUser();
-		Server server = new Server();
-		try {
-			OperatingSystem os = Ebean.find(OperatingSystem.class).where().idEq(1).findUnique();
-			Purchase purchase = Ebean.find(Purchase.class).where().idEq(1).findUnique();
-			server.setUser(user);
-			server.setName(hostname);
-			server.setAlias(hostname);
-			server.setOs(os);
-			server.setPurchase(purchase);
-			server.setHddLimit(Double.valueOf(disk));
-			server.setCpuLimit(Double.valueOf(cores));
-			server.setMemLimit(Double.valueOf(memory));
-			server.setStatus(Status.ENABLED.value());
-			server.setDescription("os=" + os + ", appserver=" + appserver + ", dbserver=" + dbserver + ", webserver=" + webserver + ", bkup=" + backups + ", support=" + support + ", app=" + application);
-			Ebean.save(server);
-
-			return getListResolution();
-		} catch (Exception e) {
-			LOG.error("Error saving server " + server + " for user " + user + ". " + e, e);
+		if (StringUtils.isNotBlank(selectedProduct)) {
+			return new RedirectResolution("/secure/checkout/add/" + selectedProduct);
 		}
-		return getEditResolution();
+		else {
+			addGlobalValidationError("product.not.selected");
+			return getAddServerResolution();
+		}
 	}
 
 	@Override
@@ -242,5 +243,21 @@ public class ServerActionBean extends JCSecureActionBean {
 
 	public void setServers(List<Server> servers) {
 		this.servers = servers;
+	}
+
+	public List<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<Product> products) {
+		this.products = products;
+	}
+
+	public String getSelectedProduct() {
+		return selectedProduct;
+	}
+
+	public void setSelectedProduct(String selectedProduct) {
+		this.selectedProduct = selectedProduct;
 	}
 }

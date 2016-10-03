@@ -12,31 +12,22 @@
             <div class="container-fluid">
                 <div class="row">
 
-					<s:form id="paymentForm" method="post" action="/secure/checkout/billing" class="tm-payment-form">
+					<s:form id="cartForm" method="post" action="/secure/checkout/billing" class="tm-cart-form">
                     	<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                         	<s:errors globalErrorsOnly="true"/>
                             <div class="h4">Cart Details</div>
-                            <div class="form-group">
-                            	<s:errors field="name"/>
-                                <input type="text" id="name" name="name" class="form-control" placeholder="Name" required="true"/>
-                            </div>
-                            <div class="form-group">
-                            	<s:errors field="address"/>
-                                <input type="text" id="address" name="address" class="form-control" placeholder="Street Address" required="true"/>
-                            </div>
-                            <div class="form-group">
-                            	<s:errors field="city"/>
-                                <input type="text" id="city" name="city" class="form-control" placeholder="Suburb" required="true"/>
-                            </div>
-                            <div class="form-group">
-                            	<s:errors field="state"/>
-                                <input type="text" id="state" name="state" class="form-control" placeholder="State" required="true"/>
-                            </div>
-                            <div class="form-group">
-                            	<s:errors field="postcode"/>
-                                <input type="text" id="postcode" name="postcode" class="form-control" placeholder="Postcode" required="true"/>
-                            </div>
+                            <table id="table" class="table">
+                            <c:forEach var="cartItem" items="${actionBean.cart.cartItems}">
+                            	<tr class="cart-item" id="${cartItem.id}">
+                            		<td class="cart-item-name">${cartItem.product.name}</td>
+                            		<td class="cart-item-desc">${cartItem.product.description}</td>
+                            		<td class="cart-item-qty">${cartItem.quantity}</td>
+                            		<td class="cart-item-price">${cartItem.product.listPrice}</td>
+		                        </tr>
+                            </c:forEach>
+                            </table>
                             <s:submit id="checkout" name="checkout" value="checkout" class="tm-btn text-uppercase" />
+                            <a href="${ctx}/secure/server/add" class="tm-btn text-uppercase">Add New Server</a>
                     	</div>
                     </s:form>
 
