@@ -1,20 +1,19 @@
 package au.com.jcloud.actionbean;
 
-import net.sourceforge.stripes.action.UrlBinding;
-import net.sourceforge.stripes.validation.EmailTypeConverter;
-import net.sourceforge.stripes.validation.Validate;
+import static au.com.jcloud.WebConstants.PATH_SECURE;
+import static au.com.jcloud.actionbean.InvoiceActionBean.JSP_BINDING;
 
 import javax.annotation.security.PermitAll;
 
-import au.com.jcloud.WebConstants;
-
-import static au.com.jcloud.actionbean.InvoiceActionBean.JSP_BINDING;
+import net.sourceforge.stripes.action.UrlBinding;
+import net.sourceforge.stripes.validation.EmailTypeConverter;
+import net.sourceforge.stripes.validation.Validate;
 
 /**
  * Created by david.vittor on 3/08/16.
  */
 @PermitAll
-@UrlBinding(WebConstants.PATH_SECURE+JSP_BINDING)
+@UrlBinding(PATH_SECURE + JSP_BINDING)
 public class InvoiceActionBean extends JCSecureActionBean {
 
 	public static final String JSP_BINDING = "/invoice";
@@ -28,6 +27,7 @@ public class InvoiceActionBean extends JCSecureActionBean {
 	@Validate(required = true, minlength = 2)
 	private String message;
 
+	@Override
 	public String getJSPBinding() {
 		return JSP_BINDING;
 	}

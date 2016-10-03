@@ -1,5 +1,6 @@
 package au.com.jcloud.actionbean;
 
+import static au.com.jcloud.WebConstants.ACTION_REST_BLOG;
 import static au.com.jcloud.WebConstants.URL_CC_PREFIX;
 
 import java.util.ArrayList;
@@ -10,7 +11,6 @@ import org.apache.commons.lang3.StringUtils;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.ExpressionList;
 
-import au.com.jcloud.WebConstants;
 import au.com.jcloud.enums.Status;
 import au.com.jcloud.model.Blog;
 import au.com.jcloud.util.HttpUtil;
@@ -24,7 +24,7 @@ import net.sourceforge.stripes.action.UrlBinding;
  * Created by david.vittor on 3/08/16.
  */
 @RestActionBean
-@UrlBinding(WebConstants.ACTION_REST_BLOG)
+@UrlBinding(ACTION_REST_BLOG)
 public class BlogLinkActionBean extends JCActionBean {
 
 	public static final int DEFAULT_ROWS = 1;
@@ -49,11 +49,12 @@ public class BlogLinkActionBean extends JCActionBean {
 			int maxRows = DEFAULT_ROWS;
 			if (pathParts.size() > 1) {
 				if (pathParts.isNumeric(1)) {
-					maxRows = pathParts.getInt(1,0,MAX_ROWS);
-				} else {
+					maxRows = pathParts.getInt(1, 0, MAX_ROWS);
+				}
+				else {
 					tags = pathParts.get(1);
 					if (pathParts.isNumeric(2)) {
-						maxRows = pathParts.getInt(2,0,MAX_ROWS);
+						maxRows = pathParts.getInt(2, 0, MAX_ROWS);
 					}
 				}
 			}

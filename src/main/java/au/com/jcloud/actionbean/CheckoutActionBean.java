@@ -1,5 +1,10 @@
 package au.com.jcloud.actionbean;
 
+import static au.com.jcloud.WebConstants.BILLING_JSP;
+import static au.com.jcloud.WebConstants.CART_JSP;
+import static au.com.jcloud.WebConstants.PATH_SECURE;
+import static au.com.jcloud.WebConstants.PATH_SECURE_JSP;
+import static au.com.jcloud.WebConstants.THANKYOU_JSP;
 import static au.com.jcloud.actionbean.CheckoutActionBean.JSP_BINDING;
 
 import java.util.List;
@@ -8,7 +13,6 @@ import javax.annotation.security.PermitAll;
 
 import com.avaje.ebean.Ebean;
 
-import au.com.jcloud.WebConstants;
 import au.com.jcloud.model.Cart;
 import au.com.jcloud.model.CartItem;
 import au.com.jcloud.model.Product;
@@ -26,7 +30,7 @@ import net.sourceforge.stripes.action.UrlBinding;
  * Created by david.vittor on 3/08/16.
  */
 @PermitAll
-@UrlBinding(WebConstants.PATH_SECURE + JSP_BINDING)
+@UrlBinding(PATH_SECURE + JSP_BINDING)
 public class CheckoutActionBean extends JCSecureActionBean {
 
 	public static final String JSP_BINDING = "/checkout";
@@ -34,15 +38,15 @@ public class CheckoutActionBean extends JCSecureActionBean {
 	private Cart cart;
 
 	public String getCartPageJsp() {
-		return WebConstants.PATH_SECURE_JSP + getJSPBinding() + "/" + WebConstants.CART_JSP;
+		return PATH_SECURE_JSP + getJSPBinding() + "/" + CART_JSP;
 	}
 
 	public String getBillingPageJsp() {
-		return WebConstants.PATH_SECURE_JSP + getJSPBinding() + "/" + WebConstants.BILLING_JSP;
+		return PATH_SECURE_JSP + getJSPBinding() + "/" + BILLING_JSP;
 	}
 
 	public String getThankYouPageJsp() {
-		return WebConstants.PATH_SECURE_JSP + getJSPBinding() + "/" + WebConstants.THANKYOU_JSP;
+		return PATH_SECURE_JSP + getJSPBinding() + "/" + THANKYOU_JSP;
 	}
 
 	public Resolution getCartResolution() {
@@ -83,22 +87,27 @@ public class CheckoutActionBean extends JCSecureActionBean {
 			String action = pathParts.get(1);
 			LOG.info("action=" + action);
 			switch (action) {
-			case ("add"):
-				int productId = pathParts.getInt(2);
-				LOG.info("adding productId=" + productId);
-				if (productId > 0) {
-					Product product = Ebean.find(Product.class).where().idEq(Long.valueOf(productId)).findUnique();
-					LOG.info("adding product=" + product);
-					if (product != null) {
-						CartItem cartItem = new CartItem();
-						cartItem.setProduct(product);
-						cartItem.setQuantity(1);
-						cart.getCartItems().add(cartItem);
-						Ebean.save(cart);
+			case ("cart"):
+				if (pathParts.size() > 2) {
+					String cartAction = pathParts.get(2);
+					LOG.info("cartAction=" + cartAction);
+					switch (cartAction) {
+					case ("add"):
+						int productId = pathParts.getInt(3);
+						LOG.info("adding productId=" + productId);
+						if (productId > 0) {
+							Product product = Ebean.find(Product.class).where().idEq(Long.valueOf(productId)).findUnique();
+							LOG.info("adding product=" + product);
+							if (product != null) {
+								CartItem cartItem = new CartItem();
+								cartItem.setProduct(product);
+								cartItem.setQuantity(1);
+								cart.getCartItems().add(cartItem);
+								Ebean.save(cart);
+							}
+						}
 					}
 				}
-				return getCartResolution();
-			case ("cart"):
 				return getCartResolution();
 			case ("billing"):
 				LOG.info("Need to validate cart()");

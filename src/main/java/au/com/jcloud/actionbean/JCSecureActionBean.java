@@ -1,15 +1,17 @@
 package au.com.jcloud.actionbean;
 
+import static au.com.jcloud.WebConstants.EDIT_JSP;
+import static au.com.jcloud.WebConstants.LIST_JSP;
+import static au.com.jcloud.WebConstants.PATH_SECURE_JSP;
+import static au.com.jcloud.WebConstants.SHOW_JSP;
+
+import javax.annotation.security.PermitAll;
+
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.DontBind;
 import net.sourceforge.stripes.action.DontValidate;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
-
-import javax.annotation.security.PermitAll;
-
-import au.com.jcloud.WebConstants;
-import au.com.jcloud.util.Constants;
 
 /**
  * Created by david on 30/08/16.
@@ -20,7 +22,7 @@ public abstract class JCSecureActionBean extends JCActionBean {
 	public Resolution defaultResolution = getListResolution();
 
 	/**
-	 * Return the url binding of the jsp page. This is prepended with {@link WebConstants#PATH_SECURE_JSP}
+	 * Return the url binding of the jsp page. This is prepended with {@link PATH_SECURE_JSP}
 	 * and appended with show.jsp, edit.jsp or list.jsp.
 	 *
 	 * @return the jsp binding for this JCSecureActionBean, e.g. /account
@@ -37,15 +39,15 @@ public abstract class JCSecureActionBean extends JCActionBean {
 	}
 
 	public String getShowPageJsp() {
-		return WebConstants.PATH_SECURE_JSP+getJSPBinding()+"/"+WebConstants.SHOW_JSP;
+		return PATH_SECURE_JSP + getJSPBinding() + "/" + SHOW_JSP;
 	}
 
 	public String getEditPageJsp() {
-		return WebConstants.PATH_SECURE_JSP+getJSPBinding()+"/"+WebConstants.EDIT_JSP;
+		return PATH_SECURE_JSP + getJSPBinding() + "/" + EDIT_JSP;
 	}
 
 	public String getListPageJsp() {
-		return WebConstants.PATH_SECURE_JSP+getJSPBinding()+"/"+WebConstants.LIST_JSP;
+		return PATH_SECURE_JSP + getJSPBinding() + "/" + LIST_JSP;
 	}
 
 	public Resolution getShowResolution() {

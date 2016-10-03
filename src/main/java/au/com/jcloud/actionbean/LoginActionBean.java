@@ -2,6 +2,7 @@ package au.com.jcloud.actionbean;
 
 import static au.com.jcloud.WebConstants.ACTION_SECURE_LOGIN;
 import static au.com.jcloud.WebConstants.PAGE_INDEX;
+import static au.com.jcloud.WebConstants.PAGE_LOGIN;
 import static au.com.jcloud.WebConstants.PAGE_RESET;
 import static au.com.jcloud.WebConstants.PAGE_SECURE;
 import static au.com.jcloud.WebConstants.URL_PARAM_REDIRECT;
@@ -13,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 
-import au.com.jcloud.WebConstants;
 import au.com.jcloud.enums.FormType;
 import au.com.jcloud.model.User;
 import au.com.jcloud.service.EmailService;
@@ -100,7 +100,7 @@ public class LoginActionBean extends JCActionBean {
 		String referrer = getReferrer();
 		String path = getConextPath();
 		if (path != null) {
-			path += WebConstants.PAGE_LOGIN;
+			path += PAGE_LOGIN;
 		}
 		LOG.debug("referrer=" + referrer);
 		LOG.debug("path=" + path);

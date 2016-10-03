@@ -1,17 +1,17 @@
 package au.com.jcloud.actionbean;
 
+import static au.com.jcloud.WebConstants.PAGE_LOGIN;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import au.com.jcloud.WebConstants;
 import au.com.jcloud.context.JCActionBeanContext;
 import au.com.jcloud.model.User;
 import au.com.jcloud.util.HttpUtil;
 import au.com.jcloud.util.PathParts;
-
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.DefaultHandler;
@@ -34,7 +34,7 @@ public class JCActionBean implements ActionBean {
 	@DontBind
 	@DefaultHandler
 	public Resolution action() throws Exception {
-		String url = WebConstants.PAGE_LOGIN;
+		String url = PAGE_LOGIN;
 		String queryString = getQueryString();
 		if (StringUtils.isNotBlank(queryString)) {
 			url += "?" + queryString;

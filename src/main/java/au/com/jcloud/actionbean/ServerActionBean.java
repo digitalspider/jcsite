@@ -1,5 +1,7 @@
 package au.com.jcloud.actionbean;
 
+import static au.com.jcloud.WebConstants.PATH_SECURE;
+import static au.com.jcloud.WebConstants.PATH_SECURE_JSP;
 import static au.com.jcloud.actionbean.ServerActionBean.JSP_BINDING;
 
 import java.util.ArrayList;
@@ -11,7 +13,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.avaje.ebean.Ebean;
 
-import au.com.jcloud.WebConstants;
 import au.com.jcloud.model.Product;
 import au.com.jcloud.model.Server;
 import au.com.jcloud.model.User;
@@ -30,7 +31,7 @@ import net.sourceforge.stripes.validation.Validate;
  * Created by david.vittor on 3/08/16.
  */
 @PermitAll
-@UrlBinding(WebConstants.PATH_SECURE + JSP_BINDING)
+@UrlBinding(PATH_SECURE + JSP_BINDING)
 public class ServerActionBean extends JCSecureActionBean {
 
 	public static final String JSP_BINDING = "/server";
@@ -67,7 +68,7 @@ public class ServerActionBean extends JCSecureActionBean {
 	private List<Server> servers = new ArrayList<>();
 
 	public String getAddServerJsp() {
-		return WebConstants.PATH_SECURE_JSP + getJSPBinding() + "/" + JSP_ADDSERVER;
+		return PATH_SECURE_JSP + getJSPBinding() + "/" + JSP_ADDSERVER;
 	}
 
 	public Resolution getAddServerResolution() {
@@ -128,7 +129,7 @@ public class ServerActionBean extends JCSecureActionBean {
 	@HandlesEvent("addserver")
 	public Resolution addServer() throws Exception {
 		if (StringUtils.isNotBlank(selectedProduct)) {
-			return new RedirectResolution("/secure/checkout/add/" + selectedProduct);
+			return new RedirectResolution(PATH_SECURE + CheckoutActionBean.JSP_BINDING + "/cart/add/" + selectedProduct);
 		}
 		else {
 			addGlobalValidationError("product.not.selected");

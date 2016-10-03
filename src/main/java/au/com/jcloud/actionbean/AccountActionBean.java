@@ -1,7 +1,16 @@
 package au.com.jcloud.actionbean;
 
+import static au.com.jcloud.WebConstants.PATH_SECURE;
+import static au.com.jcloud.actionbean.AccountActionBean.JSP_BINDING;
+
+import javax.annotation.security.PermitAll;
+
 import com.avaje.ebean.Ebean;
 
+import au.com.jcloud.model.Address;
+import au.com.jcloud.model.User;
+import au.com.jcloud.service.UserService;
+import au.com.jcloud.util.PathParts;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.DontBind;
 import net.sourceforge.stripes.action.DontValidate;
@@ -12,23 +21,11 @@ import net.sourceforge.stripes.integration.spring.SpringBean;
 import net.sourceforge.stripes.validation.EmailTypeConverter;
 import net.sourceforge.stripes.validation.Validate;
 
-import java.util.List;
-
-import javax.annotation.security.PermitAll;
-
-import au.com.jcloud.WebConstants;
-import au.com.jcloud.model.Address;
-import au.com.jcloud.model.User;
-import au.com.jcloud.service.UserService;
-import au.com.jcloud.util.PathParts;
-
-import static au.com.jcloud.actionbean.AccountActionBean.JSP_BINDING;
-
 /**
  * Created by david.vittor on 3/08/16.
  */
 @PermitAll
-@UrlBinding(WebConstants.PATH_SECURE+JSP_BINDING)
+@UrlBinding(PATH_SECURE + JSP_BINDING)
 public class AccountActionBean extends JCSecureActionBean {
 
 	public static final String JSP_BINDING = "/account";
@@ -60,6 +57,7 @@ public class AccountActionBean extends JCSecureActionBean {
 	@SpringBean
 	private UserService userService;
 
+	@Override
 	public String getJSPBinding() {
 		return JSP_BINDING;
 	}
@@ -77,7 +75,7 @@ public class AccountActionBean extends JCSecureActionBean {
 		email = user.getEmail();
 
 		Address defaultAddress = userService.getDefaultAddress(user);
-		if (defaultAddress!=null) {
+		if (defaultAddress != null) {
 			address = defaultAddress.getAddress();
 			city = defaultAddress.getCity();
 			state = defaultAddress.getState();
@@ -85,9 +83,9 @@ public class AccountActionBean extends JCSecureActionBean {
 		}
 
 		PathParts pathParts = getPathParts(); // 0=account, 1=edit
-		LOG.debug("pathParts="+pathParts);
-		if (pathParts.size()>1 && pathParts.get(1).equals("edit")) {
-			LOG.debug("go edit = "+getEditResolution());
+		LOG.debug("pathParts=" + pathParts);
+		if (pathParts.size() > 1 && pathParts.get(1).equals("edit")) {
+			LOG.debug("go edit = " + getEditResolution());
 			return getEditResolution();
 		}
 		return getShowResolution();
@@ -104,7 +102,7 @@ public class AccountActionBean extends JCSecureActionBean {
 			Ebean.save(user);
 
 			Address defaultAddress = userService.getDefaultAddress(user);
-			if (defaultAddress==null) {
+			if (defaultAddress == null) {
 				defaultAddress = new Address();
 				defaultAddress.setUser(user);
 			}
@@ -116,7 +114,7 @@ public class AccountActionBean extends JCSecureActionBean {
 
 			return getShowResolution();
 		} catch (Exception e) {
-			LOG.error("Error saving user "+user+". "+e,e);
+			LOG.error("Error saving user " + user + ". " + e, e);
 		}
 		return getEditResolution();
 	}
