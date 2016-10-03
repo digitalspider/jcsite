@@ -85,13 +85,16 @@ public class CheckoutActionBean extends JCSecureActionBean {
 			switch (action) {
 			case ("add"):
 				int productId = pathParts.getInt(2);
+				LOG.info("adding productId=" + productId);
 				if (productId > 0) {
 					Product product = Ebean.find(Product.class).where().idEq(Long.valueOf(productId)).findUnique();
+					LOG.info("adding product=" + product);
 					if (product != null) {
 						CartItem cartItem = new CartItem();
 						cartItem.setProduct(product);
 						cartItem.setQuantity(1);
 						cart.getCartItems().add(cartItem);
+						Ebean.save(cart);
 					}
 				}
 				return getCartResolution();
