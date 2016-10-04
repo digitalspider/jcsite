@@ -12,6 +12,7 @@ import java.util.List;
 import javax.annotation.security.PermitAll;
 
 import com.avaje.ebean.Ebean;
+import com.avaje.ebean.FetchConfig;
 
 import au.com.jcloud.enums.Status;
 import au.com.jcloud.model.Address;
@@ -79,13 +80,13 @@ public class CheckoutActionBean extends JCSecureActionBean {
 	@Override
 	public Resolution action() {
 		User user = getUser();
-		List<Cart> carts = Ebean.find(Cart.class).setDisableLazyLoading(true).where().eq("user",user).findList();
+		List<Cart> carts = Ebean.find(Cart.class).setDisableLazyLoading(true).fetch("cartItems").where().eq("user",user).findList();
 		if (carts.isEmpty()) {
 			cart = new Cart();
 			cart.setStatus(Status.ENABLED.value());
 			cart.setUser(user);
 			Ebean.save(cart);
-			carts = Ebean.find(Cart.class).setDisableLazyLoading(true).where().eq("user", user).findList();
+			carts = Ebean.find(Cart.class).where().eq("user", user).findList();
 		}
 		if (carts.isEmpty()) {
 			return getDefaultResolution();
