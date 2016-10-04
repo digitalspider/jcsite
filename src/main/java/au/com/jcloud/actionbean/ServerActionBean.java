@@ -128,8 +128,8 @@ public class ServerActionBean extends JCSecureActionBean {
 
 	@HandlesEvent("addserver")
 	public Resolution addServer() throws Exception {
-		if (StringUtils.isNotBlank(selectedProduct)) {
-			return new RedirectResolution(PATH_SECURE + CheckoutActionBean.JSP_BINDING + "/cart/add/" + selectedProduct);
+		if (StringUtils.isNotBlank(selectedProduct) && StringUtils.isNotBlank(hostname)) {
+			return new RedirectResolution(PATH_SECURE + CheckoutActionBean.JSP_BINDING + "/cart/add/" + selectedProduct+"/"+hostname);
 		}
 		else {
 			addGlobalValidationError("product.not.selected");

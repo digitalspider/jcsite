@@ -18,11 +18,11 @@
                             <div class="h4">Cart Details</div>
                             <table id="table" class="table">
                             <c:forEach var="cartItem" items="${actionBean.cart.cartItems}">
-                            	<tr class="cart-item" id="${cartItem.id}">
+                            	<tr class="cart-item" id="${cartItem.product.id}">
                             		<td class="cart-item-name">${cartItem.product.name}</td>
                             		<td class="cart-item-desc">${cartItem.product.description}</td>
                             		<td class="cart-item-qty">${cartItem.quantity}</td>
-                            		<td class="cart-item-price">${cartItem.product.listPrice}</td>
+                            		<td class="cart-item-price">\$${cartItem.product.listPrice}</td>
 		                        </tr>
                             </c:forEach>
                             </table>

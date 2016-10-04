@@ -13,6 +13,7 @@ import javax.annotation.security.PermitAll;
 
 import com.avaje.ebean.Ebean;
 
+import au.com.jcloud.enums.Status;
 import au.com.jcloud.model.Address;
 import au.com.jcloud.model.Cart;
 import au.com.jcloud.model.CartItem;
@@ -78,13 +79,19 @@ public class CheckoutActionBean extends JCSecureActionBean {
 	@Override
 	public Resolution action() {
 		User user = getUser();
-		List<Cart> carts = user.getCarts();
+		List<Cart> carts = Ebean.find(Cart.class).setDisableLazyLoading(true).where().eq("user",user).findList();
 		if (carts.isEmpty()) {
 			cart = new Cart();
+			cart.setStatus(Status.ENABLED.value());
+			cart.setUser(user);
+			Ebean.save(cart);
+			carts = Ebean.find(Cart.class).setDisableLazyLoading(true).where().eq("user", user).findList();
 		}
-		else {
-			cart = carts.get(0);
+		if (carts.isEmpty()) {
+			return getDefaultResolution();
 		}
+		cart = carts.get(0);
+		LOG.info("cart=" + cart+" items="+cart.getCartItems().size());
 
 		PathParts pathParts = getPathParts(); // 0=checkout, 1=add, 2=123 (productId), 3=description
 		LOG.info("pathParts=" + pathParts);
@@ -104,11 +111,23 @@ public class CheckoutActionBean extends JCSecureActionBean {
 							Product product = Ebean.find(Product.class).where().idEq(Long.valueOf(productId)).findUnique();
 							LOG.info("adding product=" + product);
 							if (product != null) {
-								CartItem cartItem = new CartItem();
-								cartItem.setProduct(product);
-								cartItem.setQuantity(1);
-								cart.getCartItems().add(cartItem);
-								Ebean.save(cart);
+								boolean added=false;
+								for (CartItem cartItem : cart.getCartItems()) {
+									if (cartItem.getProduct().getId().equals(product.getId())) {
+										cartItem.setQuantity(cartItem.getQuantity()+1);
+										Ebean.update(cartItem);
+										added=true;
+										break;
+									}
+								}
+								if (!added) {
+									CartItem cartItem = new CartItem();
+									cartItem.setProduct(product);
+									cartItem.setQuantity(1);
+									cartItem.setCart(cart);
+									Ebean.save(cartItem);
+									cart.getCartItems().add(cartItem);
+								}
 							}
 						}
 					}
@@ -173,7 +192,7 @@ public class CheckoutActionBean extends JCSecureActionBean {
 
 	@Override
 	public User getUser() {
-		return getUser();
+		return super.getUser();
 	}
 
 	public Address getAddress() {

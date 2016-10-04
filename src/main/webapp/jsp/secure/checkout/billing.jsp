@@ -126,13 +126,13 @@ function stripeResponseHandler(status, response) {
 
                             <div class="form-group">
                             	<s:errors field="cc-number"/>
-                            	<label for="cc-number" class="control-label">Card number <small class="text-muted">[<span class="cc-brand">${actionBean.creditcard.type}</span>]</small></label>
-                                <input type="tel" id="cc-number" data-stripe="number" class="form-control cc-number" placeholder="1234 5678 9012 3456" required="true" value="${actionBean.creditcard.cardSuffix}"/>
+                            	<label for="cc-number" class="control-label">Card number <small class="text-muted">[<span class="cc-brand">${actionBean.creditCard.type}</span>]</small></label>
+                                <input type="tel" id="cc-number" data-stripe="number" class="form-control cc-number" placeholder="1234 5678 9012 3456" required="true" value="${actionBean.creditCard.cardSuffix}"/>
                             </div>
                             <div class="form-group">
                             	<s:errors field="cc-address"/>
                             	<label for="cc-exp" class="control-label">Card expiry </label>
-                                <input type="tel" id="cc-exp" class="form-control cc-exp" autocomplete="cc-exp" placeholder="01 / 16" required="true" value="${actionBean.creditcard.expiry}"/>
+                                <input type="tel" id="cc-exp" class="form-control cc-exp" autocomplete="cc-exp" placeholder="01 / 16" required="true" value="${actionBean.creditCard.expiry}"/>
                             </div>
                             <div class="form-group">
                             	<s:errors field="cc-cvc"/>

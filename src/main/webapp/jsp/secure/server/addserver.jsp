@@ -4,18 +4,31 @@
 <s:layout-render name="/jsp/layout/secure.jsp" pageTitle="Server">
 
 	<s:layout-component name="customjs">
+		<style>
+			.product-item {
+				float: left;
+				margin-left: 12px;
+			}
+			.product-item-selected {
+				border: medium solid #cc9900;
+				border-radius: 15px;
+			}
+		</style>
 		<script>
 			$(document).ready(function () {
 				getLinks("${ctx}", "category", 5, "#link-template", "#category-links");
 				getLinks("${ctx}", "home", 5, "#link-template", "#useful-links");
-				$("#product-item").onclick(function(ele) {
-					$("#product-selected").val(ele.id());
-					ele.addClass("product-item-selected");
-					$("#product-item") {
-						if (this.id != ele.id) {
-							ele.removeClass("product-item-selected");
-						}
-					};
+				$(".product-item").each(function() {
+					$(this).click(function() {
+						var ele = $(this);
+						$("#product-selected").val(ele.attr('id'));
+						ele.addClass("product-item-selected");
+						$(".product-item").each(function() {
+							if ($(this).attr('id') != ele.attr('id')) {
+								$(this).removeClass("product-item-selected");
+							}
+						});
+					});
 				});
 				if ($("#1")) {
 					$("#1").click();
@@ -55,14 +68,14 @@ String username = request.getRemoteUser();
 					<div class="row tm-margin-t-small">
 						<input type="hidden" name="selectedProduct" id="product-selected"></input>
 						<c:forEach var="product" items="${actionBean.products}">
-							<div id="${product.id}" class="product-item tm-btn text-uppercase">${product.name} - ${product.currency}${product.listPrice}</div>
-							<div id="product-item-details" class="popupbox" style="display: none;">
-								<p>{$product.description}</p>
+							<div id="${product.id}" class="product-item">
+							 	<div id="button" class="tm-btn text-uppercase">${product.name} - \$${product.listPrice}</div>
+								<div id="description" ${product.description}</div>
 							</div>
 						</c:forEach>
 					</div>
 					
-					<div class="row tm-margin-t-small">
+					<div class="row tm-margin-t-small" style="display: none;">
 						<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
 								<h4 class="tm-margin-b-20 tm-gold-text">Hardware</h4>
 								<table class="table table-striped table-condensed">
@@ -226,7 +239,6 @@ String username = request.getRemoteUser();
 				<input type="checkbox" id="terms" name="terms" class="terms" required="true"/>
 				<br/>
 				<s:submit id="addserver" name="addserver" value="Add To Cart" class="tm-btn text-uppercase"/>
-				<a href="${ctx}/secure/checkout/add/1" class="tm-btn text-uppercase">Add To Cart</a>
 				<a href="${ctx}/secure/server" class="tm-btn text-uppercase">Cancel</a>
 			</div>
 		</s:form>
