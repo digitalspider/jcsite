@@ -27,6 +27,7 @@ import net.sourceforge.stripes.action.DontBind;
 import net.sourceforge.stripes.action.DontValidate;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.HandlesEvent;
+import net.sourceforge.stripes.action.RedirectResolution;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.UrlBinding;
 
@@ -80,7 +81,7 @@ public class CheckoutActionBean extends JCSecureActionBean {
 	@Override
 	public Resolution action() {
 		User user = getUser();
-		List<Cart> carts = Ebean.find(Cart.class).setDisableLazyLoading(true).fetch("cartItems").where().eq("user",user).findList();
+		List<Cart> carts = Ebean.find(Cart.class).setDisableLazyLoading(true).fetch("cartItems.product").where().eq("user",user).findList();
 		if (carts.isEmpty()) {
 			cart = new Cart();
 			cart.setStatus(Status.ENABLED.value());
@@ -168,7 +169,7 @@ public class CheckoutActionBean extends JCSecureActionBean {
 	public Resolution checkout() throws Exception {
 		User user = getUser();
 		LOG.info(user + " has checked out!");
-		return getBillingResolution();
+		return new RedirectResolution(PATH_SECURE + JSP_BINDING + "/billing");
 	}
 
 	@HandlesEvent("purchase")
